@@ -1,14 +1,14 @@
 package com.andersen.controllers.impl;
 
+import java.util.List;
+
 import com.andersen.controllers.OrderController;
 import com.andersen.models.BookOrder;
-
-import java.util.List;
 
 public class OrderControllerImpl implements OrderController {
 
     @Override
-    public void list(Long clientId, String sortKey) {
+    public void list(String sortKey) {
         System.out.println("order list");
     }
 
@@ -18,7 +18,7 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public void create(Long clientId, List<BookOrder> books) {
+    public void create(List<BookOrder> books) {
         System.out.println("order create");
     }
 

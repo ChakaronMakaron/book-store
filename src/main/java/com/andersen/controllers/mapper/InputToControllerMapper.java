@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.andersen.authorization.Authenticator;
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
 import com.andersen.controllers.RequestController;
@@ -58,7 +57,7 @@ public class InputToControllerMapper {
         // Order list
         map.put(hash(ORDER.getStrValue(), OrderAction.LIST.getStrValue()), input -> {
             String sortKey = input.getArgs()[0];
-            orderController.list(Authenticator.getUser().getId(), sortKey);
+            orderController.list(sortKey);
         });
 
         // Order complete
@@ -69,7 +68,7 @@ public class InputToControllerMapper {
 
         // Order create
         map.put(hash(ORDER.getStrValue(), OrderAction.CREATE.getStrValue()), input -> {
-            orderController.create(Authenticator.getUser().getId(), parseArgsToBookOrders(input.getArgs()));
+            orderController.create(parseArgsToBookOrders(input.getArgs()));
         });
 
         // Order cancel
