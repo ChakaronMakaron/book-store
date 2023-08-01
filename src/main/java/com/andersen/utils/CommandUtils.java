@@ -30,7 +30,7 @@ public class CommandUtils {
 
         String[] parsedArgs = Arrays.copyOfRange(inputElements, 2, inputElements.length);
 
-        if (parsedArgs.length < parsedAction.getMaxArgsAmount() || parsedArgs.length > parsedAction.getMaxArgsAmount())
+        if (parsedArgs.length < parsedAction.getMinArgsAmount() || parsedArgs.length > parsedAction.getMaxArgsAmount())
                 throw new IllegalArgumentException(format("Invalid args amount '%s' for for command '%s', action '%s'",
                         parsedArgs.length,
                         command,

@@ -2,7 +2,7 @@ package com.andersen.enums.actions;
 
 public enum OrderAction implements CommandAction {
     
-    LIST("list", 2, 2),
+    LIST("list", 1, 1),
     COMPLETE("complete", 1, 1),
     CREATE("create", 2, 20),
     CANCEL("cancel", 1, 1);
