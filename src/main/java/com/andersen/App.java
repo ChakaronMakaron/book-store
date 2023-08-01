@@ -8,6 +8,7 @@ import static java.lang.System.out;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+import com.andersen.controllers.impl.OrderControllerImpl;
 import com.andersen.controllers.mapper.InputToControllerMapper;
 import com.andersen.models.ParsedInput;
 import com.andersen.utils.CommandUtils;
@@ -19,7 +20,7 @@ public class App {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(in, StandardCharsets.UTF_8);
-        InputToControllerMapper inputToControllerMapper = new InputToControllerMapper(null, null, null);
+        InputToControllerMapper inputToControllerMapper = new InputToControllerMapper(null, new OrderControllerImpl(), null);
 
         out.println("Book store");
         out.println("Type 'exit' to close");
