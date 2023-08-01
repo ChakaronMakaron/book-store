@@ -2,19 +2,19 @@ package com.andersen.models;
 
 public class BookOrder {
 
-    private Book book;
+    private String book;
     private int amount;
 
-    public BookOrder(Book book, int amount) {
+    public BookOrder(String book, int amount) {
         this.book = book;
         this.amount = amount;
     }
 
-    public Book getBook() {
+    public String getBook() {
         return book;
     }
 
-    public void setBook(Book book) {
+    public void setBook(String book) {
         this.book = book;
     }
 
