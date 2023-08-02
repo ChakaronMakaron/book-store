@@ -1,16 +1,17 @@
 package com.andersen.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Order {
 
     private Long id;
     private Long clientId;
-    private List<BookOrder> books;
     private LocalDateTime completionDate;
     private OrderStatus status;
     private List<Request> requests;
+    private Integer price;
 
     public static enum OrderStatus {
         IN_PROCESS, COMPLETED
@@ -30,14 +31,6 @@ public class Order {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
-    }
-
-    public List<BookOrder> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookOrder> books) {
-        this.books = books;
     }
 
     public LocalDateTime getCompletionDate() {
@@ -64,9 +57,21 @@ public class Order {
         this.requests = requests;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
-        return "Order [id=" + id + ", clientId=" + clientId + ", books=" + books + ", completionDate=" + completionDate
-                + ", status=" + status + ", requests=" + requests + "]";
+        return id
+                + ". clientId = " + clientId
+                + (completionDate == null ? ", " : ", completionDate = " + completionDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ", ")
+                + "price = " + price + ", "
+                + "status = " + status;
+
     }
 }
