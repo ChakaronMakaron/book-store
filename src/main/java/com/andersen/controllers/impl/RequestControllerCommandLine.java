@@ -8,10 +8,10 @@ import java.util.Comparator;
 
 import static java.lang.System.out;
 
-public class RequestControllerImpl implements RequestController {
+public class RequestControllerCommandLine implements RequestController {
     private final RequestService requestService;
 
-    public RequestControllerImpl(RequestService requestService) {
+    public RequestControllerCommandLine(RequestService requestService) {
         this.requestService = requestService;
     }
 

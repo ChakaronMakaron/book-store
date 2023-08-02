@@ -8,10 +8,10 @@ import java.util.Comparator;
 
 import static java.lang.System.out;
 
-public class BookControllerImpl implements BookController {
+public class BookControllerCommandLine implements BookController {
     private final BookService bookService;
 
-    public BookControllerImpl(BookService bookService) {
+    public BookControllerCommandLine(BookService bookService) {
         this.bookService = bookService;
     }
 
