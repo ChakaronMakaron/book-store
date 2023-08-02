@@ -14,7 +14,6 @@ import com.andersen.enums.AppCommand;
 import com.andersen.enums.actions.BookAction;
 import com.andersen.enums.actions.OrderAction;
 import com.andersen.enums.actions.RequestAction;
-import com.andersen.models.BookOrder;
 import com.andersen.models.ParsedInput;
 
 public class InputToControllerRouter {
@@ -54,7 +53,7 @@ public class InputToControllerRouter {
         // Order list
         router.put(new ParsedInput(AppCommand.ORDER, OrderAction.LIST), input -> {
             String sortKey = input.getArgs()[0];
-            orderController.list(Authenticator.getInstance().getUser().getId(), sortKey);
+            orderController.list(sortKey);
         });
 
         // Order complete
@@ -65,7 +64,7 @@ public class InputToControllerRouter {
 
         // Order create
         router.put(new ParsedInput(AppCommand.ORDER, OrderAction.CREATE), input -> {
-            orderController.create(Authenticator.getInstance().getUser().getId(), parseArgsToBookOrders(input.getArgs()));
+            orderController.create();
         });
 
         // Order cancel
@@ -79,11 +78,5 @@ public class InputToControllerRouter {
             String sortKey = input.getArgs()[0];
             requestController.list(sortKey);
         });
-    }
-
-    private List<BookOrder> parseArgsToBookOrders(String[] args) {
-        List<BookOrder> res = new ArrayList<>();
-        for (int i = 0; i < args.length; i += 2) res.add(new BookOrder(args[i], Integer.parseInt(args[i + 1])));
-        return res;
     }
 }

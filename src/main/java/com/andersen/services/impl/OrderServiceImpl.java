@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void createOrder(Order order, Integer amount, Book book) {
         order.setId((long) getAll().size() + 1);
-        order.setClientId(Authenticator.getUser().getId());
+        order.setClientId(Authenticator.getInstance().getUser().getId());
         order.setStatus(Order.OrderStatus.IN_PROCESS);
         addRequestToOrder(order, amount, book);
     }

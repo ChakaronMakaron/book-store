@@ -4,7 +4,7 @@ public enum OrderAction implements CommandAction {
     
     LIST(1, 1),
     COMPLETE(1, 1),
-    CREATE(2, 20),
+    CREATE(0, 0),
     CANCEL(1, 1);
 
     private int minArgsAmount;

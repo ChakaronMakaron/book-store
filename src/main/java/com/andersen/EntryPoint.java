@@ -1,15 +1,31 @@
 package com.andersen;
 
 import com.andersen.authorization.Authenticator;
+import com.andersen.controllers.impl.OrderControllerCommandLine;
 import com.andersen.controllers.router.InputToControllerRouter;
 import com.andersen.models.ParsedInput;
+import com.andersen.repositories.BookRepository;
+import com.andersen.repositories.OrderRepository;
+import com.andersen.repositories.RequestRepository;
+import com.andersen.services.impl.BookServiceImpl;
+import com.andersen.services.impl.OrderServiceImpl;
+import com.andersen.services.impl.RequestServiceImpl;
 import com.andersen.utils.InputParser;
 
+import java.io.Console;
+
 public class EntryPoint {
-    
+
+
     public static void main(String[] args) {
 
-        InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(null, null, null);
+        Console console = System.console();
+
+        InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(null,
+                new OrderControllerCommandLine(
+                    new BookServiceImpl(new BookRepository()),
+                    new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository()))),
+                null);
 
         System.out.println("Book store");
         System.out.println("Type 'exit' to close");

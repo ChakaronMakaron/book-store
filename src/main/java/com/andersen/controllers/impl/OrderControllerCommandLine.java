@@ -25,7 +25,7 @@ public class OrderControllerCommandLine implements OrderController {
 
     @Override
     public void list(String sortKey) {
-        Long clientId = Authenticator.getUser().getId();
+        Long clientId = Authenticator.getInstance().getUser().getId();
         List<Order> orders = orderService.getAllClientOrders(clientId);
 
         if (sortKey != null) {
