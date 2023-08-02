@@ -7,7 +7,7 @@ import java.util.List;
 
 public class RequestRepository {
 
-    private List<Request> requests = new ArrayList<>();
+    private final List<Request> requests = new ArrayList<>();
     public List<Request> findAll(){
         return requests;
     }

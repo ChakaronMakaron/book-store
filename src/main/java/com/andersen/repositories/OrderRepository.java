@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderRepository {
-    List<Order> orders = new ArrayList<>();
+    private final List<Order> orders = new ArrayList<>();
 
     public List<Order> findAll(){
         return orders;

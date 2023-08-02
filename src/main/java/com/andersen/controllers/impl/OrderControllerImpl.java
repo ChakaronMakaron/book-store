@@ -12,19 +12,16 @@ import com.andersen.services.impl.RequestServiceImpl;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class OrderControllerImpl implements OrderController {
 
     private final BookServiceImpl bookService;
     private final OrderServiceImpl orderService;
-    private final RequestServiceImpl requestService;
     private final Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
 
-    public OrderControllerImpl(BookServiceImpl bookService, OrderServiceImpl orderService, RequestServiceImpl requestService) {
+    public OrderControllerImpl(BookServiceImpl bookService, OrderServiceImpl orderService) {
         this.bookService = bookService;
         this.orderService = orderService;
-        this.requestService = requestService;
     }
 
     @Override

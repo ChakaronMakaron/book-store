@@ -30,8 +30,7 @@ public class App {
                 null,
                 new OrderControllerImpl(
                         new BookServiceImpl(new BookRepository()),
-                        new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository())),
-                        new RequestServiceImpl(new RequestRepository())
+                        new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository()))
                 ),
                 null);
 
