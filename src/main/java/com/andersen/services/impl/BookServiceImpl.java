@@ -7,7 +7,6 @@ import com.andersen.services.BookService;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
-
     private final BookRepository bookRepository;
 
     public BookServiceImpl(BookRepository bookRepository) {
