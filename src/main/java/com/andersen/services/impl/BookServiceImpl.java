@@ -20,7 +20,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBookById(Long id) {
-        return bookRepository.findById(id);
+    public Book getBookById(Long bookId) {
+        return bookRepository.findById(bookId);
+    }
+
+    @Override
+    public void changeAmountOfBook(Long bookId, Integer amount) {
+        if(amount < 0){
+            throw new IllegalArgumentException("Amount value is not valid");
+        }
+        bookRepository.findById(bookId).setAmount(amount);
     }
 }

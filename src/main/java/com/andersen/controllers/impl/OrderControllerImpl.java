@@ -10,9 +10,8 @@ import com.andersen.services.impl.OrderServiceImpl;
 import com.andersen.services.impl.RequestServiceImpl;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class OrderControllerImpl implements OrderController {
@@ -30,7 +29,40 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public void list(String sortKey) {
-        System.out.println("order list");
+        Long clientId = Authenticator.getUser().getId();
+        List<Order> orders = orderService.getAllClientOrders(clientId);
+
+        if (sortKey != null) {
+            switch (sortKey) {
+                case "price": {
+                    orders.sort(Comparator.comparing(Order::getPrice));
+                }
+                case "date": {
+                    orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
+                    break;
+                }
+                case "status": {
+                    orders.sort(Comparator.comparing(Order::getStatus));
+                    break;
+                }
+                default: {
+                    throw new IllegalArgumentException("Wrong sort key");
+                }
+            }
+        }
+        for(Order order : orders){
+            System.out.println(order.toString());
+
+            if(order.getRequests().size() > 0){
+                List<Request> requests = order.getRequests();
+                System.out.println("Order requests:");
+
+                for(Request request : requests){
+                    System.out.println("\t" + request.toString());
+                }
+            }
+        }
+
     }
 
     @Override
@@ -40,8 +72,6 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public void create() {
-
-        boolean execute = true;
         Order order = new Order();
 
         List<Book> books = bookService.getAll(); // find all books and print it to console
@@ -51,36 +81,19 @@ public class OrderControllerImpl implements OrderController {
 
         System.out.println("\nPrint bookId and amount like this: \"1 2\"");
         System.out.println("Type \"finish\" to complete creating the order");
-        while (execute){
+
+        while (true){
             System.out.print(">>>");
             String bookRequest = sc.nextLine();
 
             if(bookRequest.trim().equals("finish")){ // command to finish creating the order
                 orderService.add(order); // final save order
-                execute = false;
-                continue;
+                break;
             }
-
-            String[] args = bookRequest.split(" "); // get args from input
-            if (args.length != 2) throw new IllegalArgumentException("Bad input"); // TODO: need to add check if it's nums
-            IntStream.range(0, args.length).forEach(i -> args[i] = args[i].trim()); // trim() all args
-
-            Long bookId = Long.parseLong(args[0]);
-            Integer amount = Integer.parseInt(args[1]);
-            Book book = bookService.getBookById(bookId);
-
-            if(book != null){ // if book was found -> create order or change order
-                if(order.getId() != null){ // if order already exists -> set new request for the book
-                    setRequestsToOrder(order, amount, book);
-                }else{ // if order isn't exist -> create it and set first request
-                    order.setId((long) orderService.getAll().size() + 1);
-                    order.setClientId(Authenticator.getUser().getId());
-                    order.setStatus(Order.OrderStatus.IN_PROCESS);
-                    setRequestsToOrder(order, amount, book);
-                }
-            }
-            // TODO: make a method to check requests in order
+            orderService.processUserInput(order, bookRequest); // creating order and requests
         }
+        orderService.processOrder(order); // checking all requests in the order
+
     }
 
     @Override
@@ -88,13 +101,4 @@ public class OrderControllerImpl implements OrderController {
         System.out.println("order cancel");
     }
 
-    private void setRequestsToOrder(Order order, Integer amount, Book book) { // a method to avoid code duplication of changing requests in the order
-        if(order.getRequests() == null){
-            order.setRequests(new ArrayList<>());
-        }
-        List<Request> requests = order.getRequests();
-        requests.add(new Request((long) requestService.getAll().size() + 1, book, amount));
-
-        order.setRequests(requests);
-    }
 }

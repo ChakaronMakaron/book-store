@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RequestService {
     public List<Request> getAll();
+    public void add(Request request);
 }

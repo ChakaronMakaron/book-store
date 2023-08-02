@@ -18,4 +18,9 @@ public class RequestServiceImpl implements RequestService {
     public List<Request> getAll() {
         return requestRepository.findAll();
     }
+
+    @Override
+    public void add(Request request) {
+        requestRepository.add(request);
+    }
 }

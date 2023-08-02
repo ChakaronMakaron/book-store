@@ -38,6 +38,10 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request [id=" + id + ", book=" + book + ", amount=" + amount + "]";
+        return id
+                + ". book = " + book.getName()
+                + ", price = " + book.getPrice()
+                + ", bookAmount = " + book.getAmount()
+                + ", requestAmount = " + amount;
     }
 }

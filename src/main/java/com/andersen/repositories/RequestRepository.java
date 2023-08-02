@@ -11,4 +11,10 @@ public class RequestRepository {
     public List<Request> findAll(){
         return requests;
     }
+    public void add(Request request){
+        if(request == null){
+            throw new IllegalArgumentException("Request is null");
+        }
+        requests.add(request);
+    }
 }

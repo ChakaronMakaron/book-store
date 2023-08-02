@@ -18,4 +18,37 @@ public class OrderRepository {
         }
         orders.add(order);
     }
+
+    public Order findById(Long bookId) {
+        if(bookId < 1L){
+            throw new IllegalArgumentException("Bad order id");
+        }
+        for(Order order : orders){
+            if(order.getId().equals(bookId)){
+                return order;
+            }
+        }
+        return null;
+    }
+
+    public void remove(Long bookId) {
+        for(Order order : orders){
+            if(order.getId().equals(bookId)){
+                orders.remove(order);
+            }
+        }
+    }
+
+    public List<Order> findOrdersByClientId(Long clientId){
+        if(clientId < 1L){
+            throw new IllegalArgumentException("Bad order id");
+        }
+        List<Order> ordersOfClient = new ArrayList<>();
+        for(Order order : orders){
+            if(order.getClientId().equals(clientId)){
+                ordersOfClient.add(order);
+            }
+        }
+        return ordersOfClient;
+    }
 }
