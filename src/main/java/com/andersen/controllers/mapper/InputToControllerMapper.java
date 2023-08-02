@@ -17,7 +17,6 @@ import com.andersen.controllers.RequestController;
 import com.andersen.enums.actions.BookAction;
 import com.andersen.enums.actions.OrderAction;
 import com.andersen.enums.actions.RequestAction;
-import com.andersen.models.BookOrder;
 import com.andersen.models.ParsedInput;
 
 public class InputToControllerMapper {
@@ -68,7 +67,7 @@ public class InputToControllerMapper {
 
         // Order create
         map.put(hash(ORDER.getStrValue(), OrderAction.CREATE.getStrValue()), input -> {
-            orderController.create(parseArgsToBookOrders(input.getArgs()));
+            orderController.create();
         });
 
         // Order cancel
@@ -82,11 +81,5 @@ public class InputToControllerMapper {
             String sortKey = input.getArgs()[0];
             requestController.list(sortKey);
         });
-    }
-
-    private List<BookOrder> parseArgsToBookOrders(String[] args) {
-        List<BookOrder> res = new ArrayList<>();
-        for (int i = 0; i < args.length; i += 2) res.add(new BookOrder(args[i], Integer.parseInt(args[i + 1])));
-        return res;
     }
 }

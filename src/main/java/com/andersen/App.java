@@ -11,6 +11,12 @@ import java.util.Scanner;
 import com.andersen.controllers.impl.OrderControllerImpl;
 import com.andersen.controllers.mapper.InputToControllerMapper;
 import com.andersen.models.ParsedInput;
+import com.andersen.repositories.BookRepository;
+import com.andersen.repositories.OrderRepository;
+import com.andersen.repositories.RequestRepository;
+import com.andersen.services.impl.BookServiceImpl;
+import com.andersen.services.impl.OrderServiceImpl;
+import com.andersen.services.impl.RequestServiceImpl;
 import com.andersen.utils.CommandUtils;
 
 public class App {
@@ -20,7 +26,14 @@ public class App {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(in, StandardCharsets.UTF_8);
-        InputToControllerMapper inputToControllerMapper = new InputToControllerMapper(null, new OrderControllerImpl(), null);
+        InputToControllerMapper inputToControllerMapper = new InputToControllerMapper(
+                null,
+                new OrderControllerImpl(
+                        new BookServiceImpl(new BookRepository()),
+                        new OrderServiceImpl(new OrderRepository()),
+                        new RequestServiceImpl(new RequestRepository())
+                ),
+                null);
 
         out.println("Book store");
         out.println("Type 'exit' to close");

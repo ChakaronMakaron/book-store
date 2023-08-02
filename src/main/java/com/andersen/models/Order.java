@@ -7,7 +7,6 @@ public class Order {
 
     private Long id;
     private Long clientId;
-    private List<BookOrder> books;
     private LocalDateTime completionDate;
     private OrderStatus status;
     private List<Request> requests;
@@ -30,14 +29,6 @@ public class Order {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
-    }
-
-    public List<BookOrder> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookOrder> books) {
-        this.books = books;
     }
 
     public LocalDateTime getCompletionDate() {
@@ -66,7 +57,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [id=" + id + ", clientId=" + clientId + ", books=" + books + ", completionDate=" + completionDate
+        return "Order [id=" + id + ", clientId=" + clientId + ", completionDate=" + completionDate
                 + ", status=" + status + ", requests=" + requests + "]";
     }
 }
