@@ -45,7 +45,7 @@ public final class ParsedInput {
 
     @Override
     public int hashCode() {
-        return Objects.hash(command.toString(), action.toString());
+        return Objects.hash(String.valueOf(command), String.valueOf(action));
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.andersen;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
 import com.andersen.authorization.Authenticator;
 import com.andersen.controllers.impl.OrderControllerCommandLine;
 import com.andersen.controllers.router.InputToControllerRouter;
@@ -12,14 +15,12 @@ import com.andersen.services.impl.OrderServiceImpl;
 import com.andersen.services.impl.RequestServiceImpl;
 import com.andersen.utils.InputParser;
 
-import java.io.Console;
-
 public class EntryPoint {
 
 
     public static void main(String[] args) {
 
-        Console console = System.console();
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 
         InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(null,
                 new OrderControllerCommandLine(
@@ -32,7 +33,7 @@ public class EntryPoint {
         System.out.println();
 
         while (App.getInstance().isRunning()) {
-            if (!Authenticator.getInstance().isAuthenticated()) Authenticator.getInstance().authenticate();
+            if (!Authenticator.getInstance().isAuthenticated()) Authenticator.getInstance().authenticate(scanner);
             System.out.print(">>> ");
             try {
 
