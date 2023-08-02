@@ -2,6 +2,8 @@ package com.andersen.authorization;
 
 import static java.lang.System.out;
 
+import java.util.Scanner;
+
 import com.andersen.authorization.models.User;
 
 public class Authenticator {
@@ -20,12 +22,12 @@ public class Authenticator {
         this.user = new User(1L, "root", "pass");
     }
 
-    public void authenticate() {
+    public void authenticate(Scanner scanner) {
         out.print("Your login: ");
-        String login = System.console().readLine();
+        String login = scanner.nextLine();
         if (!user.getLogin().equals(login)) throw new IllegalArgumentException("User not found");
         out.print("Password: ");
-        String password = new String(System.console().readPassword());
+        String password = new String(scanner.nextLine());
         if (!user.getPassword().equals(password)) throw new IllegalArgumentException("Wrong password");
         isAuthenticated = true;
     }
