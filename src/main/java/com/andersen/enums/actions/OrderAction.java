@@ -2,24 +2,22 @@ package com.andersen.enums.actions;
 
 public enum OrderAction implements CommandAction {
     
-    LIST("list", 1, 1),
-    COMPLETE("complete", 1, 1),
-    CREATE("create", 2, 20),
-    CANCEL("cancel", 1, 1);
+    LIST(1, 1),
+    COMPLETE(1, 1),
+    CREATE(2, 20),
+    CANCEL(1, 1);
 
-    private String strValue;
     private int minArgsAmount;
     private int maxArgsAmount;
 
-    OrderAction(String strValue, int minArgsAmount, int maxArgsAmount) {
-        this.strValue = strValue;
+    OrderAction(int minArgsAmount, int maxArgsAmount) {
         this.minArgsAmount = minArgsAmount;
         this.maxArgsAmount = maxArgsAmount;
     }
 
     @Override
-    public String getStrValue() {
-        return strValue;
+    public String toString() {
+        return this.name().toLowerCase();
     }
 
     @Override

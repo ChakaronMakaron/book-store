@@ -9,25 +9,30 @@ repositories {
 dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
-    implementation("com.google.guava:guava:31.1-jre")
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 tasks.withType<Jar> {
     manifest {
-        attributes["Main-Class"] = "com.andersen.App"
+        attributes["Main-Class"] = "com.andersen.EntryPoint"
     }
 }
 
 application {
-    mainClass.set("com.andersen.App")
+    mainClass.set("com.andersen.EntryPoint")
 }
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+    reports.html.required.set(false)
+    
+    testLogging {
+        setShowStandardStreams(true)
+        // showStandardStreams = true
+    }
 }

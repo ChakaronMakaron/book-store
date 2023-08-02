@@ -2,21 +2,19 @@ package com.andersen.enums.actions;
 
 public enum RequestAction implements CommandAction {
     
-    LIST("list", 1, 1);
+    LIST(1, 1);
 
-    private String strValue;
     private int minArgsAmount;
     private int maxArgsAmount;
 
-    RequestAction(String strValue, int minArgsAmount, int maxArgsAmount) {
-        this.strValue = strValue;
+    RequestAction(int minArgsAmount, int maxArgsAmount) {
         this.minArgsAmount = minArgsAmount;
         this.maxArgsAmount = maxArgsAmount;
     }
 
     @Override
-    public String getStrValue() {
-        return strValue;
+    public String toString() {
+        return this.name().toLowerCase();
     }
 
     @Override

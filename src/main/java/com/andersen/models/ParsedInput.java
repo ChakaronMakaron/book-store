@@ -1,6 +1,7 @@
 package com.andersen.models;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import com.andersen.enums.AppCommand;
 import com.andersen.enums.actions.CommandAction;
@@ -13,6 +14,10 @@ public class ParsedInput {
 
     public ParsedInput(AppCommand command) {
         this(command, null, null);
+    }
+
+    public ParsedInput(AppCommand command, CommandAction action) {
+        this(command, action, null);
     }
 
     public ParsedInput(AppCommand command, CommandAction action, String[] args) {
@@ -36,5 +41,20 @@ public class ParsedInput {
     @Override
     public String toString() {
         return "ParsedInput [command=" + command + ", action=" + action + ", args=" + Arrays.toString(args) + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(command.toString(), action.toString());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ParsedInput) {
+            ParsedInput that = (ParsedInput) obj;
+            return String.valueOf(this.command.toString()).equals(String.valueOf(that.command.toString())) &&
+                    String.valueOf(this.action.toString()).equals(String.valueOf(that.action.toString()));
+        }
+        return false;
     }
 }
