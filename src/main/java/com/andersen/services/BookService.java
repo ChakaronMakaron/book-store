@@ -1,9 +1,8 @@
 package com.andersen.services;
 
-import com.andersen.models.Book;
-import com.andersen.repositories.BookRepository;
-
 import java.util.List;
+
+import com.andersen.models.Book;
 
 public interface BookService {
     List<Book> getAll();

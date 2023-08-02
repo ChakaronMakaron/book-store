@@ -1,16 +1,16 @@
 package com.andersen.services.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.andersen.authorization.Authenticator;
 import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.andersen.models.Request;
 import com.andersen.repositories.OrderRepository;
 import com.andersen.services.OrderService;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void createOrder(Order order, Integer amount, Book book) {
         order.setId((long) getAll().size() + 1);
-        order.setClientId(Authenticator.getUser().getId());
+        order.setClientId(Authenticator.getInstance().getUser().getId());
         order.setStatus(Order.OrderStatus.IN_PROCESS);
         addRequestToOrder(order, amount, book);
     }
