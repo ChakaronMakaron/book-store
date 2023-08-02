@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.andersen.enums.AppCommand;
 import com.andersen.enums.actions.CommandAction;
 
-public class ParsedInput {
+public final class ParsedInput {
 
     private AppCommand command;
     private CommandAction action;
