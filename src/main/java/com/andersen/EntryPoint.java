@@ -37,7 +37,7 @@ public class EntryPoint {
             System.out.print(">>> ");
             try {
 
-                ParsedInput parsedInput = InputParser.getInstance().parseInput(System.console().readLine());
+                ParsedInput parsedInput = InputParser.getInstance().parseInput(scanner.nextLine());
                 inputToControllerMapper.sendToController(parsedInput);
 
             } catch (Exception e) {
