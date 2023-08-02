@@ -7,19 +7,18 @@ import com.andersen.models.Order;
 import com.andersen.models.Request;
 import com.andersen.services.impl.BookServiceImpl;
 import com.andersen.services.impl.OrderServiceImpl;
-import com.andersen.services.impl.RequestServiceImpl;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class OrderControllerImpl implements OrderController {
+public class OrderControllerCommandLine implements OrderController {
 
     private final BookServiceImpl bookService;
     private final OrderServiceImpl orderService;
     private final Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
 
-    public OrderControllerImpl(BookServiceImpl bookService, OrderServiceImpl orderService) {
+    public OrderControllerCommandLine(BookServiceImpl bookService, OrderServiceImpl orderService) {
         this.bookService = bookService;
         this.orderService = orderService;
     }

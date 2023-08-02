@@ -8,7 +8,7 @@ import static java.lang.System.out;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import com.andersen.controllers.impl.OrderControllerImpl;
+import com.andersen.controllers.impl.OrderControllerCommandLine;
 import com.andersen.controllers.mapper.InputToControllerMapper;
 import com.andersen.models.ParsedInput;
 import com.andersen.repositories.BookRepository;
@@ -28,7 +28,7 @@ public class App {
         Scanner scanner = new Scanner(in, StandardCharsets.UTF_8);
         InputToControllerMapper inputToControllerMapper = new InputToControllerMapper(
                 null,
-                new OrderControllerImpl(
+                new OrderControllerCommandLine(
                         new BookServiceImpl(new BookRepository()),
                         new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository()))
                 ),
