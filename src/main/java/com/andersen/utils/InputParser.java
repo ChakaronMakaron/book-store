@@ -35,12 +35,12 @@ public class InputParser {
 
         String[] parsedArgs = Arrays.copyOfRange(inputElements, 2, inputElements.length);
 
-        argsCountCheck(parsedCommand, parsedAction, parsedArgs);
+        checkArgsCount(parsedCommand, parsedAction, parsedArgs);
 
         return new ParsedInput(parsedCommand, parsedAction, parsedArgs);
     }
 
-    private void argsCountCheck(AppCommand parsedCommand, CommandAction parsedAction, String[] args) {
+    private void checkArgsCount(AppCommand parsedCommand, CommandAction parsedAction, String[] args) {
         if (args.length < parsedAction.getMinArgsAmount() || args.length > parsedAction.getMaxArgsAmount())
                 throw new IllegalArgumentException(format("Invalid args amount '%s' for for command '%s', action '%s'",
                         args.length,
