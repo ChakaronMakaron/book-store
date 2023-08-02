@@ -10,25 +10,19 @@ import com.andersen.enums.actions.RequestAction;
 
 public enum AppCommand {
 
-    EXIT("exit", false, Collections.emptyList()),
+    EXIT(false, Collections.emptyList()),
     
-    BOOK("book", true, List.of(BookAction.LIST, BookAction.ADD)),
-    REQUEST("request", true, List.of(RequestAction.LIST)),
-    ORDER("order", true, List.of(OrderAction.LIST, OrderAction.CREATE, OrderAction.COMPLETE, OrderAction.CANCEL)),
-    CLIENT("client", true, Collections.emptyList());
+    BOOK(true, List.of(BookAction.LIST, BookAction.ADD)),
+    REQUEST(true, List.of(RequestAction.LIST)),
+    ORDER(true, List.of(OrderAction.LIST, OrderAction.CREATE, OrderAction.COMPLETE, OrderAction.CANCEL)),
+    CLIENT(true, Collections.emptyList());
 
-    private String strValue;
     private boolean isActionable;
     private List<CommandAction> actions;
 
-    AppCommand(String strValue, boolean isActionable, List<CommandAction> actions) {
-        this.strValue = strValue;
+    AppCommand(boolean isActionable, List<CommandAction> actions) {
         this.isActionable = isActionable;
         this.actions = actions;
-    }
-
-    public String getStrValue() {
-        return strValue;
     }
 
     public List<CommandAction> getActions() {
@@ -37,5 +31,10 @@ public enum AppCommand {
 
     public boolean isActionable() {
         return isActionable;
+    }
+
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
     }
 }
