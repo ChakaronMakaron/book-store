@@ -3,6 +3,7 @@ package com.andersen.repositories;
 import com.andersen.models.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BookRepository {
 
@@ -25,15 +26,12 @@ public class BookRepository {
         return books;
     }
 
-    public Book findById(Long id) {
-        if(id < 1L){
+    public Optional<Book> findById(Long bookId) {
+        if(bookId < 1L){
             throw new IllegalArgumentException("Bad book id");
         }
-        for(Book book : books){
-            if(book.getId().equals(id)){
-                return book;
-            }
-        }
-        return null;
+        return books.stream()
+                .filter(book -> book.getId().equals(bookId))
+                .findFirst();
     }
 }

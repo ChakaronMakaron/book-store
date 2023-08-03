@@ -63,7 +63,7 @@ public class OrderControllerCommandLine implements OrderController {
 
     @Override
     public void complete(Long orderId) {
-        System.out.println("order complete");
+
     }
 
     @Override

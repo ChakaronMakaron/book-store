@@ -5,6 +5,7 @@ import com.andersen.repositories.BookRepository;
 import com.andersen.services.BookService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BookServiceImpl implements BookService {
 
@@ -20,7 +21,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBookById(Long bookId) {
+    public Optional<Book> getBookById(Long bookId) {
         return bookRepository.findById(bookId);
     }
 
@@ -29,6 +30,6 @@ public class BookServiceImpl implements BookService {
         if(amount < 0){
             throw new IllegalArgumentException("Amount value is not valid");
         }
-        bookRepository.findById(bookId).setAmount(amount);
+        bookRepository.findById(bookId).ifPresent(book -> book.setAmount(amount));
     }
 }

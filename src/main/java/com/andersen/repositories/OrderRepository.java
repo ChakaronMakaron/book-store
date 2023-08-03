@@ -4,6 +4,8 @@ import com.andersen.models.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class OrderRepository {
     private final List<Order> orders = new ArrayList<>();
@@ -19,36 +21,21 @@ public class OrderRepository {
         orders.add(order);
     }
 
-    public Order findById(Long bookId) {
+    public Optional<Order> findById(Long bookId) {
         if(bookId < 1L){
             throw new IllegalArgumentException("Bad order id");
         }
-        for(Order order : orders){
-            if(order.getId().equals(bookId)){
-                return order;
-            }
-        }
-        return null;
-    }
-
-    public void remove(Long bookId) {
-        for(Order order : orders){
-            if(order.getId().equals(bookId)){
-                orders.remove(order);
-            }
-        }
+        return orders.stream()
+                .filter(order -> order.getId().equals(bookId))
+                .findFirst();
     }
 
     public List<Order> findOrdersByClientId(Long clientId){
         if(clientId < 1L){
             throw new IllegalArgumentException("Bad order id");
         }
-        List<Order> ordersOfClient = new ArrayList<>();
-        for(Order order : orders){
-            if(order.getClientId().equals(clientId)){
-                ordersOfClient.add(order);
-            }
-        }
-        return ordersOfClient;
+        return orders.stream()
+                .filter(order -> order.getClientId().equals(clientId))
+                .collect(Collectors.toList());
     }
 }

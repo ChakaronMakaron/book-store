@@ -1,9 +1,7 @@
 package com.andersen.services.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.andersen.authorization.Authenticator;
 import com.andersen.models.Book;
@@ -36,10 +34,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void save(Order order) {
-        Order orderFromRepo = orderRepository.findById(order.getId());
+        Optional<Order> orderFromRepo = orderRepository.findById(order.getId());
 
-        orderFromRepo.setStatus(order.getStatus());
-        orderFromRepo.setCompletionDate(order.getCompletionDate());
+        orderFromRepo.ifPresent(existingOrder -> {
+            existingOrder.setStatus(order.getStatus());
+            existingOrder.setCompletionDate(order.getCompletionDate());
+        });
     }
 
     @Override
@@ -89,15 +89,15 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Wrong input parameters");
         }
 
-        Book book = bookService.getBookById(bookId);
+        Optional<Book> book = bookService.getBookById(bookId);
 
-        if(book != null){ // if book was found -> create order or change order
-            if(order.getId() != null){ // if order already exists -> set new request for the book
-                addRequestToOrder(order, amount, book);
-            }else{ // if order isn't exist -> create it and set first request
-                createOrder(order, amount, book);
+        book.ifPresent(theBook -> {                          // if book was found -> create order or change order
+            if(order.getId() != null){                       // if order already exists -> set new request for the book
+                addRequestToOrder(order, amount, theBook);
+            }else{                                           // if order isn't exist -> create it and set first request
+                createOrder(order, amount, theBook);
             }
-        }
+        });
     }
 
     private void createOrder(Order order, Integer amount, Book book) {
