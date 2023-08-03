@@ -21,12 +21,12 @@ public class OrderRepository {
         orders.add(order);
     }
 
-    public Optional<Order> findById(Long bookId) {
-        if(bookId < 1L){
+    public Optional<Order> findByOrderId(Long orderId) {
+        if(orderId < 1L){
             throw new IllegalArgumentException("Bad order id");
         }
         return orders.stream()
-                .filter(order -> order.getId().equals(bookId))
+                .filter(order -> order.getId().equals(orderId))
                 .findFirst();
     }
 

@@ -49,8 +49,12 @@ public class InputToControllerRouter {
 
         // Order list
         router.put(new ParsedInput(AppCommand.ORDER, OrderAction.LIST), input -> {
-            String sortKey = input.getArgs()[0];
-            orderController.list(sortKey);
+            if(input.getArgs().length == 0){
+                orderController.list("natural");
+            }else{
+                String sortKey = input.getArgs()[0];
+                orderController.list(sortKey);
+            }
         });
 
         // Order complete

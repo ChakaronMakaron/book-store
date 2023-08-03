@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void save(Order order) {
-        Optional<Order> orderFromRepo = orderRepository.findById(order.getId());
+        Optional<Order> orderFromRepo = orderRepository.findByOrderId(order.getId());
 
         orderFromRepo.ifPresent(existingOrder -> {
             existingOrder.setStatus(order.getStatus());
@@ -45,6 +45,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllClientOrders(Long clientId) {
         return orderRepository.findOrdersByClientId(clientId);
+    }
+
+    @Override
+    public void changeStatus(Long orderId, Order.OrderStatus newStatus) {
+        orderRepository.findByOrderId(orderId).ifPresent(order -> {
+            order.setStatus(newStatus);
+        });
     }
 
     public void processOrder(Order order) {

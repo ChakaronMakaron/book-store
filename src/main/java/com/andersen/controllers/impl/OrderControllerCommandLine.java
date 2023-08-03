@@ -30,6 +30,9 @@ public class OrderControllerCommandLine implements OrderController {
 
         if (sortKey != null) {
             switch (sortKey) {
+                case "natural": {
+                    break; // natural order
+                }
                 case "price": {
                     orders.sort(Comparator.comparing(Order::getPrice));
                 }
@@ -63,7 +66,10 @@ public class OrderControllerCommandLine implements OrderController {
 
     @Override
     public void complete(Long orderId) {
-
+        if(orderId < 1L){
+            throw new IllegalArgumentException("Wrong order id");
+        }
+        orderService.changeStatus(orderId, Order.OrderStatus.COMPLETED);
     }
 
     @Override
@@ -79,7 +85,7 @@ public class OrderControllerCommandLine implements OrderController {
         System.out.println("Type \"finish\" to complete creating the order");
 
         while (true){
-            System.out.print(">>>");
+            System.out.print(">>> ");
             String bookRequest = sc.nextLine();
 
             if(bookRequest.trim().equals("finish")){ // command to finish creating the order
@@ -94,7 +100,10 @@ public class OrderControllerCommandLine implements OrderController {
 
     @Override
     public void cancel(Long orderId) {
-        System.out.println("order cancel");
+        if(orderId < 1L){
+            throw new IllegalArgumentException("Wrong order id");
+        }
+        orderService.changeStatus(orderId, Order.OrderStatus.CANCELED);
     }
 
 }

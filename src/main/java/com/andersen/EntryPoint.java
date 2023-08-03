@@ -1,11 +1,13 @@
 package com.andersen;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Scanner;
 
 import com.andersen.authorization.Authenticator;
 import com.andersen.controllers.impl.OrderControllerCommandLine;
 import com.andersen.controllers.router.InputToControllerRouter;
+import com.andersen.models.Book;
 import com.andersen.models.ParsedInput;
 import com.andersen.repositories.BookRepository;
 import com.andersen.repositories.OrderRepository;
@@ -22,10 +24,25 @@ public class EntryPoint {
 
         Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 
+        List<Book> books = List.of(
+                new Book(1L,"The Great Gatsby", 39, 5),
+                new Book(2L, "Lolita", 25, 3),
+                new Book(3L, "The Catcher in the Rye", 22, 2),
+                new Book(4L, "Don Quixote", 42, 9),
+                new Book(5L, "The Grapes of Wrath", 33, 3),
+                new Book(6L, "Beloved", 17, 4),
+                new Book(7L, "Catch-22", 20, 6),
+                new Book(8L, "To Kill a Mockingbird", 25, 2),
+                new Book(9L, "Frankenstein", 15, 1),
+                new Book(10L, "Ulysses", 31, 1),
+                new Book(11L, "Alice in Wonderland", 25, 3),
+                new Book(12L, "Anna Karenina", 27, 1)
+        );
+
         InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(null,
                 new OrderControllerCommandLine(
-                    new BookServiceImpl(new BookRepository()),
-                    new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository()))),
+                    new BookServiceImpl(new BookRepository(books)),
+                    new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository(books)))),
                 null);
 
         System.out.println("Book store");

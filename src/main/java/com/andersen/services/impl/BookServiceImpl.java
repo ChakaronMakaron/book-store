@@ -22,7 +22,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Optional<Book> getBookById(Long bookId) {
-        return bookRepository.findById(bookId);
+        return bookRepository.findByBookId(bookId);
     }
 
     @Override
@@ -30,6 +30,6 @@ public class BookServiceImpl implements BookService {
         if(amount < 0){
             throw new IllegalArgumentException("Amount value is not valid");
         }
-        bookRepository.findById(bookId).ifPresent(book -> book.setAmount(amount));
+        bookRepository.findByBookId(bookId).ifPresent(book -> book.setAmount(amount));
     }
 }
