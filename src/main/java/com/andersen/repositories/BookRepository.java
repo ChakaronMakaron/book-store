@@ -15,7 +15,7 @@ public class BookRepository {
             new Book(6L, "Beloved", 17, 4),
             new Book(7L, "Catch-22", 20, 6),
             new Book(8L, "To Kill a Mockingbird", 25, 2),
-            new Book(9L, "Frankenstein", 15, 1),
+            new Book(9L, "Frankenstein", 15, 0),
             new Book(10L, "Ulysses", 31, 1),
             new Book(11L, "Alice in Wonderland", 25, 3),
             new Book(12L, "Anna Karenina", 27, 1)
