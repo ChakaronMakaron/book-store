@@ -21,4 +21,17 @@ public class App {
     public boolean isRunning() {
         return running;
     }
+
+    public void help() {
+        System.out.println("""
+
+                order create - create new order
+                order list - show the list of orders in natural order
+                order list (price/date/status) - show sorted list with chosen parameter
+                order complete (id) - change order status to "COMPLETED"
+                order cancel (id) - change order status to "CANCELED"
+                exit - stop the program
+                help - print all available commands
+                """);
+    }
 }

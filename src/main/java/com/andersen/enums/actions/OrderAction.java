@@ -7,8 +7,8 @@ public enum OrderAction implements CommandAction {
     CREATE(0, 0),
     CANCEL(1, 1);
 
-    private int minArgsAmount;
-    private int maxArgsAmount;
+    private final int minArgsAmount;
+    private final int maxArgsAmount;
 
     OrderAction(int minArgsAmount, int maxArgsAmount) {
         this.minArgsAmount = minArgsAmount;

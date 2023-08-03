@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.andersen.App;
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
 import com.andersen.controllers.RequestController;
@@ -78,6 +79,16 @@ public class InputToControllerRouter {
         router.put(new ParsedInput(AppCommand.REQUEST, RequestAction.LIST), input -> {
             String sortKey = input.getArgs()[0];
             requestController.list(sortKey);
+        });
+
+        // Exit
+        router.put(new ParsedInput(AppCommand.EXIT), input -> {
+            System.exit(0);
+        });
+
+        // Help
+        router.put(new ParsedInput(AppCommand.HELP), input -> {
+            App.getInstance().help();
         });
     }
 }

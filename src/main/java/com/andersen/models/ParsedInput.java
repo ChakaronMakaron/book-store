@@ -8,9 +8,9 @@ import com.andersen.enums.actions.CommandAction;
 
 public final class ParsedInput {
 
-    private AppCommand command;
-    private CommandAction action;
-    private String[] args;
+    private final AppCommand command;
+    private final CommandAction action;
+    private final String[] args;
 
     public ParsedInput(AppCommand command) {
         this(command, null, null);
@@ -44,17 +44,15 @@ public final class ParsedInput {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(String.valueOf(command), String.valueOf(action));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParsedInput that = (ParsedInput) o;
+        return command == that.command && action == that.action;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ParsedInput) {
-            ParsedInput that = (ParsedInput) obj;
-            return String.valueOf(this.command.toString()).equals(String.valueOf(that.command.toString())) &&
-                    String.valueOf(this.action.toString()).equals(String.valueOf(that.action.toString()));
-        }
-        return false;
+    public int hashCode() {
+        return Objects.hash(command, action);
     }
 }
