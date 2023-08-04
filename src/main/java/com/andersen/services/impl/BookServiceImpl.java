@@ -31,4 +31,13 @@ public class BookServiceImpl implements BookService {
         }
         bookRepository.findById(bookId).setAmount(amount);
     }
+
+    @Override
+    public void changeBookStatus(Long bookId, boolean bookStatus) {
+        if(bookStatus){
+            bookRepository.findById(bookId).setStatus(Book.BookStatus.IN_STOCK);
+        } else {
+            bookRepository.findById(bookId).setStatus(Book.BookStatus.OUT_OF_STOCK);
+        }
+    }
 }
