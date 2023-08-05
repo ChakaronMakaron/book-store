@@ -22,6 +22,7 @@ public class RequestControllerCommandLine implements RequestController {
             case "name" -> requests.sort(Comparator.comparing(request -> request.getBook().getName()));
             case "price" ->
                     requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
+            default -> System.out.println("Wrong sort key (valid sorting keys - name, price) list without sorting :");
         }
 
         requests.forEach(System.out::println);

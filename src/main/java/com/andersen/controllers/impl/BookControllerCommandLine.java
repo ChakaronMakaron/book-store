@@ -22,6 +22,8 @@ public class BookControllerCommandLine implements BookController {
             case "name" -> books.sort(Comparator.comparing(Book::getName));
             case "price" -> books.sort(Comparator.comparing(Book::getPrice));
             case "availability" -> books.sort(Comparator.comparing(Book::getAmount));
+            default -> System.out.println("Wrong sort key (valid sorting keys - name, price, availability)" +
+                    " list without sorting :");
         }
 
         books.forEach(System.out::println);
