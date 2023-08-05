@@ -90,7 +90,6 @@ public class InputToControllerRouter {
                 .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
                 .toFormatter();
 
-
         router.put(new ParsedInput(AppCommand.ORDER, OrderAction.TOTAL_INCOME), input -> {
             LocalDateTime startIncomeDate = LocalDateTime.parse(input.getArgs()[0], formatter);
             LocalDateTime endIncomeDate = LocalDateTime.parse(input.getArgs()[1], formatter);

@@ -30,7 +30,8 @@ public class BookControllerCommandLine implements BookController {
     }
 
     @Override
-    public void add(String name, int amountToAdd) {
+    public void add(String name, int amountToAdd, int priceToAdd) {
 
     }
+
 }
