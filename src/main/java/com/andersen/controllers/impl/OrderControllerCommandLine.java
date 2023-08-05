@@ -2,6 +2,7 @@ package com.andersen.controllers.impl;
 
 import com.andersen.authorization.Authenticator;
 import com.andersen.controllers.OrderController;
+import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.andersen.models.Request;
@@ -28,25 +29,16 @@ public class OrderControllerCommandLine implements OrderController {
         Long clientId = Authenticator.getInstance().getUser().getId();
         List<Order> orders = orderService.getAllClientOrders(clientId);
 
+        //OrderSortKey orderSortKey = OrderSortKey.valueOf(sortKey.toUpperCase());
+
         if (sortKey != null) {
             switch (sortKey) {
-                case "natural": {
+                case "natural" -> {
                     break; // natural order
                 }
-                case "price": {
-                    orders.sort(Comparator.comparing(Order::getPrice));
-                }
-                case "date": {
-                    orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
-                    break;
-                }
-                case "status": {
-                    orders.sort(Comparator.comparing(Order::getStatus));
-                    break;
-                }
-                default: {
-                    throw new IllegalArgumentException("Wrong sort key");
-                }
+                case "price" -> orders.sort(Comparator.comparing(Order::getPrice));
+                case "date" -> orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
+                case "status" -> orders.sort(Comparator.comparing(Order::getStatus));
             }
         }
         for(Order order : orders){

@@ -1,5 +1,6 @@
 package com.andersen.services.impl;
 
+import com.andersen.enums.RequestSortKey;
 import com.andersen.models.Request;
 import com.andersen.repositories.RequestRepository;
 import com.andersen.services.RequestService;
@@ -17,6 +18,11 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Request> getAll() {
         return requestRepository.findAll();
+    }
+
+    @Override
+    public List<Request> list(RequestSortKey sortKey) {
+        return requestRepository.list(sortKey);
     }
 
     @Override
