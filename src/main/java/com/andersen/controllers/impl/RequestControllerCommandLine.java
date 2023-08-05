@@ -24,6 +24,6 @@ public class RequestControllerCommandLine implements RequestController {
                     requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
         }
 
-        requests.forEach(request -> System.out.println());
+        requests.forEach(System.out::println);
     }
 }

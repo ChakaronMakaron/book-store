@@ -24,7 +24,7 @@ public class BookControllerCommandLine implements BookController {
             case "availability" -> books.sort(Comparator.comparing(Book::getAmount));
         }
 
-        books.forEach(book -> System.out.println());
+        books.forEach(System.out::println);
     }
 
     @Override
