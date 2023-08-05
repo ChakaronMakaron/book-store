@@ -1,10 +1,9 @@
 name: Tests runner on pull request
 
 on:
-#  pull_request:
-#    types: [opened, edited, reopened]
-  push:
-    branches: [run-tests-on-pull-request]
+  pull_request:
+    types: [opened, edited, reopened]
+    branches: [master]
 
 jobs:
   build-gradle-project:
