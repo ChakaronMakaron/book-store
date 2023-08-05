@@ -5,8 +5,7 @@ import com.andersen.models.Book;
 import com.andersen.services.BookService;
 
 import java.util.Comparator;
-
-import static java.lang.System.out;
+import java.util.List;
 
 public class BookControllerCommandLine implements BookController {
     private final BookService bookService;
@@ -17,23 +16,15 @@ public class BookControllerCommandLine implements BookController {
 
     @Override
     public void list(String sortKey) {
+        List<Book> books = bookService.getAll();
+
         switch (sortKey) {
-            case "name":
-                bookService.getAll().stream()
-                        .sorted(Comparator.comparing(Book::getName))
-                        .forEach(out::println);
-                break;
-            case "price":
-                bookService.getAll().stream()
-                        .sorted(Comparator.comparing(Book::getPrice))
-                        .forEach(out::println);
-                break;
-            case "availability":
-                bookService.getAll().stream()
-                        .sorted(Comparator.comparing(Book::getAmount))
-                        .forEach(out::println);
-                break;
+            case "name" -> books.sort(Comparator.comparing(Book::getName));
+            case "price" -> books.sort(Comparator.comparing(Book::getPrice));
+            case "availability" -> books.sort(Comparator.comparing(Book::getAmount));
         }
+
+        books.forEach(book -> System.out.println());
     }
 
     @Override
