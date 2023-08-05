@@ -1,7 +1,7 @@
 package com.andersen.enums.actions;
 
 public enum RequestAction implements CommandAction {
-    
+
     LIST(1, 1);
 
     private final int minArgsAmount;

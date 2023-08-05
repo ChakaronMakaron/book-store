@@ -1,14 +1,18 @@
 package com.andersen.services.impl;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
 import com.andersen.authorization.Authenticator;
+import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.andersen.models.Request;
 import com.andersen.repositories.OrderRepository;
 import com.andersen.services.OrderService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -20,6 +24,11 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
         this.requestService = requestService;
         this.bookService = bookService;
+    }
+
+    @Override
+    public List<Order> list(OrderSortKey sortKey) {
+        return orderRepository.list(sortKey);
     }
 
     @Override
@@ -43,8 +52,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllClientOrders(Long clientId) {
-        return orderRepository.findOrdersByClientId(clientId);
+    public List<Order> getAllClientOrders(Long clientId, OrderSortKey sortKey) {
+        return orderRepository.findOrdersByClientId(clientId, sortKey);
     }
 
     @Override
@@ -61,9 +70,9 @@ public class OrderServiceImpl implements OrderService {
         while (iterator.hasNext()) {
             Request request = iterator.next();
             Book book = request.getBook();
-            if(order.getPrice() == null){
+            if (order.getPrice() == null) {
                 order.setPrice(book.getPrice() * request.getAmount());
-            }else{
+            } else {
                 order.setPrice(order.getPrice() + book.getPrice() * request.getAmount());
             }
 
@@ -75,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
-        if(order.getRequests().isEmpty()){
+        if (order.getRequests().isEmpty()) {
             order.setStatus(Order.OrderStatus.COMPLETED);
             order.setCompletionDate(LocalDateTime.now());
         }
@@ -84,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
     public void processUserInput(Order order, String bookRequest) {
         String[] inputValues = bookRequest.split(" "); // get inputValues from input
 
-        if (inputValues.length != 2){
+        if (inputValues.length != 2) {
             throw new IllegalArgumentException("Bad input");
         }
         long bookId;
@@ -92,16 +101,16 @@ public class OrderServiceImpl implements OrderService {
         try {
             bookId = Long.parseLong(inputValues[0].trim());
             amount = Integer.parseInt(inputValues[1].trim());
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Wrong input parameters");
         }
 
         Optional<Book> book = bookService.getBookById(bookId);
 
         book.ifPresent(theBook -> {                          // if book was found -> create order or change order
-            if(order.getId() != null){                       // if order already exists -> set new request for the book
+            if (order.getId() != null) {                       // if order already exists -> set new request for the book
                 addRequestToOrder(order, amount, theBook);
-            }else{                                           // if order isn't exist -> create it and set first request
+            } else {                                           // if order isn't exist -> create it and set first request
                 createOrder(order, amount, theBook);
             }
         });
@@ -115,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void addRequestToOrder(Order order, Integer amount, Book book) {
-        if(order.getRequests() == null){
+        if (order.getRequests() == null) {
             order.setRequests(new ArrayList<>());
         }
         List<Request> requests = order.getRequests();

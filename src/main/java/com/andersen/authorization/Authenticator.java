@@ -1,10 +1,10 @@
 package com.andersen.authorization;
 
-import static java.lang.System.out;
+import com.andersen.authorization.models.User;
 
 import java.util.Scanner;
 
-import com.andersen.authorization.models.User;
+import static java.lang.System.out;
 
 public class Authenticator {
 

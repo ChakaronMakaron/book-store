@@ -1,10 +1,10 @@
 package com.andersen.models;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import com.andersen.enums.AppCommand;
 import com.andersen.enums.actions.CommandAction;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 public final class ParsedInput {
 

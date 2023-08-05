@@ -1,9 +1,5 @@
 package com.andersen;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Scanner;
-
 import com.andersen.authorization.Authenticator;
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
@@ -22,6 +18,10 @@ import com.andersen.services.impl.OrderServiceImpl;
 import com.andersen.services.impl.RequestServiceImpl;
 import com.andersen.utils.InputParser;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Scanner;
+
 public class EntryPoint {
 
     public static void main(String[] args) {
@@ -29,7 +29,7 @@ public class EntryPoint {
         Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 
         List<Book> books = List.of(
-                new Book(1L,"The Great Gatsby", 39, 5),
+                new Book(1L, "The Great Gatsby", 39, 5),
                 new Book(2L, "Lolita", 25, 3),
                 new Book(3L, "The Catcher in the Rye", 22, 2),
                 new Book(4L, "Don Quixote", 42, 9),
@@ -49,8 +49,8 @@ public class EntryPoint {
         OrderController orderController = new OrderControllerCommandLine(
                 new BookServiceImpl(new BookRepository(books)),
                 new OrderServiceImpl(new OrderRepository(),
-                new RequestServiceImpl(new RequestRepository()),
-                new BookServiceImpl(new BookRepository(books))));
+                        new RequestServiceImpl(new RequestRepository()),
+                        new BookServiceImpl(new BookRepository(books))));
 
         RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepository()));
 
@@ -81,6 +81,7 @@ public class EntryPoint {
     }
 
     private static void onException(Exception e) {
+        e.printStackTrace();
         System.out.println(e);
         System.out.println("Type 'exit' to close");
         System.out.println();

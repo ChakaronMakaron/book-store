@@ -1,7 +1,7 @@
 package com.andersen.enums.actions;
 
 public enum BookAction implements CommandAction {
-    
+
     LIST(1, 1),
     ADD(2, 2);
 

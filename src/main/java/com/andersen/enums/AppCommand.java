@@ -1,9 +1,12 @@
 package com.andersen.enums;
 
+import com.andersen.enums.actions.BookAction;
+import com.andersen.enums.actions.CommandAction;
+import com.andersen.enums.actions.OrderAction;
+import com.andersen.enums.actions.RequestAction;
+
 import java.util.Collections;
 import java.util.List;
-
-import com.andersen.enums.actions.*;
 
 public enum AppCommand {
 

@@ -1,9 +1,5 @@
 package com.andersen.controllers.router;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import com.andersen.App;
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
@@ -14,6 +10,10 @@ import com.andersen.enums.actions.OrderAction;
 import com.andersen.enums.actions.RequestAction;
 import com.andersen.models.ParsedInput;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+
 public class InputToControllerRouter {
 
     private final Map<ParsedInput, Consumer<ParsedInput>> router;
@@ -22,7 +22,7 @@ public class InputToControllerRouter {
     private final RequestController requestController;
 
     public InputToControllerRouter(BookController bookController,
-            OrderController orderController, RequestController requestController) {
+                                   OrderController orderController, RequestController requestController) {
         this.router = new HashMap<>();
         this.bookController = bookController;
         this.orderController = orderController;
@@ -50,9 +50,9 @@ public class InputToControllerRouter {
 
         // Order list
         router.put(new ParsedInput(AppCommand.ORDER, OrderAction.LIST), input -> {
-            if(input.getArgs().length == 0){
+            if (input.getArgs().length == 0) {
                 orderController.list("natural");
-            }else{
+            } else {
                 String sortKey = input.getArgs()[0];
                 orderController.list(sortKey);
             }

@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface RequestService {
     List<Request> list(RequestSortKey sortKey);
+
     List<Request> getAll();
+
     void add(Request request);
 }

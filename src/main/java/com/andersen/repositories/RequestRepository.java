@@ -1,11 +1,11 @@
 package com.andersen.repositories;
 
+import com.andersen.enums.RequestSortKey;
+import com.andersen.models.Request;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import com.andersen.enums.RequestSortKey;
-import com.andersen.models.Request;
 
 public class RequestRepository {
 
@@ -32,7 +32,7 @@ public class RequestRepository {
         switch (requestSortKey) {
             case NAME -> requests.sort(Comparator.comparing(request -> request.getBook().getName()));
             case PRICE ->
-                requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
+                    requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
         }
     }
 }
