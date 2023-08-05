@@ -1,5 +1,11 @@
 package com.andersen.controllers.router;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -38,7 +44,8 @@ public class InputToControllerRouter {
         router.put(new ParsedInput(AppCommand.BOOK, BookAction.ADD), input -> {
             String bookName = input.getArgs()[0];
             int amount = Integer.parseInt(input.getArgs()[1]);
-            bookController.add(bookName, amount);
+            int price = Integer.parseInt(input.getArgs()[2]);
+            bookController.add(bookName, amount, price);
         });
 
         // Book list
@@ -75,5 +82,22 @@ public class InputToControllerRouter {
             String sortKey = input.getArgs()[0];
             requestController.list(sortKey);
         });
+
+        //Get total income from orders for a certain period
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd['T'HH:mm]")
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .toFormatter();
+
+
+        router.put(new ParsedInput(AppCommand.ORDER, OrderAction.TOTAL_INCOME), input -> {
+            LocalDateTime startIncomeDate = LocalDateTime.parse(input.getArgs()[0], formatter);
+            LocalDateTime endIncomeDate = LocalDateTime.parse(input.getArgs()[1], formatter);
+            System.out.println("PERIOD FROM "+ startIncomeDate);
+            System.out.println("TO "+ endIncomeDate);
+            orderController.countIncome(startIncomeDate, endIncomeDate);
+        });
+
     }
 }

@@ -97,4 +97,20 @@ public class OrderControllerCommandLine implements OrderController {
         System.out.println("order cancel");
     }
 
+    @Override
+    public void countIncome(LocalDateTime startPeriodCompletionDate, LocalDateTime endPeriodOfCompletionDate) {
+
+
+        List<Order> orders = orderService.getOrdersFilteredInPeriod(startPeriodCompletionDate, endPeriodOfCompletionDate);
+        int incomeCounter = 0;
+        for(Order order : orders){
+            incomeCounter += order.getPrice();
+            System.out.println(order);
+        }
+        System.out.println("Total income for period from " + startPeriodCompletionDate + " to " + endPeriodOfCompletionDate
+                + " is " + incomeCounter);
+
+
+    }
+
 }
