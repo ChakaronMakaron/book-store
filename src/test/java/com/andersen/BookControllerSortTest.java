@@ -1,12 +1,5 @@
 package com.andersen;
 
-import com.andersen.controllers.impl.BookControllerCommandLine;
-import com.andersen.enums.BookSortKey;
-import com.andersen.models.Book;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,6 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import com.andersen.enums.BookSortKey;
+import com.andersen.models.Book;
+import com.andersen.repositories.BookRepository;
 
 public class BookControllerSortTest {
     private static Map<BookSortKey, Pair<List<Book>>> sortKeyToActualExpectedPair;
@@ -28,21 +29,21 @@ public class BookControllerSortTest {
     @Test
     public void whenSortCalled_withNameSortKey_thenSortedByName() {
         Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.NAME);
-        BookControllerCommandLine.sort(actualExpectedPair.actual(), BookSortKey.NAME);
+        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.NAME);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
     @Test
     public void whenSortCalled_withPriceSortKey_thenSortedByPrice() {
         Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.PRICE);
-        BookControllerCommandLine.sort(actualExpectedPair.actual(), BookSortKey.PRICE);
+        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.PRICE);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
     @Test
     public void whenSortCalled_withAmountSortKey_thenSortedByAmount() {
         Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.AMOUNT);
-        BookControllerCommandLine.sort(actualExpectedPair.actual(), BookSortKey.AMOUNT);
+        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.AMOUNT);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 

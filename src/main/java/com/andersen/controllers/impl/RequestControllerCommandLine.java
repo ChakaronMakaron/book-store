@@ -1,18 +1,17 @@
 package com.andersen.controllers.impl;
 
-import com.andersen.controllers.RequestController;
-import com.andersen.enums.BookSortKey;
-import com.andersen.enums.RequestSortKey;
-import com.andersen.models.Book;
-import com.andersen.models.Request;
-import com.andersen.services.RequestService;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.andersen.controllers.RequestController;
+import com.andersen.enums.RequestSortKey;
+import com.andersen.models.Request;
+import com.andersen.services.RequestService;
+
 public class RequestControllerCommandLine implements RequestController {
+
     private final RequestService requestService;
 
     public RequestControllerCommandLine(RequestService requestService) {
@@ -40,7 +39,8 @@ public class RequestControllerCommandLine implements RequestController {
     public static void sort(List<Request> requests, RequestSortKey requestSortKey) {
         switch (requestSortKey) {
             case NAME -> requests.sort(Comparator.comparing(request -> request.getBook().getName()));
-            case PRICE -> requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
+            case PRICE ->
+                requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
         }
     }
 }

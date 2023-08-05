@@ -1,6 +1,12 @@
 package com.andersen;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
 import com.andersen.authorization.Authenticator;
+import com.andersen.controllers.BookController;
+import com.andersen.controllers.OrderController;
+import com.andersen.controllers.RequestController;
 import com.andersen.controllers.impl.BookControllerCommandLine;
 import com.andersen.controllers.impl.OrderControllerCommandLine;
 import com.andersen.controllers.impl.RequestControllerCommandLine;
@@ -14,26 +20,25 @@ import com.andersen.services.impl.OrderServiceImpl;
 import com.andersen.services.impl.RequestServiceImpl;
 import com.andersen.utils.InputParser;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
-
 public class EntryPoint {
-
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 
-        InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(
-                new BookControllerCommandLine(new BookServiceImpl(new BookRepository())),
-                new OrderControllerCommandLine(
-                    new BookServiceImpl(new BookRepository()),
-                    new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository()))),
-                new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepository())));
+        BookController bookController = new BookControllerCommandLine(new BookServiceImpl(new BookRepository()));
 
-        System.out.println("Book store");
-        System.out.println("Type 'exit' to close");
-        System.out.println();
+        OrderController orderController = new OrderControllerCommandLine(
+                new BookServiceImpl(new BookRepository()),
+                new OrderServiceImpl(new OrderRepository(),
+                new RequestServiceImpl(new RequestRepository()),
+                new BookServiceImpl(new BookRepository())));
+
+        RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepository()));
+
+        InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(bookController, orderController, requestController);
+
+        intro();
 
         while (App.getInstance().isRunning()) {
             if (!Authenticator.getInstance().isAuthenticated()) Authenticator.getInstance().authenticate(scanner);
@@ -44,10 +49,22 @@ public class EntryPoint {
                 inputToControllerMapper.sendToController(parsedInput);
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-                System.out.println("Type 'exit' to close");
-                System.out.println();
+                onException(e);
             }
         }
+
+        scanner.close();
+    }
+
+    private static void intro() {
+        System.out.println("Book store");
+        System.out.println("Type 'exit' to close");
+        System.out.println();
+    }
+
+    private static void onException(Exception e) {
+        System.out.println(e);
+        System.out.println("Type 'exit' to close");
+        System.out.println();
     }
 }
