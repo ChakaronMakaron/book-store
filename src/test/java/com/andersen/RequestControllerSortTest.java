@@ -1,13 +1,5 @@
 package com.andersen;
 
-import com.andersen.controllers.impl.RequestControllerCommandLine;
-import com.andersen.enums.RequestSortKey;
-import com.andersen.models.Book;
-import com.andersen.models.Request;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -15,6 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import com.andersen.enums.RequestSortKey;
+import com.andersen.models.Book;
+import com.andersen.models.Request;
+import com.andersen.repositories.RequestRepository;
 
 public class RequestControllerSortTest {
     private static Map<RequestSortKey, Pair<List<Request>>> sortKeyToActualExpectedPair;
@@ -29,14 +30,14 @@ public class RequestControllerSortTest {
     @Test
     public void whenSortCalled_withNameSortKey_thenSortedByName() {
         Pair<List<Request>> actualExpectedPair = sortKeyToActualExpectedPair.get(RequestSortKey.NAME);
-        RequestControllerCommandLine.sort(actualExpectedPair.actual(), RequestSortKey.NAME);
+        RequestRepository.sort(actualExpectedPair.actual(), RequestSortKey.NAME);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
     @Test
     public void whenSortCalled_withPriceSortKey_thenSortedByPrice() {
         Pair<List<Request>> actualExpectedPair = sortKeyToActualExpectedPair.get(RequestSortKey.PRICE);
-        RequestControllerCommandLine.sort(actualExpectedPair.actual(), RequestSortKey.PRICE);
+        RequestRepository.sort(actualExpectedPair.actual(), RequestSortKey.PRICE);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
