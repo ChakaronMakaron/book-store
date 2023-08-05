@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 class AppTest {
     
-    @Test void test() {
+    @Test
+    void test() {
         System.out.println("Hello from test");
     }
 }

@@ -1,10 +1,9 @@
 package com.andersen;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
-
 import com.andersen.authorization.Authenticator;
+import com.andersen.controllers.impl.BookControllerCommandLine;
 import com.andersen.controllers.impl.OrderControllerCommandLine;
+import com.andersen.controllers.impl.RequestControllerCommandLine;
 import com.andersen.controllers.router.InputToControllerRouter;
 import com.andersen.models.ParsedInput;
 import com.andersen.repositories.BookRepository;
@@ -15,6 +14,9 @@ import com.andersen.services.impl.OrderServiceImpl;
 import com.andersen.services.impl.RequestServiceImpl;
 import com.andersen.utils.InputParser;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
 public class EntryPoint {
 
 
@@ -22,11 +24,12 @@ public class EntryPoint {
 
         Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 
-        InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(null,
+        InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(
+                new BookControllerCommandLine(new BookServiceImpl(new BookRepository())),
                 new OrderControllerCommandLine(
                     new BookServiceImpl(new BookRepository()),
                     new OrderServiceImpl(new OrderRepository(), new RequestServiceImpl(new RequestRepository()), new BookServiceImpl(new BookRepository()))),
-                null);
+                new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepository())));
 
         System.out.println("Book store");
         System.out.println("Type 'exit' to close");

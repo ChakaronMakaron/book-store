@@ -2,11 +2,12 @@ package com.andersen.repositories;
 
 import com.andersen.models.Book;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BookRepository {
 
-    private final List<Book> books = List.of(
+    private final List<Book> books = Arrays.asList(
             new Book(1L,"The Great Gatsby", 39, 5),
             new Book(2L, "Lolita", 25, 3),
             new Book(3L, "The Catcher in the Rye", 22, 2),
