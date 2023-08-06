@@ -4,7 +4,6 @@ import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.repositories.BookRepository;
 import com.andersen.repositories.impl.BookRepositoryDummy;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -17,6 +16,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class BookControllerSortTest {
     private static Map<BookSortKey, Pair<List<Book>>> sortKeyToActualExpectedPair;
 
@@ -25,12 +27,12 @@ public class BookControllerSortTest {
     public void whenListCalled_withProvidedSortKey_thenSortedByKey(BookSortKey sortKey) {
         Pair<List<Book>> pair = sortKeyToActualExpectedPair.get(sortKey);
 
-        Assertions.assertNotNull(pair);
+        assertNotNull(pair);
 
         BookRepository bookRepository = new BookRepositoryDummy(pair.actual());
         List<Book> sortedBooks = bookRepository.list(sortKey);
 
-        Assertions.assertEquals(pair.expected(), sortedBooks);
+        assertEquals(pair.expected(), sortedBooks);
     }
 
     @BeforeAll

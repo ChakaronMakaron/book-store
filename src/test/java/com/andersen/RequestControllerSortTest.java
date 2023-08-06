@@ -5,7 +5,6 @@ import com.andersen.models.Book;
 import com.andersen.models.Request;
 import com.andersen.repositories.RequestRepository;
 import com.andersen.repositories.impl.RequestRepositoryDummy;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -18,6 +17,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class RequestControllerSortTest {
     private static Map<RequestSortKey, Pair<List<Request>>> sortKeyToActualExpectedPair;
 
@@ -26,13 +28,13 @@ public class RequestControllerSortTest {
     public void whenListCalled_withProvidedSortKey_thenSortedByKey(RequestSortKey sortKey) {
         Pair<List<Request>> pair = sortKeyToActualExpectedPair.get(sortKey);
 
-        Assertions.assertNotNull(pair);
+        assertNotNull(pair);
 
         RequestRepository requestRepository = new RequestRepositoryDummy();
         pair.actual().forEach(requestRepository::add);
         List<Request> sortedRequests = requestRepository.findAllByClientIdSortedByKey(1L, sortKey);
 
-        Assertions.assertEquals(pair.expected(), sortedRequests);
+        assertEquals(pair.expected(), sortedRequests);
     }
 
     @BeforeAll
