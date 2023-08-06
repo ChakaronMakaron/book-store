@@ -7,6 +7,7 @@ import com.andersen.repositories.RequestRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RequestRepositoryDummy implements RequestRepository {
 
@@ -22,6 +23,19 @@ public class RequestRepositoryDummy implements RequestRepository {
     @Override
     public List<Request> findAll() {
         return requests;
+    }
+
+    @Override
+    public List<Request> findAllByClientIdSortedByKey(Long clientId, RequestSortKey sortKey) {
+        if (clientId < 1L) {
+            throw new IllegalArgumentException("Bad order id");
+        }
+        List<Request> clientRequests = requests.stream()
+                .filter(request -> request.getClientId().equals(clientId)).collect(Collectors.toList());
+        if (sortKey != RequestSortKey.NATURAL) {
+            sort(clientRequests, sortKey);
+        }
+        return clientRequests;
     }
 
     @Override

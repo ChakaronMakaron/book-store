@@ -10,5 +10,7 @@ public interface RequestRepository {
 
     List<Request> findAll();
 
+    List<Request> findAllByClientIdSortedByKey(Long clientId, RequestSortKey requestSortKey);
+
     void add(Request request);
 }

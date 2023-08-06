@@ -6,7 +6,6 @@ import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.andersen.models.Request;
 import com.andersen.repositories.OrderRepository;
-import com.andersen.repositories.impl.OrderRepositoryDummy;
 import com.andersen.services.OrderService;
 
 import java.time.LocalDateTime;
@@ -129,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
             order.setRequests(new ArrayList<>());
         }
         List<Request> requests = order.getRequests();
-        requests.add(new Request((long) requests.size() + 1, book, amount));
+        requests.add(new Request((long) requests.size() + 1, order.getClientId(), book, amount));
 
         order.setRequests(requests);
     }

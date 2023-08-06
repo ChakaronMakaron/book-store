@@ -36,7 +36,9 @@ public class BookRepositoryDummy implements BookRepository {
     @Override
     public List<Book> list(BookSortKey sortKey) {
         List<Book> fetchedBooks = new ArrayList<>(books);
-        sort(fetchedBooks, sortKey);
+        if (sortKey != BookSortKey.NATURAL) {
+            sort(fetchedBooks, sortKey);
+        }
         return fetchedBooks;
     }
 
