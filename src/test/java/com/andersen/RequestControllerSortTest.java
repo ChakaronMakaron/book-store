@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.andersen.enums.RequestSortKey;
 import com.andersen.models.Book;
 import com.andersen.models.Request;
-import com.andersen.repositories.RequestRepository;
+import com.andersen.repositories.impl.RequestRepositoryDummy;
 
 public class RequestControllerSortTest {
     private static Map<RequestSortKey, Pair<List<Request>>> sortKeyToActualExpectedPair;
@@ -30,14 +30,14 @@ public class RequestControllerSortTest {
     @Test
     public void whenSortCalled_withNameSortKey_thenSortedByName() {
         Pair<List<Request>> actualExpectedPair = sortKeyToActualExpectedPair.get(RequestSortKey.NAME);
-        RequestRepository.sort(actualExpectedPair.actual(), RequestSortKey.NAME);
+        RequestRepositoryDummy.sort(actualExpectedPair.actual(), RequestSortKey.NAME);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
     @Test
     public void whenSortCalled_withPriceSortKey_thenSortedByPrice() {
         Pair<List<Request>> actualExpectedPair = sortKeyToActualExpectedPair.get(RequestSortKey.PRICE);
-        RequestRepository.sort(actualExpectedPair.actual(), RequestSortKey.PRICE);
+        RequestRepositoryDummy.sort(actualExpectedPair.actual(), RequestSortKey.PRICE);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
-import com.andersen.repositories.BookRepository;
+import com.andersen.repositories.impl.BookRepositoryDummy;
 
 public class BookControllerSortTest {
     private static Map<BookSortKey, Pair<List<Book>>> sortKeyToActualExpectedPair;
@@ -29,21 +29,21 @@ public class BookControllerSortTest {
     @Test
     public void whenSortCalled_withNameSortKey_thenSortedByName() {
         Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.NAME);
-        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.NAME);
+        BookRepositoryDummy.sort(actualExpectedPair.actual(), BookSortKey.NAME);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
     @Test
     public void whenSortCalled_withPriceSortKey_thenSortedByPrice() {
         Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.PRICE);
-        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.PRICE);
+        BookRepositoryDummy.sort(actualExpectedPair.actual(), BookSortKey.PRICE);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
     @Test
     public void whenSortCalled_withAmountSortKey_thenSortedByAmount() {
         Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.AMOUNT);
-        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.AMOUNT);
+        BookRepositoryDummy.sort(actualExpectedPair.actual(), BookSortKey.AMOUNT);
         Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
     }
 
