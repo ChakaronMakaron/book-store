@@ -58,7 +58,7 @@ public class OrderRepositoryDummy implements OrderRepository {
         return fetchedOrders;
     }
 
-    public static void sort(List<Order> orders, OrderSortKey orderSortKey) {
+    private void sort(List<Order> orders, OrderSortKey orderSortKey) {
 
         switch (orderSortKey) {
             case PRICE -> orders.sort(Comparator.comparing(Order::getPrice));

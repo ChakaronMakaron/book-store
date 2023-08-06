@@ -46,7 +46,7 @@ public class RequestRepositoryDummy implements RequestRepository {
         requests.add(request);
     }
 
-    public static void sort(List<Request> requests, RequestSortKey requestSortKey) {
+    private void sort(List<Request> requests, RequestSortKey requestSortKey) {
         switch (requestSortKey) {
             case NAME -> requests.sort(Comparator.comparing(request -> request.getBook().getName()));
             case PRICE ->

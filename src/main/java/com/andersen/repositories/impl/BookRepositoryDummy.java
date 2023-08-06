@@ -42,7 +42,7 @@ public class BookRepositoryDummy implements BookRepository {
         return fetchedBooks;
     }
 
-    public static void sort(List<Book> books, BookSortKey bookSortKey) {
+    private void sort(List<Book> books, BookSortKey bookSortKey) {
         switch (bookSortKey) {
             case NAME -> books.sort(Comparator.comparing(Book::getName));
             case PRICE -> books.sort(Comparator.comparing(Book::getPrice));
