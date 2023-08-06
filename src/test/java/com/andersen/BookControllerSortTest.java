@@ -29,29 +29,29 @@ public class BookControllerSortTest {
 
     @Test
     public void whenSortCalled_withNameSortKey_thenSortedByName() {
-        Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.NAME);
-        BookRepository bookRepository = new BookRepositoryDummy(actualExpectedPair.actual());
+        Pair<List<Book>> pair = sortKeyToActualExpectedPair.get(BookSortKey.NAME);
+        BookRepository bookRepository = new BookRepositoryDummy(pair.actual());
         List<Book> sortedBooks = bookRepository.list(BookSortKey.NAME);
 
-        Assertions.assertEquals(actualExpectedPair.expected(), sortedBooks);
+        Assertions.assertEquals(pair.expected(), sortedBooks);
     }
 
     @Test
     public void whenSortCalled_withPriceSortKey_thenSortedByPrice() {
-        Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.PRICE);
-        BookRepository bookRepository = new BookRepositoryDummy(actualExpectedPair.actual());
+        Pair<List<Book>> pair = sortKeyToActualExpectedPair.get(BookSortKey.PRICE);
+        BookRepository bookRepository = new BookRepositoryDummy(pair.actual());
         List<Book> sortedBooks = bookRepository.list(BookSortKey.PRICE);
 
-        Assertions.assertEquals(actualExpectedPair.expected(), sortedBooks);
+        Assertions.assertEquals(pair.expected(), sortedBooks);
     }
 
     @Test
     public void whenSortCalled_withAmountSortKey_thenSortedByAmount() {
-        Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.AMOUNT);
-        BookRepository bookRepository = new BookRepositoryDummy(actualExpectedPair.actual());
+        Pair<List<Book>> pair = sortKeyToActualExpectedPair.get(BookSortKey.AMOUNT);
+        BookRepository bookRepository = new BookRepositoryDummy(pair.actual());
         List<Book> sortedBooks = bookRepository.list(BookSortKey.AMOUNT);
 
-        Assertions.assertEquals(actualExpectedPair.expected(), sortedBooks);
+        Assertions.assertEquals(pair.expected(), sortedBooks);
     }
 
     @BeforeAll

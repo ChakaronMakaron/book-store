@@ -129,7 +129,5 @@ public class OrderServiceImpl implements OrderService {
         }
         List<Request> requests = order.getRequests();
         requests.add(new Request((long) requests.size() + 1, order.getClientId(), book, amount));
-
-        order.setRequests(requests);
     }
 }

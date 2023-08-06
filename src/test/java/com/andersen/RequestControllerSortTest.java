@@ -29,22 +29,22 @@ public class RequestControllerSortTest {
 
     @Test
     public void whenSortCalled_withNameSortKey_thenSortedByName() {
-        Pair<List<Request>> actualExpectedPair = sortKeyToActualExpectedPair.get(RequestSortKey.NAME);
+        Pair<List<Request>> pair = sortKeyToActualExpectedPair.get(RequestSortKey.NAME);
         RequestRepository requestRepository = new RequestRepositoryDummy();
-        actualExpectedPair.actual().forEach(requestRepository::add);
+        pair.actual().forEach(requestRepository::add);
         List<Request> sortedRequests = requestRepository.findAllByClientIdSortedByKey(1L, RequestSortKey.NAME);
 
-        Assertions.assertEquals(actualExpectedPair.expected(), sortedRequests);
+        Assertions.assertEquals(pair.expected(), sortedRequests);
     }
 
     @Test
     public void whenSortCalled_withPriceSortKey_thenSortedByPrice() {
-        Pair<List<Request>> actualExpectedPair = sortKeyToActualExpectedPair.get(RequestSortKey.PRICE);
+        Pair<List<Request>> pair = sortKeyToActualExpectedPair.get(RequestSortKey.PRICE);
         RequestRepository requestRepository = new RequestRepositoryDummy();
-        actualExpectedPair.actual().forEach(requestRepository::add);
+        pair.actual().forEach(requestRepository::add);
         List<Request> sortedRequests = requestRepository.findAllByClientIdSortedByKey(1L, RequestSortKey.PRICE);
 
-        Assertions.assertEquals(actualExpectedPair.expected(), sortedRequests);
+        Assertions.assertEquals(pair.expected(), sortedRequests);
     }
 
     @BeforeAll

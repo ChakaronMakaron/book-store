@@ -59,13 +59,11 @@ public class OrderRepositoryDummy implements OrderRepository {
     }
 
     private void sort(List<Order> orders, OrderSortKey orderSortKey) {
-
         switch (orderSortKey) {
             case PRICE -> orders.sort(Comparator.comparing(Order::getPrice));
             case DATE ->
                     orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
             case STATUS -> orders.sort(Comparator.comparing(Order::getStatus));
         }
-
     }
 }
