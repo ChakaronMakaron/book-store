@@ -26,6 +26,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public List<Request> getAllByClientIdSortedByKey(Long clientId, RequestSortKey requestSortKey) {
+        return requestRepository.findAllByClientIdSortedByKey(clientId, requestSortKey);
+    }
+
+    @Override
     public void add(Request request) {
         requestRepository.add(request);
     }

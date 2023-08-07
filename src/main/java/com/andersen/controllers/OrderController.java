@@ -1,5 +1,7 @@
 package com.andersen.controllers;
 
+import java.time.LocalDateTime;
+
 public interface OrderController {
 
     void list(String sortKey);
@@ -9,4 +11,6 @@ public interface OrderController {
     void create();
 
     void cancel(Long orderId);
+
+    void countIncome(LocalDateTime startPeriodOfCompletionDate, LocalDateTime endPeriodOfCompletionDate);
 }

@@ -1,5 +1,6 @@
 package com.andersen.controllers.router;
 
+
 import com.andersen.App;
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
@@ -10,9 +11,14 @@ import com.andersen.enums.actions.OrderAction;
 import com.andersen.enums.actions.RequestAction;
 import com.andersen.models.ParsedInput;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+
 
 public class InputToControllerRouter {
 
@@ -37,15 +43,19 @@ public class InputToControllerRouter {
     private void addMappings() {
         // Book add
         router.put(new ParsedInput(AppCommand.BOOK, BookAction.ADD), input -> {
-            String bookName = input.getArgs()[0];
+            Long bookId = Long.parseLong(input.getArgs()[0]);
             int amount = Integer.parseInt(input.getArgs()[1]);
-            bookController.add(bookName, amount);
+            bookController.add(bookId, amount);
         });
 
         // Book list
         router.put(new ParsedInput(AppCommand.BOOK, BookAction.LIST), input -> {
-            String sortKey = input.getArgs()[0];
-            bookController.list(sortKey);
+            if (input.getArgs().length == 0) {
+                bookController.list("natural");
+            } else {
+                String sortKey = input.getArgs()[0];
+                bookController.list(sortKey);
+            }
         });
 
         // Order list
@@ -77,9 +87,30 @@ public class InputToControllerRouter {
 
         // Request list
         router.put(new ParsedInput(AppCommand.REQUEST, RequestAction.LIST), input -> {
-            String sortKey = input.getArgs()[0];
-            requestController.list(sortKey);
+            if (input.getArgs().length == 0) {
+                requestController.list("natural");
+            } else {
+                String sortKey = input.getArgs()[0];
+                requestController.list(sortKey);
+            }
         });
+
+
+        //Get total income from orders for a certain period
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd['T'HH:mm]")
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .toFormatter();
+
+        router.put(new ParsedInput(AppCommand.ORDER, OrderAction.TOTAL_INCOME), input -> {
+            LocalDateTime startIncomeDate = LocalDateTime.parse(input.getArgs()[0], formatter);
+            LocalDateTime endIncomeDate = LocalDateTime.parse(input.getArgs()[1], formatter);
+            System.out.println("PERIOD FROM " + startIncomeDate);
+            System.out.println("TO " + endIncomeDate);
+            orderController.countIncome(startIncomeDate, endIncomeDate);
+        });
+
 
         // Exit
         router.put(new ParsedInput(AppCommand.EXIT), input -> {
@@ -90,5 +121,6 @@ public class InputToControllerRouter {
         router.put(new ParsedInput(AppCommand.HELP), input -> {
             App.getInstance().help();
         });
+
     }
 }

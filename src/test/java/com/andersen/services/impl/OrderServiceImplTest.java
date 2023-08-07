@@ -41,8 +41,8 @@ class OrderServiceImplTest {
         Book book2 = new Book(4L, "Don Quixote", 42, 9);
 
         List<Request> requests = List.of(
-                new Request(1L, book1, 4, Request.RequestStatus.IN_PROCESS),
-                new Request(2L, book2, 11, Request.RequestStatus.IN_PROCESS));
+                new Request(1L, 1L, book1, 4, Request.RequestStatus.IN_PROCESS),
+                new Request(2L, 1L, book2, 11, Request.RequestStatus.IN_PROCESS));
 
         order1 = new Order(1L, 1L, LocalDateTime.now().plusHours(5), Order.OrderStatus.COMPLETED, Collections.emptyList(), 67);
         order2 = new Order(2L, 2L, LocalDateTime.now().plusHours(4), Order.OrderStatus.COMPLETED, requests, 50);
@@ -134,8 +134,8 @@ class OrderServiceImplTest {
         Book book2 = new Book(4L, "Don Quixote", 42, 9);
 
         List<Request> requests = List.of(
-                new Request(1L, book1, 2, Request.RequestStatus.IN_PROCESS),
-                new Request(2L, book2, 5, Request.RequestStatus.IN_PROCESS));
+                new Request(1L, 1L, book1, 2, Request.RequestStatus.IN_PROCESS),
+                new Request(2L, 1L, book2, 5, Request.RequestStatus.IN_PROCESS));
 
         Order order = new Order(4L, 1L, null, Order.OrderStatus.IN_PROCESS, requests, 67);
 
@@ -151,8 +151,8 @@ class OrderServiceImplTest {
         Book book2 = new Book(4L, "Don Quixote", 42, 9);
 
         List<Request> requests = List.of(
-                new Request(1L, book1, 4, Request.RequestStatus.IN_PROCESS),
-                new Request(2L, book2, 11, Request.RequestStatus.IN_PROCESS));
+                new Request(1L, 1L, book1, 4, Request.RequestStatus.IN_PROCESS),
+                new Request(2L, 1L, book2, 11, Request.RequestStatus.IN_PROCESS));
 
         Order order = new Order(4L, 1L, null, Order.OrderStatus.IN_PROCESS, requests, null);
 

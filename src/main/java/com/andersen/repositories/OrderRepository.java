@@ -4,54 +4,21 @@ import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Order;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class OrderRepository {
+public interface OrderRepository {
+    List<Order> findAll();
 
-    private final List<Order> orders = new ArrayList<>();
+    void add(Order order);
 
-    public List<Order> findAll() {
-        return orders;
-    }
+    Optional<Order> findByOrderId(Long orderId);
 
-    public void add(Order order) {
-        if (order == null) {
-            throw new IllegalArgumentException("Order is null");
-        }
-        orders.add(order);
-    }
+    List<Order> findOrdersByClientId(Long clientId);
 
-    public Optional<Order> findByOrderId(Long orderId) {
-        if (orderId < 1L) {
-            throw new IllegalArgumentException("Bad order id");
-        }
-        return orders.stream()
-                .filter(order -> order.getId().equals(orderId))
-                .findFirst();
-    }
+    List<Order> list(String sortKey);
 
-    public List<Order> findOrdersByClientId(Long clientId) {
-        if (clientId < 1L) {
-            throw new IllegalArgumentException("Bad order id");
-        }
-        return orders.stream()
-                .filter(order -> order.getClientId().equals(clientId)).collect(Collectors.toList());
-    }
+    List<Order> findOrdersInPeriodOfCompletionDateWithPositiveStatus(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate);
 
-    public void sort(List<Order> orders, String orderSortKey) {
-
-        OrderSortKey sortKey = OrderSortKey.valueOf(orderSortKey.toUpperCase());
-
-        switch (sortKey) {
-            case PRICE -> orders.sort(Comparator.comparing(Order::getPrice));
-            case DATE ->
-                    orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
-            case STATUS -> orders.sort(Comparator.comparing(Order::getStatus));
-        }
-
-    }
+    void sort(List<Order> orders, String orderSortKey);
 }

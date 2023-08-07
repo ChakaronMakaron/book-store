@@ -15,4 +15,6 @@ public interface BookService {
     Optional<Book> getBookById(Long bookId);
 
     void changeAmountOfBook(Long bookId, Integer amount);
+
+    void changeBookStatus(Long bookId, boolean bookStatus);
 }

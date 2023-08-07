@@ -3,7 +3,9 @@ package com.andersen.models;
 public class Request {
 
     private Long id;
+    private Long clientId;
     private Book book;
+
     private Integer amount;
 
     private RequestStatus requestStatus;
@@ -12,8 +14,9 @@ public class Request {
         IN_PROCESS, COMPLETED, INTERRUPTED, CANCELED
     }
 
-    public Request(Long id, Book book, Integer amount, RequestStatus requestStatus) {
+    public Request(Long id, Long clientId, Book book, Integer amount, RequestStatus requestStatus) {
         this.id = id;
+        this.clientId = clientId;
         this.book = book;
         this.amount = amount;
         this.requestStatus = requestStatus;
@@ -25,6 +28,14 @@ public class Request {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public Book getBook() {

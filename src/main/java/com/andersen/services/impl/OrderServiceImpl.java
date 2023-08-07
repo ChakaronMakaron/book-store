@@ -1,7 +1,6 @@
 package com.andersen.services.impl;
 
 import com.andersen.authorization.Authenticator;
-import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.andersen.models.Request;
@@ -10,7 +9,6 @@ import com.andersen.services.OrderService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,11 +77,14 @@ public class OrderServiceImpl implements OrderService {
 
             case CANCELED ->
                     order.getRequests().forEach(request -> request.setRequestStatus(Request.RequestStatus.CANCELED));
-            // case IN_PROCESS -> TODO
         }
     }
 
     @Override
+    public List<Order> getOrdersFilteredInPeriod(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate) {
+        return orderRepository.findOrdersInPeriodOfCompletionDateWithPositiveStatus(startCompletionDate, endCompletionDate);
+    }
+
     public void processOrder(Order order) {
         List<Request> requestsFromOrder = order.getRequests();
 
@@ -159,7 +160,8 @@ public class OrderServiceImpl implements OrderService {
             order.setRequests(new ArrayList<>());
         }
         List<Request> requests = order.getRequests();
-        requests.add(new Request((long) requests.size() + 1, book, amount, Request.RequestStatus.IN_PROCESS));
+
+        requests.add(new Request((long) requests.size() + 1, order.getClientId(), book, amount, Request.RequestStatus.IN_PROCESS));
 
         order.setRequests(requests);
     }

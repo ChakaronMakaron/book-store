@@ -19,7 +19,10 @@ public class BookControllerCommandLine implements BookController {
     }
 
     @Override
-    public void add(String name, int amountToAdd) {
-        throw new UnsupportedOperationException("Bokk controller add not implemented"); // TODO
+    public void add(Long id, int amountToAdd) {
+        bookService.changeAmountOfBook(id, bookService.getBookById(id).
+                orElseThrow(() -> new IllegalArgumentException("No book with this id")).getAmount() + amountToAdd);
     }
 }
+
+

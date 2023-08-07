@@ -2,6 +2,7 @@ package com.andersen.services;
 
 import com.andersen.models.Order;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderService {
@@ -20,5 +21,7 @@ public interface OrderService {
     void processUserInput(Order order, String bookRequest);
 
     void changeRequestsStatusByOrderStatus(Order.OrderStatus newStatus, Order order);
+
+    List<Order> getOrdersFilteredInPeriod(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate);
 
 }

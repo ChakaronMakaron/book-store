@@ -9,6 +9,7 @@ import com.andersen.services.impl.BookServiceImpl;
 import com.andersen.services.impl.OrderServiceImpl;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -79,6 +80,19 @@ public class OrderControllerCommandLine implements OrderController {
             throw new IllegalArgumentException("Wrong order id");
         }
         orderService.changeStatus(orderId, Order.OrderStatus.CANCELED);
+    }
+
+    @Override
+    public void countIncome(LocalDateTime startPeriodCompletionDate, LocalDateTime endPeriodOfCompletionDate) {
+
+        List<Order> orders = orderService.getOrdersFilteredInPeriod(startPeriodCompletionDate, endPeriodOfCompletionDate);
+        int incomeCounter = 0;
+        for (Order order : orders) {
+            incomeCounter += order.getPrice();
+            System.out.println(order);
+        }
+        System.out.printf("Total income for period from %s to %s is %s", startPeriodCompletionDate,
+                endPeriodOfCompletionDate, incomeCounter);
     }
 
 }

@@ -14,7 +14,7 @@ public enum AppCommand {
     HELP(false, Collections.emptyList()),
     BOOK(true, List.of(BookAction.LIST, BookAction.ADD)),
     REQUEST(true, List.of(RequestAction.LIST)),
-    ORDER(true, List.of(OrderAction.LIST, OrderAction.CREATE, OrderAction.COMPLETE, OrderAction.CANCEL)),
+    ORDER(true, List.of(OrderAction.LIST, OrderAction.CREATE, OrderAction.COMPLETE, OrderAction.CANCEL, OrderAction.TOTAL_INCOME)),
     CLIENT(true, Collections.emptyList());
 
     private final boolean isActionable;
