@@ -63,6 +63,10 @@ public class OrderServiceImpl implements OrderService {
         });
     }
 
+    public List<Order> getOrdersFilteredInPeriod(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate) {
+        return orderRepository.findOrdersInPeriodOfCompletionDateWithPositiveStatus(startCompletionDate, endCompletionDate);
+    }
+
     public void processOrder(Order order) {
         List<Request> requestsFromOrder = order.getRequests();
         Iterator<Request> iterator = requestsFromOrder.iterator();
