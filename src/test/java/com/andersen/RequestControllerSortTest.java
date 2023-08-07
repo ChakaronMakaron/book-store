@@ -44,13 +44,13 @@ public class RequestControllerSortTest {
     @BeforeAll
     public static void fillMap() {
         List<Request> requestsForNameSort = Stream.of("B", "C", "Z", "X")
-                .map(name -> new Request(0L, new Book(0L, name, 0, 0), 0))
+                .map(name -> new Request(0L, new Book(0L, name, 0, 0), 0, Request.RequestStatus.IN_PROCESS))
                 .collect(Collectors.toList());
         List<Request> requestsForNameSortCopy = new ArrayList<>(requestsForNameSort);
         requestsForNameSortCopy.sort(Comparator.comparing(request -> request.getBook().getName()));
 
         List<Request> requestsForPriceSort = Stream.of(1, 3, 4, 2)
-                .map(price -> new Request(0L, new Book(0L, "", price, 0), price))
+                .map(price -> new Request(0L, new Book(0L, "", price, 0), price, Request.RequestStatus.IN_PROCESS))
                 .collect(Collectors.toList());
         List<Request> requestsForPriceSortCopy = new ArrayList<>(requestsForPriceSort);
         requestsForPriceSortCopy.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
