@@ -6,7 +6,7 @@ public enum OrderAction implements CommandAction {
     COMPLETE(1, 1),
     CREATE(0, 0),
     CANCEL(1, 1),
-    TOTAL_INCOME (2 , 2);
+    TOTAL_INCOME(2, 2);
 
     private final int minArgsAmount;
     private final int maxArgsAmount;

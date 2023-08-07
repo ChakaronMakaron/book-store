@@ -13,7 +13,6 @@ public class Book {
     }
 
 
-
     public Book(Long id, String name, Integer price, Integer amount) {
         this.id = id;
         this.name = name;
@@ -21,7 +20,6 @@ public class Book {
         this.amount = amount;
         this.status = (amount >= 1) ? BookStatus.IN_STOCK : BookStatus.OUT_OF_STOCK;
     }
-
 
 
     public Long getId() {
@@ -57,9 +55,13 @@ public class Book {
         this.status = (amount >= 1) ? BookStatus.IN_STOCK : BookStatus.OUT_OF_STOCK;
     }
 
-    public BookStatus getStatus() {return status;}
+    public BookStatus getStatus() {
+        return status;
+    }
 
-    public void setStatus(BookStatus status) {this.status = status;}
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {

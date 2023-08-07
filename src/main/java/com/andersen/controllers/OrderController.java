@@ -11,5 +11,6 @@ public interface OrderController {
     void create();
 
     void cancel(Long orderId);
+
     void countIncome(LocalDateTime startPeriodOfCompletionDate, LocalDateTime endPeriodOfCompletionDate);
 }

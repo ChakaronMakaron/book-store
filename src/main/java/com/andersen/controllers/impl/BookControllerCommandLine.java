@@ -22,6 +22,6 @@ public class BookControllerCommandLine implements BookController {
     public void add(String name, int amountToAdd, int priceToAdd) {
         throw new UnsupportedOperationException("Book controller add not implemented"); // TODO
     }
-    }
+}
 
 

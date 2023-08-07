@@ -1,19 +1,7 @@
 package com.andersen.controllers.router;
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
-
 import com.andersen.App;
-
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
 import com.andersen.controllers.RequestController;
@@ -22,6 +10,14 @@ import com.andersen.enums.actions.BookAction;
 import com.andersen.enums.actions.OrderAction;
 import com.andersen.enums.actions.RequestAction;
 import com.andersen.models.ParsedInput;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 
 public class InputToControllerRouter {
@@ -111,8 +107,8 @@ public class InputToControllerRouter {
         router.put(new ParsedInput(AppCommand.ORDER, OrderAction.TOTAL_INCOME), input -> {
             LocalDateTime startIncomeDate = LocalDateTime.parse(input.getArgs()[0], formatter);
             LocalDateTime endIncomeDate = LocalDateTime.parse(input.getArgs()[1], formatter);
-            System.out.println("PERIOD FROM "+ startIncomeDate);
-            System.out.println("TO "+ endIncomeDate);
+            System.out.println("PERIOD FROM " + startIncomeDate);
+            System.out.println("TO " + endIncomeDate);
             orderController.countIncome(startIncomeDate, endIncomeDate);
         });
 

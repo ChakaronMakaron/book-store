@@ -67,22 +67,22 @@ public class OrderRepositoryDummy implements OrderRepository {
         }
     }
 
-    public List<Order> findOrdersInPeriodOfCompletionDateWithPositiveStatus(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate){
+    public List<Order> findOrdersInPeriodOfCompletionDateWithPositiveStatus(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate) {
         LocalDateTime currentTime = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(59);
-        if(startCompletionDate.isAfter(currentTime) || endCompletionDate.isAfter(currentTime)){
+        if (startCompletionDate.isAfter(currentTime) || endCompletionDate.isAfter(currentTime)) {
             throw new IllegalArgumentException("Not existed data");
         }
         List<Order> ordersInPeriod = new ArrayList<>();
-        for(Order order : orders){
-            if (order.getStatus()!= Order.OrderStatus.COMPLETED){
+        for (Order order : orders) {
+            if (order.getStatus() != Order.OrderStatus.COMPLETED) {
                 continue;
             }
             LocalDateTime orderCompletionDate = order.getCompletionDate();
-            if(
+            if (
                     (orderCompletionDate.isAfter(startCompletionDate) || orderCompletionDate.isEqual(startCompletionDate))
                             && (orderCompletionDate.isBefore(endCompletionDate) || orderCompletionDate.isEqual(endCompletionDate))
                             && order.getStatus() == Order.OrderStatus.COMPLETED
-            ){
+            ) {
                 ordersInPeriod.add(order);
             }
         }
