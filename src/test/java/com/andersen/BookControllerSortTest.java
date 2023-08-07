@@ -1,5 +1,13 @@
 package com.andersen;
 
+import com.andersen.enums.BookSortKey;
+import com.andersen.models.Book;
+import com.andersen.repositories.BookRepository;
+import com.andersen.repositories.impl.BookRepositoryDummy;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -8,43 +16,23 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import com.andersen.enums.BookSortKey;
-import com.andersen.models.Book;
-import com.andersen.repositories.BookRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BookControllerSortTest {
     private static Map<BookSortKey, Pair<List<Book>>> sortKeyToActualExpectedPair;
 
-    @Test
-    public void testIfAllSortKeysCanBeTested() {
-        for (BookSortKey bookSortKey : BookSortKey.values()) {
-            Assertions.assertNotNull(sortKeyToActualExpectedPair.get(bookSortKey));
-        }
-    }
+    @ParameterizedTest
+    @EnumSource(BookSortKey.class)
+    public void whenListCalled_withProvidedSortKey_thenSortedByKey(BookSortKey sortKey) {
+        Pair<List<Book>> pair = sortKeyToActualExpectedPair.get(sortKey);
 
-    @Test
-    public void whenSortCalled_withNameSortKey_thenSortedByName() {
-        Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.NAME);
-        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.NAME);
-        Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
-    }
+        assertNotNull(pair);
 
-    @Test
-    public void whenSortCalled_withPriceSortKey_thenSortedByPrice() {
-        Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.PRICE);
-        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.PRICE);
-        Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
-    }
+        BookRepository bookRepository = new BookRepositoryDummy(pair.actual());
+        List<Book> sortedBooks = bookRepository.list(sortKey);
 
-    @Test
-    public void whenSortCalled_withAmountSortKey_thenSortedByAmount() {
-        Pair<List<Book>> actualExpectedPair = sortKeyToActualExpectedPair.get(BookSortKey.AMOUNT);
-        BookRepository.sort(actualExpectedPair.actual(), BookSortKey.AMOUNT);
-        Assertions.assertEquals(actualExpectedPair.expected(), actualExpectedPair.actual());
+        assertEquals(pair.expected(), sortedBooks);
     }
 
     @BeforeAll
@@ -67,10 +55,16 @@ public class BookControllerSortTest {
         List<Book> booksForAmountSortCopy = new ArrayList<>(booksForAmountSort);
         booksForAmountSortCopy.sort(Comparator.comparing(Book::getAmount));
 
+        List<Book> booksForNaturalOrder = Stream.of(2, 3, 1, 0, 4)
+                .map(amount -> new Book(0L, "", 0, amount))
+                .collect(Collectors.toList());
+        List<Book> booksForNaturalOrderCopy = new ArrayList<>(booksForNaturalOrder);
+
         sortKeyToActualExpectedPair = new HashMap<>() {{
             put(BookSortKey.NAME, new Pair<>(booksForNameSort, booksForNameSortCopy));
             put(BookSortKey.PRICE, new Pair<>(booksForPriceSort, booksForPriceSortCopy));
             put(BookSortKey.AMOUNT, new Pair<>(booksForAmountSort, booksForAmountSortCopy));
+            put(BookSortKey.NATURAL, new Pair<>(booksForNaturalOrder, booksForNaturalOrderCopy));
         }};
     }
 }
