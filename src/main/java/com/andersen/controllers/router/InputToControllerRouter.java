@@ -43,10 +43,9 @@ public class InputToControllerRouter {
     private void addMappings() {
         // Book add
         router.put(new ParsedInput(AppCommand.BOOK, BookAction.ADD), input -> {
-            String bookName = input.getArgs()[0];
+            Long bookId = Long.parseLong(input.getArgs()[0]);
             int amount = Integer.parseInt(input.getArgs()[1]);
-            int price = Integer.parseInt(input.getArgs()[2]);
-            bookController.add(bookName, amount, price);
+            bookController.add(bookId, amount);
         });
 
         // Book list
