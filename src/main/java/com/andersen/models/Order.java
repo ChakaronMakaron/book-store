@@ -2,6 +2,7 @@ package com.andersen.models;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
@@ -13,8 +14,21 @@ public class Order {
     private List<Request> requests;
     private Integer price;
 
-    public static enum OrderStatus {
+    public enum OrderStatus {
         IN_PROCESS, COMPLETED, CANCELED
+    }
+
+    public Order(Long id, Long clientId, LocalDateTime completionDate, OrderStatus status, List<Request> requests, Integer price) {
+        this.id = id;
+        this.clientId = clientId;
+        this.completionDate = completionDate;
+        this.status = status;
+        this.requests = requests;
+        this.price = price;
+    }
+
+    public Order() {
+
     }
 
     public Long getId() {
@@ -50,13 +64,19 @@ public class Order {
     }
 
     public List<Request> getRequests() {
-        return requests;
+        if (requests == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(requests);
     }
 
     public void setRequests(List<Request> requests) {
-        this.requests = requests;
+        if (requests == null) {
+            this.requests = new ArrayList<>();
+        } else {
+            this.requests = new ArrayList<>(requests);
+        }
     }
-
     public Integer getPrice() {
         return price;
     }

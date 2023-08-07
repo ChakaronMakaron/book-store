@@ -10,7 +10,7 @@ import com.andersen.services.OrderService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +27,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> list(OrderSortKey sortKey) {
-        return orderRepository.list(sortKey);
-    }
-
-    @Override
-    public List<Order> getAll() {
+    public List<Order> list() {
         return orderRepository.findAll();
     }
 
@@ -52,52 +47,84 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllClientOrders(Long clientId, OrderSortKey sortKey) {
-        return orderRepository.findOrdersByClientId(clientId, sortKey);
+    public List<Order> getAllClientOrders(Long clientId) {
+        return orderRepository.findOrdersByClientId(clientId);
     }
 
     @Override
     public void changeStatus(Long orderId, Order.OrderStatus newStatus) {
         orderRepository.findByOrderId(orderId).ifPresent(order -> {
             order.setStatus(newStatus);
+
+            changeRequestsStatusByOrderStatus(newStatus, order);
         });
     }
 
+    @Override
+    public void changeRequestsStatusByOrderStatus(Order.OrderStatus newStatus, Order order) {
+        Request.RequestStatus requestStatus = Request.RequestStatus.valueOf(newStatus.toString());
+        switch (requestStatus) {
+
+            case COMPLETED -> order
+                    .getRequests()
+                    .stream()
+                    .filter(request -> request
+                            .getRequestStatus() != Request.RequestStatus.COMPLETED)
+                    .forEach(request -> request
+                            .setRequestStatus(Request.RequestStatus.INTERRUPTED));
+
+            case CANCELED ->
+                    order.getRequests().forEach(request -> request.setRequestStatus(Request.RequestStatus.CANCELED));
+            // case IN_PROCESS -> TODO
+        }
+    }
+
+    @Override
     public void processOrder(Order order) {
         List<Request> requestsFromOrder = order.getRequests();
-        Iterator<Request> iterator = requestsFromOrder.iterator();
 
-        while (iterator.hasNext()) {
-            Request request = iterator.next();
+        for (Request request : requestsFromOrder) {
             Book book = request.getBook();
-            if (order.getPrice() == null) {
-                order.setPrice(book.getPrice() * request.getAmount());
-            } else {
-                order.setPrice(order.getPrice() + book.getPrice() * request.getAmount());
-            }
+
+            setOrderPrice(order, request.getAmount(), book.getPrice());
 
             if (request.getAmount() > book.getAmount()) {
                 requestService.add(request);
             } else {
                 bookService.changeAmountOfBook(book.getId(), book.getAmount() - request.getAmount());
-                iterator.remove();
+                request.setRequestStatus(Request.RequestStatus.COMPLETED);
             }
         }
 
-        if (order.getRequests().isEmpty()) {
+        boolean areAllRequestsCompleted = order.getRequests()
+                .stream()
+                .noneMatch(request -> request.getRequestStatus()
+                        .equals(Request.RequestStatus.IN_PROCESS));
+
+        if (areAllRequestsCompleted) {
             order.setStatus(Order.OrderStatus.COMPLETED);
             order.setCompletionDate(LocalDateTime.now());
         }
     }
 
+    private void setOrderPrice(Order order, Integer requestAmount, Integer bookPrice) {
+        if (order.getPrice() == null) {
+            order.setPrice(bookPrice * requestAmount);
+        } else {
+            order.setPrice(order.getPrice() + bookPrice * requestAmount);
+        }
+    }
+
+    @Override
     public void processUserInput(Order order, String bookRequest) {
         String[] inputValues = bookRequest.split(" "); // get inputValues from input
+        long bookId;
+        Integer amount;
 
         if (inputValues.length != 2) {
             throw new IllegalArgumentException("Bad input");
         }
-        long bookId;
-        Integer amount;
+
         try {
             bookId = Long.parseLong(inputValues[0].trim());
             amount = Integer.parseInt(inputValues[1].trim());
@@ -117,19 +144,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void createOrder(Order order, Integer amount, Book book) {
-        order.setId((long) getAll().size() + 1);
+        order.setId((long) list().size() + 1);
         order.setClientId(Authenticator.getInstance().getUser().getId());
         order.setStatus(Order.OrderStatus.IN_PROCESS);
         addRequestToOrder(order, amount, book);
     }
 
     private void addRequestToOrder(Order order, Integer amount, Book book) {
-        if (order.getRequests() == null) {
+        if (order.getRequests().isEmpty()) {
             order.setRequests(new ArrayList<>());
         }
         List<Request> requests = order.getRequests();
-        requests.add(new Request((long) requests.size() + 1, book, amount));
+        requests.add(new Request((long) requests.size() + 1, book, amount, Request.RequestStatus.IN_PROCESS));
 
         order.setRequests(requests);
+    }
+
+    @Override
+    public void sort(List<Order> orders, String orderSortKey) {
+
+        OrderSortKey sortKey = OrderSortKey.valueOf(orderSortKey.toUpperCase());
+
+        switch (sortKey) {
+            case PRICE -> orders.sort(Comparator.comparing(Order::getPrice));
+            case DATE ->
+                    orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
+            case STATUS -> orders.sort(Comparator.comparing(Order::getStatus));
+        }
+
     }
 }

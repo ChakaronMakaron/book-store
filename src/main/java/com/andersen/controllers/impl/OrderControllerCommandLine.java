@@ -27,9 +27,9 @@ public class OrderControllerCommandLine implements OrderController {
     public void list(String sortKey) {
         Long clientId = Authenticator.getInstance().getUser().getId();
 
-        OrderSortKey orderSortKey = OrderSortKey.valueOf(sortKey.toUpperCase());
+        List<Order> orders = orderService.getAllClientOrders(clientId);
 
-        List<Order> orders = orderService.getAllClientOrders(clientId, orderSortKey);
+        orderService.sort(orders, sortKey);
 
         orders.forEach(order -> {
             System.out.println(order);
