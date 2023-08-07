@@ -1,10 +1,10 @@
-package com.andersen;
+package com.andersen.repositories.impl;
 
+import com.andersen.Pair;
 import com.andersen.enums.RequestSortKey;
 import com.andersen.models.Book;
 import com.andersen.models.Request;
 import com.andersen.repositories.RequestRepository;
-import com.andersen.repositories.impl.RequestRepositoryDummy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RequestControllerSortTest {
+public class RequestRepositoryDummyTest {
     private static Map<RequestSortKey, Pair<List<Request>>> sortKeyToActualExpectedPair;
 
     @ParameterizedTest

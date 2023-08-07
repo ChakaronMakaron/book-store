@@ -1,9 +1,9 @@
-package com.andersen;
+package com.andersen.repositories.impl;
 
+import com.andersen.Pair;
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.repositories.BookRepository;
-import com.andersen.repositories.impl.BookRepositoryDummy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class BookControllerSortTest {
+public class BookRepositoryDummyTest {
     private static Map<BookSortKey, Pair<List<Book>>> sortKeyToActualExpectedPair;
 
     @ParameterizedTest
