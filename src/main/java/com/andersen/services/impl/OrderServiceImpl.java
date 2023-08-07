@@ -27,8 +27,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> list() {
-        return orderRepository.findAll();
+    public List<Order> list(String sortKey) {
+        List<Order> orders = orderRepository.findAll();
+        orderRepository.sort(orders, sortKey);
+        return orders;
     }
 
     @Override
@@ -47,8 +49,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllClientOrders(Long clientId) {
-        return orderRepository.findOrdersByClientId(clientId);
+    public List<Order> getAllClientOrders(Long clientId, String sortKey) {
+        List<Order> clientOrders = orderRepository.findOrdersByClientId(clientId);
+        orderRepository.sort(clientOrders, sortKey);
+        return clientOrders;
     }
 
     @Override
@@ -144,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void createOrder(Order order, Integer amount, Book book) {
-        order.setId((long) list().size() + 1);
+        order.setId((long) orderRepository.findAll().size() + 1);
         order.setClientId(Authenticator.getInstance().getUser().getId());
         order.setStatus(Order.OrderStatus.IN_PROCESS);
         addRequestToOrder(order, amount, book);
@@ -158,19 +162,5 @@ public class OrderServiceImpl implements OrderService {
         requests.add(new Request((long) requests.size() + 1, book, amount, Request.RequestStatus.IN_PROCESS));
 
         order.setRequests(requests);
-    }
-
-    @Override
-    public void sort(List<Order> orders, String orderSortKey) {
-
-        OrderSortKey sortKey = OrderSortKey.valueOf(orderSortKey.toUpperCase());
-
-        switch (sortKey) {
-            case PRICE -> orders.sort(Comparator.comparing(Order::getPrice));
-            case DATE ->
-                    orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
-            case STATUS -> orders.sort(Comparator.comparing(Order::getStatus));
-        }
-
     }
 }

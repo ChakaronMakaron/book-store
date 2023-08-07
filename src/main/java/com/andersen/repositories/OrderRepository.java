@@ -1,8 +1,11 @@
 package com.andersen.repositories;
 
+import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Order;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,5 +40,18 @@ public class OrderRepository {
         }
         return orders.stream()
                 .filter(order -> order.getClientId().equals(clientId)).collect(Collectors.toList());
+    }
+
+    public void sort(List<Order> orders, String orderSortKey) {
+
+        OrderSortKey sortKey = OrderSortKey.valueOf(orderSortKey.toUpperCase());
+
+        switch (sortKey) {
+            case PRICE -> orders.sort(Comparator.comparing(Order::getPrice));
+            case DATE ->
+                    orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
+            case STATUS -> orders.sort(Comparator.comparing(Order::getStatus));
+        }
+
     }
 }

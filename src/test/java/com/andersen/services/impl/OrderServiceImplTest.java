@@ -14,10 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,18 +50,7 @@ class OrderServiceImplTest {
         orders = new ArrayList<>(List.of(order1, order2, order3));
     }
 
-    @Test
-    void givenListOfOrders_whenFindAllCalled_thenItShouldReturnAllOrders() {
-        Mockito.when(orderRepository.findAll()).thenReturn(orders);
 
-        List<Order> ordersFromMemory = orderService.list();
-
-        assertEquals(orders.size(), ordersFromMemory.size());
-        assertEquals(orders, ordersFromMemory);
-
-        Mockito.verify(orderRepository, Mockito.times(1)).findAll();
-
-    }
 
     @Test
     void givenListOfOrders_whenAddNewOrder_thenItShouldBeListed() {
@@ -104,7 +90,7 @@ class OrderServiceImplTest {
 
         Mockito.when(orderRepository.findOrdersByClientId(1L)).thenReturn(expectedClientOrder);
 
-        List<Order> actualClientOrders = orderService.getAllClientOrders(1L);
+        List<Order> actualClientOrders = orderService.getAllClientOrders(1L, "date");
 
         assertEquals(2, actualClientOrders.size());
         assertEquals(expectedClientOrder, actualClientOrders);
@@ -219,32 +205,79 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void givenListOfOrders_whenSortByDate_thenItShouldReturnSortedOrdersByCompletionDate() {
-        orderService.sort(orders, "date");
+    void givenListOfOrders_whenFindAllCalledWithSortParameterDate_thenItShouldReturnAllOrdersSortedByDate() {
+        Mockito.when(orderRepository.findAll()).thenReturn(orders);
 
-        assertEquals(3, orders.size());
+        String sortKey = "date";
+        List<Order> sortedOrders = orderService.list(sortKey);
+
+        orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
+
+        assertEquals(orders.size(), sortedOrders.size());
         assertEquals(order2, orders.get(0));
         assertEquals(order1, orders.get(1));
         assertEquals(order3, orders.get(2));
+        assertEquals(orders, sortedOrders);
+
+        Mockito.verify(orderRepository, Mockito.times(1)).findAll();
+        Mockito.verify(orderRepository, Mockito.times(1)).sort(orders, sortKey);
+
     }
 
     @Test
-    void givenListOfOrders_whenSortByPrice_thenItShouldReturnSortedOrdersByPrice() {
-        orderService.sort(orders, "price");
+    void givenListOfOrders_whenFindAllCalledWithSortParameterPrice_thenItShouldReturnAllOrdersSortedByPrice() {
+        Mockito.when(orderRepository.findAll()).thenReturn(orders);
 
-        assertEquals(3, orders.size());
+        String sortKey = "price";
+        List<Order> sortedOrders = orderService.list(sortKey);
+
+        orders.sort(Comparator.comparing(Order::getPrice));
+
+        assertEquals(orders.size(), sortedOrders.size());
         assertEquals(order2, orders.get(0));
         assertEquals(order3, orders.get(1));
         assertEquals(order1, orders.get(2));
+        assertEquals(orders, sortedOrders);
+
+        Mockito.verify(orderRepository, Mockito.times(1)).findAll();
+        Mockito.verify(orderRepository, Mockito.times(1)).sort(orders, sortKey);
+
     }
-
     @Test
-    void givenListOfOrders_whenSortByStatus_thenItShouldReturnSortedOrdersByStatus() {
-        orderService.sort(orders, "status");
+    void givenListOfOrders_whenFindAllCalledWithSortParameterStatus_thenItShouldReturnAllOrdersSortedByStatus() {
+        Mockito.when(orderRepository.findAll()).thenReturn(orders);
 
-        assertEquals(3, orders.size());
+        String sortKey = "date";
+        List<Order> sortedOrders = orderService.list(sortKey);
+
+        orders.sort(Comparator.comparing(Order::getStatus));
+
+        assertEquals(orders.size(), sortedOrders.size());
         assertEquals(order3, orders.get(0));
         assertEquals(order1, orders.get(1));
         assertEquals(order2, orders.get(2));
+        assertEquals(orders, sortedOrders);
+
+        Mockito.verify(orderRepository, Mockito.times(1)).findAll();
+        Mockito.verify(orderRepository, Mockito.times(1)).sort(orders, sortKey);
+
+    }
+
+    @Test
+    void givenListOfOrders_whenFindAllCalledWithoutSortParameter_thenItShouldReturnAllOrders() {
+        Mockito.when(orderRepository.findAll()).thenReturn(orders);
+
+        String sortKey = "date";
+        List<Order> sortedOrders = orderService.list(sortKey);
+
+        assertEquals(orders.size(), sortedOrders.size());
+        assertEquals(order1, orders.get(0));
+        assertEquals(order2, orders.get(1));
+        assertEquals(order3, orders.get(2));
+        assertEquals(orders, sortedOrders);
+
+        Mockito.verify(orderRepository, Mockito.times(1)).findAll();
+        Mockito.verify(orderRepository, Mockito.times(1)).sort(orders, sortKey);
+
     }
 }
