@@ -4,7 +4,5 @@ public interface BookController {
 
     void list(String sortKey);
 
-    void add(String name, int amountToAdd, int priceToAdd);
-
-
+    void add(Long id, int amountToAdd);
 }
