@@ -29,7 +29,7 @@ application {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
-    reports.html.required.set(false)
+    reports.html.required.set(true)
     testLogging {
         setShowStandardStreams(true)
     }

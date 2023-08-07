@@ -1,5 +1,6 @@
 package com.andersen.controllers.router;
 
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+
+import com.andersen.App;
+
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
 import com.andersen.controllers.RequestController;
@@ -19,6 +23,7 @@ import com.andersen.enums.actions.OrderAction;
 import com.andersen.enums.actions.RequestAction;
 import com.andersen.models.ParsedInput;
 
+
 public class InputToControllerRouter {
 
     private final Map<ParsedInput, Consumer<ParsedInput>> router;
@@ -27,7 +32,7 @@ public class InputToControllerRouter {
     private final RequestController requestController;
 
     public InputToControllerRouter(BookController bookController,
-            OrderController orderController, RequestController requestController) {
+                                   OrderController orderController, RequestController requestController) {
         this.router = new HashMap<>();
         this.bookController = bookController;
         this.orderController = orderController;
@@ -56,8 +61,12 @@ public class InputToControllerRouter {
 
         // Order list
         router.put(new ParsedInput(AppCommand.ORDER, OrderAction.LIST), input -> {
-            String sortKey = input.getArgs()[0];
-            orderController.list(sortKey);
+            if (input.getArgs().length == 0) {
+                orderController.list("natural");
+            } else {
+                String sortKey = input.getArgs()[0];
+                orderController.list(sortKey);
+            }
         });
 
         // Order complete
@@ -83,6 +92,7 @@ public class InputToControllerRouter {
             requestController.list(sortKey);
         });
 
+
         //Get total income from orders for a certain period
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .appendPattern("yyyy-MM-dd['T'HH:mm]")
@@ -96,6 +106,17 @@ public class InputToControllerRouter {
             System.out.println("PERIOD FROM "+ startIncomeDate);
             System.out.println("TO "+ endIncomeDate);
             orderController.countIncome(startIncomeDate, endIncomeDate);
+        });
+
+
+        // Exit
+        router.put(new ParsedInput(AppCommand.EXIT), input -> {
+            System.exit(0);
+        });
+
+        // Help
+        router.put(new ParsedInput(AppCommand.HELP), input -> {
+            App.getInstance().help();
         });
 
     }

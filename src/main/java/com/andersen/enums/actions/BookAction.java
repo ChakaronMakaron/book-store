@@ -1,12 +1,12 @@
 package com.andersen.enums.actions;
 
 public enum BookAction implements CommandAction {
-    
+
     LIST(1, 1),
     ADD(2, 2);
 
-    private int minArgsAmount;
-    private int maxArgsAmount;
+    private final int minArgsAmount;
+    private final int maxArgsAmount;
 
     BookAction(int minArgsAmount, int maxArgsAmount) {
         this.minArgsAmount = minArgsAmount;

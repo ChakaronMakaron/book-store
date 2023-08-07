@@ -1,13 +1,11 @@
 package com.andersen.controllers.impl;
 
 import com.andersen.controllers.BookController;
-import com.andersen.models.Book;
+import com.andersen.enums.BookSortKey;
 import com.andersen.services.BookService;
 
-import java.util.Comparator;
-import java.util.List;
-
 public class BookControllerCommandLine implements BookController {
+
     private final BookService bookService;
 
     public BookControllerCommandLine(BookService bookService) {
@@ -16,22 +14,14 @@ public class BookControllerCommandLine implements BookController {
 
     @Override
     public void list(String sortKey) {
-        List<Book> books = bookService.getAll();
-
-        switch (sortKey) {
-            case "name" -> books.sort(Comparator.comparing(Book::getName));
-            case "price" -> books.sort(Comparator.comparing(Book::getPrice));
-            case "availability" -> books.sort(Comparator.comparing(Book::getAmount));
-            default -> System.out.println("Wrong sort key (valid sorting keys - name, price, availability)" +
-                    " list without sorting :");
-        }
-
-        books.forEach(System.out::println);
+        BookSortKey bookSortKey = BookSortKey.valueOf(sortKey.toUpperCase());
+        bookService.list(bookSortKey).forEach(System.out::println);
     }
 
     @Override
     public void add(String name, int amountToAdd, int priceToAdd) {
-
+        throw new UnsupportedOperationException("Book controller add not implemented"); // TODO
+    }
     }
 
-}
+

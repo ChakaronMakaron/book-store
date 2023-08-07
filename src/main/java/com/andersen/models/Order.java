@@ -14,7 +14,7 @@ public class Order {
     private Integer price;
 
     public static enum OrderStatus {
-        IN_PROCESS, COMPLETED
+        IN_PROCESS, COMPLETED, CANCELED
     }
 
     public Long getId() {
