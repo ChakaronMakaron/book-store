@@ -8,7 +8,11 @@ repositories {
 
 dependencies {
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("org.mockito:mockito-core:5.4.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.4.0")
+
+
 }
 
 java {
@@ -31,6 +35,6 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
     reports.html.required.set(true)
     testLogging {
-        setShowStandardStreams(true)
+        showStandardStreams = true
     }
 }
