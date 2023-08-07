@@ -55,8 +55,12 @@ public class InputToControllerRouter {
 
         // Book list
         router.put(new ParsedInput(AppCommand.BOOK, BookAction.LIST), input -> {
-            String sortKey = input.getArgs()[0];
-            bookController.list(sortKey);
+            if (input.getArgs().length == 0) {
+                bookController.list("natural");
+            } else {
+                String sortKey = input.getArgs()[0];
+                bookController.list(sortKey);
+            }
         });
 
         // Order list
@@ -88,8 +92,12 @@ public class InputToControllerRouter {
 
         // Request list
         router.put(new ParsedInput(AppCommand.REQUEST, RequestAction.LIST), input -> {
-            String sortKey = input.getArgs()[0];
-            requestController.list(sortKey);
+            if (input.getArgs().length == 0) {
+                requestController.list("natural");
+            } else {
+                String sortKey = input.getArgs()[0];
+                requestController.list(sortKey);
+            }
         });
 
 

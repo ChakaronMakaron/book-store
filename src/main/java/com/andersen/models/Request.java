@@ -3,11 +3,15 @@ package com.andersen.models;
 public class Request {
 
     private Long id;
+    private Long clientId;
+
     private Book book;
+
     private Integer amount;
 
-    public Request(Long id, Book book, Integer amount) {
+    public Request(Long id, Long clientId, Book book, Integer amount) {
         this.id = id;
+        this.clientId = clientId;
         this.book = book;
         this.amount = amount;
     }
@@ -18,6 +22,14 @@ public class Request {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public Book getBook() {

@@ -10,9 +10,9 @@ import com.andersen.controllers.impl.RequestControllerCommandLine;
 import com.andersen.controllers.router.InputToControllerRouter;
 import com.andersen.models.Book;
 import com.andersen.models.ParsedInput;
-import com.andersen.repositories.BookRepository;
-import com.andersen.repositories.OrderRepository;
-import com.andersen.repositories.RequestRepository;
+import com.andersen.repositories.impl.BookRepositoryDummy;
+import com.andersen.repositories.impl.OrderRepositoryDummy;
+import com.andersen.repositories.impl.RequestRepositoryDummy;
 import com.andersen.services.impl.BookServiceImpl;
 import com.andersen.services.impl.OrderServiceImpl;
 import com.andersen.services.impl.RequestServiceImpl;
@@ -43,16 +43,16 @@ public class EntryPoint {
                 new Book(12L, "Anna Karenina", 27, 1)
         );
 
-        BookController bookController = new BookControllerCommandLine(new BookServiceImpl(new BookRepository(books)));
+        BookController bookController = new BookControllerCommandLine(new BookServiceImpl(new BookRepositoryDummy(books)));
 
 
         OrderController orderController = new OrderControllerCommandLine(
-                new BookServiceImpl(new BookRepository(books)),
-                new OrderServiceImpl(new OrderRepository(),
-                        new RequestServiceImpl(new RequestRepository()),
-                        new BookServiceImpl(new BookRepository(books))));
+                new BookServiceImpl(new BookRepositoryDummy(books)),
+                new OrderServiceImpl(new OrderRepositoryDummy(),
+                        new RequestServiceImpl(new RequestRepositoryDummy()),
+                        new BookServiceImpl(new BookRepositoryDummy(books))));
 
-        RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepository()));
+        RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepositoryDummy()));
 
         InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(bookController, orderController, requestController);
 
