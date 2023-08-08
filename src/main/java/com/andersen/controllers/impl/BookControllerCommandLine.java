@@ -2,7 +2,10 @@ package com.andersen.controllers.impl;
 
 import com.andersen.controllers.BookController;
 import com.andersen.enums.BookSortKey;
+import com.andersen.models.Book;
 import com.andersen.services.BookService;
+
+import java.util.List;
 
 public class BookControllerCommandLine implements BookController {
 
@@ -13,9 +16,11 @@ public class BookControllerCommandLine implements BookController {
     }
 
     @Override
-    public void list(String sortKey) {
+    public List<Book> list(String sortKey) {
         BookSortKey bookSortKey = BookSortKey.valueOf(sortKey.toUpperCase());
-        bookService.list(bookSortKey).forEach(System.out::println);
+        List<Book> books = bookService.list(bookSortKey);
+        books.forEach(System.out::println);
+        return books;
     }
 
     @Override

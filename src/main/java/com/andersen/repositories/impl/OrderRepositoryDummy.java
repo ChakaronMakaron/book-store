@@ -13,7 +13,11 @@ import java.util.stream.Collectors;
 
 public class OrderRepositoryDummy implements OrderRepository {
 
-    private final List<Order> orders = new ArrayList<>();
+    private final List<Order> orders;
+
+    public OrderRepositoryDummy(List<Order> orders) {
+        this.orders = orders;
+    }
 
     @Override
     public List<Order> findAll() {
@@ -56,7 +60,13 @@ public class OrderRepositoryDummy implements OrderRepository {
 
     @Override
     public void sort(List<Order> orders, String orderSortKey) {
-        OrderSortKey sortKey = OrderSortKey.valueOf(orderSortKey.toUpperCase());
+        OrderSortKey sortKey;
+
+        if(containsSortParameter(orderSortKey)){
+            sortKey = OrderSortKey.valueOf(orderSortKey.toUpperCase());
+        }else{
+            sortKey = OrderSortKey.NATURAL;
+        }
 
         switch (sortKey) {
             case PRICE -> orders.sort(Comparator.comparing(Order::getPrice));
@@ -64,6 +74,15 @@ public class OrderRepositoryDummy implements OrderRepository {
                     orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
             case STATUS -> orders.sort(Comparator.comparing(Order::getStatus));
         }
+    }
+
+    public boolean containsSortParameter(String orderSortKey) {
+        for (OrderSortKey sortKey : OrderSortKey.values()) {
+            if (sortKey.name().equalsIgnoreCase(orderSortKey)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

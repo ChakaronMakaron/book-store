@@ -2,7 +2,6 @@ package com.andersen.controllers.impl;
 
 import com.andersen.authorization.Authenticator;
 import com.andersen.controllers.OrderController;
-import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.andersen.services.impl.BookServiceImpl;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class OrderControllerCommandLine implements OrderController {
-
     private final BookServiceImpl bookService;
     private final OrderServiceImpl orderService;
     private final Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
@@ -25,7 +23,7 @@ public class OrderControllerCommandLine implements OrderController {
     }
 
     @Override
-    public void list(String sortKey) {
+    public List<Order> list(String sortKey) {
         Long clientId = Authenticator.getInstance().getUser().getId();
 
         List<Order> orders = orderService.getAllClientOrders(clientId, sortKey);
@@ -33,11 +31,9 @@ public class OrderControllerCommandLine implements OrderController {
         orders.forEach(order -> {
             System.out.println(order);
             System.out.println("Order requests:");
-            order.getRequests().forEach(request -> {
-                System.out.printf("\t%s%n", request);
-            });
+            order.getRequests().forEach(request -> System.out.printf("\t%s%n", request));
         });
-
+        return orders;
     }
 
     @Override

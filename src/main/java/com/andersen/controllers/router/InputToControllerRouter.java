@@ -10,6 +10,7 @@ import com.andersen.enums.actions.BookAction;
 import com.andersen.enums.actions.OrderAction;
 import com.andersen.enums.actions.RequestAction;
 import com.andersen.models.ParsedInput;
+import com.andersen.utils.JSONParserClass;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -114,6 +115,7 @@ public class InputToControllerRouter {
 
         // Exit
         router.put(new ParsedInput(AppCommand.EXIT), input -> {
+            new JSONParserClass().writeJson(orderController, bookController);
             System.exit(0);
         });
 
