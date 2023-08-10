@@ -73,6 +73,7 @@ public class OrderRepositoryDummy implements OrderRepository {
             case DATE ->
                     orders.sort(Comparator.comparing(Order::getCompletionDate, Comparator.nullsLast(LocalDateTime::compareTo)));
             case STATUS -> orders.sort(Comparator.comparing(Order::getStatus));
+            default -> throw new IllegalArgumentException("Unexpected value: " + sortKey);
         }
     }
 

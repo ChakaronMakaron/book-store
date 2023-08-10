@@ -77,6 +77,7 @@ public class OrderServiceImpl implements OrderService {
 
             case CANCELED ->
                     order.getRequests().forEach(request -> request.setRequestStatus(Request.RequestStatus.CANCELED));
+            default -> throw new IllegalArgumentException("Unexpected value: " + requestStatus);
         }
     }
 

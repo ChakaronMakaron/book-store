@@ -51,6 +51,7 @@ public class RequestRepositoryDummy implements RequestRepository {
             case NAME -> requests.sort(Comparator.comparing(request -> request.getBook().getName()));
             case PRICE ->
                     requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
+            default -> throw new IllegalArgumentException("Unexpected value: " + requestSortKey);
         }
     }
 }

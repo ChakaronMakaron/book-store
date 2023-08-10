@@ -1,97 +1,53 @@
 package com.andersen;
 
-import com.andersen.authorization.Authenticator;
-import com.andersen.controllers.BookController;
-import com.andersen.controllers.OrderController;
-import com.andersen.controllers.RequestController;
-import com.andersen.controllers.impl.BookControllerCommandLine;
-import com.andersen.controllers.impl.OrderControllerCommandLine;
-import com.andersen.controllers.impl.RequestControllerCommandLine;
-import com.andersen.controllers.router.InputToControllerRouter;
-import com.andersen.models.Book;
-import com.andersen.models.Order;
-import com.andersen.models.ParsedInput;
-import com.andersen.repositories.impl.BookRepositoryDummy;
-import com.andersen.repositories.impl.OrderRepositoryDummy;
-import com.andersen.repositories.impl.RequestRepositoryDummy;
-import com.andersen.services.impl.BookServiceImpl;
-import com.andersen.services.impl.OrderServiceImpl;
-import com.andersen.services.impl.RequestServiceImpl;
-import com.andersen.utils.InputParser;
-import com.andersen.utils.JSONParserClass;
-
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Scanner;
+
+import org.apache.catalina.Context;
+import org.apache.catalina.startup.Tomcat;
+import org.apache.commons.io.IOUtils;
+
+import com.andersen.config.DependencyModule;
+import com.andersen.config.model.ConfigModel;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import jakarta.servlet.http.HttpServlet;
 
 public class EntryPoint {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+        Injector injector = Guice.createInjector(new DependencyModule());
 
+        ConfigModel config = readConfig(injector.getInstance(ObjectMapper.class));
+        HttpServlet routerServlet = injector.getInstance(HttpServlet.class);
 
-        JSONParserClass parser = new JSONParserClass();
-        List<Book> books = parser.readJsonBooks();
-        List<Order> orders = parser.readJsonOrders();
+        String tempDir = System.getProperty("java.io.tmpdir");
 
+        Tomcat tomcat = new Tomcat();
+        tomcat.setBaseDir(tempDir);
+        tomcat.setPort(config.port());
+        tomcat.getConnector();
 
-//        List<Book> books = List.of(
-//                new Book(1L, "The Great Gatsby", 39, 5),
-//                new Book(2L, "Lolita", 25, 3),
-//                new Book(3L, "The Catcher in the Rye", 22, 2),
-//                new Book(4L, "Don Quixote", 42, 9),
-//                new Book(5L, "The Grapes of Wrath", 33, 3),
-//                new Book(6L, "Beloved", 17, 4),
-//                new Book(7L, "Catch-22", 20, 6),
-//                new Book(8L, "To Kill a Mockingbird", 25, 2),
-//                new Book(9L, "Frankenstein", 15, 1),
-//                new Book(10L, "Ulysses", 31, 1),
-//                new Book(11L, "Alice in Wonderland", 25, 3),
-//                new Book(12L, "Anna Karenina", 27, 1)
-//        );
+        Context servletContext = tomcat.addContext(config.contextPath(), tempDir);
 
-        BookController bookController = new BookControllerCommandLine(new BookServiceImpl(new BookRepositoryDummy(books)));
+        tomcat.addServlet(config.contextPath(), "RouterServlet", routerServlet);
+        servletContext.addServletMappingDecoded("/*", "RouterServlet");
 
+        tomcat.start();
+        tomcat.getServer().await();
+    }
 
-        OrderController orderController = new OrderControllerCommandLine(
-                new BookServiceImpl(new BookRepositoryDummy(books)),
-                new OrderServiceImpl(new OrderRepositoryDummy(orders),
-                        new RequestServiceImpl(new RequestRepositoryDummy()),
-                        new BookServiceImpl(new BookRepositoryDummy(books))));
-
-        RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepositoryDummy()));
-
-        InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(bookController, orderController, requestController);
-
-        intro();
-
-        while (App.getInstance().isRunning()) {
-            if (!Authenticator.getInstance().isAuthenticated()) Authenticator.getInstance().authenticate(scanner);
-            System.out.print(">>> ");
-            try {
-
-                ParsedInput parsedInput = InputParser.getInstance().parseInput(scanner.nextLine());
-                inputToControllerMapper.sendToController(parsedInput);
-
-            } catch (Exception e) {
-                onException(e);
-            }
+    private static ConfigModel readConfig(ObjectMapper objectMapper) {
+        try {
+            String rawConfig = IOUtils.toString(EntryPoint.class.getClassLoader().getResourceAsStream("config.json"),
+                    StandardCharsets.UTF_8);
+            System.out.printf("Config:\n%s", rawConfig);
+            return objectMapper.readValue(rawConfig, ConfigModel.class);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
         }
-
-        scanner.close();
-    }
-
-    private static void intro() {
-        System.out.println("Book store");
-        System.out.println("Type 'exit' to close");
-        System.out.println();
-    }
-
-    private static void onException(Exception e) {
-        e.printStackTrace();
-        System.out.println(e);
-        System.out.println("Type 'exit' to close");
-        System.out.println();
     }
 }

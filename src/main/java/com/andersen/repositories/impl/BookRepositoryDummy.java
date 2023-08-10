@@ -1,13 +1,13 @@
 package com.andersen.repositories.impl;
 
-import com.andersen.enums.BookSortKey;
-import com.andersen.models.Book;
-import com.andersen.repositories.BookRepository;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import com.andersen.enums.BookSortKey;
+import com.andersen.models.Book;
+import com.andersen.repositories.BookRepository;
 
 public class BookRepositoryDummy implements BookRepository {
 
@@ -16,7 +16,6 @@ public class BookRepositoryDummy implements BookRepository {
     public BookRepositoryDummy(List<Book> books) {
         this.books = books;
     }
-
 
     @Override
     public List<Book> findAll() {
@@ -47,6 +46,7 @@ public class BookRepositoryDummy implements BookRepository {
             case NAME -> books.sort(Comparator.comparing(Book::getName));
             case PRICE -> books.sort(Comparator.comparing(Book::getPrice));
             case AMOUNT -> books.sort(Comparator.comparing(Book::getAmount));
+            default -> throw new IllegalArgumentException("Unexpected value: " + bookSortKey);
         }
     }
 }
