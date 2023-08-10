@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.catalina.Context;
+import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.io.IOUtils;
 
@@ -28,8 +29,10 @@ public class EntryPoint {
 
         Tomcat tomcat = new Tomcat();
         tomcat.setBaseDir(tempDir);
-        tomcat.setPort(config.port());
-        tomcat.getConnector();
+
+        Connector httpConnector = new Connector();
+        httpConnector.setPort(config.port());
+        tomcat.getService().addConnector(httpConnector);
 
         Context servletContext = tomcat.addContext(config.contextPath(), tempDir);
 
