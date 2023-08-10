@@ -4,7 +4,7 @@
     "id": 1,
     "name": "The Great Gatsby",
     "price": 39,
-    "amount": 4
+    "amount": 2
   },
   {
     "status": "IN_STOCK",
@@ -60,7 +60,7 @@
     "id": 9,
     "name": "Frankenstein",
     "price": 15,
-    "amount": 1
+    "amount": 3
   },
   {
     "status": "IN_STOCK",

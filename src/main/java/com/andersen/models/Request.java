@@ -5,9 +5,7 @@ public class Request {
     private Long id;
     private Long clientId;
     private Book book;
-
     private Integer amount;
-
     private RequestStatus requestStatus;
 
     public enum RequestStatus {

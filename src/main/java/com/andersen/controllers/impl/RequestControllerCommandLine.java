@@ -3,7 +3,10 @@ package com.andersen.controllers.impl;
 import com.andersen.authorization.Authenticator;
 import com.andersen.controllers.RequestController;
 import com.andersen.enums.RequestSortKey;
+import com.andersen.models.Request;
 import com.andersen.services.RequestService;
+
+import java.util.List;
 
 public class RequestControllerCommandLine implements RequestController {
 
@@ -14,10 +17,12 @@ public class RequestControllerCommandLine implements RequestController {
     }
 
     @Override
-    public void list(String sortKey) {
+    public List<Request> list(String sortKey) {
         Long clientId = Authenticator.getInstance().getUser().getId();
 
         RequestSortKey requestSortKey = RequestSortKey.valueOf(sortKey.toUpperCase());
-        requestService.getAllByClientIdSortedByKey(clientId, requestSortKey).forEach(System.out::println);
+        List<Request> requests = requestService.getAllByClientIdSortedByKey(clientId, requestSortKey);
+        requests.forEach(System.out::println);
+        return requests;
     }
 }

@@ -11,6 +11,7 @@ import com.andersen.controllers.router.InputToControllerRouter;
 import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.andersen.models.ParsedInput;
+import com.andersen.models.Request;
 import com.andersen.repositories.impl.BookRepositoryDummy;
 import com.andersen.repositories.impl.OrderRepositoryDummy;
 import com.andersen.repositories.impl.RequestRepositoryDummy;
@@ -30,11 +31,10 @@ public class EntryPoint {
 
         Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 
-
         JSONParserClass parser = new JSONParserClass();
         List<Book> books = parser.readJsonBooks();
         List<Order> orders = parser.readJsonOrders();
-
+        List<Request> requests = parser.readJsonRequests();
 
 //        List<Book> books = List.of(
 //                new Book(1L, "The Great Gatsby", 39, 5),
@@ -57,10 +57,10 @@ public class EntryPoint {
         OrderController orderController = new OrderControllerCommandLine(
                 new BookServiceImpl(new BookRepositoryDummy(books)),
                 new OrderServiceImpl(new OrderRepositoryDummy(orders),
-                        new RequestServiceImpl(new RequestRepositoryDummy()),
+                        new RequestServiceImpl(new RequestRepositoryDummy(requests)),
                         new BookServiceImpl(new BookRepositoryDummy(books))));
 
-        RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepositoryDummy()));
+        RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepositoryDummy(requests)));
 
         InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(bookController, orderController, requestController);
 

@@ -3,6 +3,7 @@ package com.andersen.repositories.impl;
 import com.andersen.enums.RequestSortKey;
 import com.andersen.models.Request;
 import com.andersen.repositories.RequestRepository;
+import com.andersen.utils.JSONParserClass;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,7 +12,13 @@ import java.util.stream.Collectors;
 
 public class RequestRepositoryDummy implements RequestRepository {
 
-    private final List<Request> requests = new ArrayList<>();
+    private final List<Request> requests;
+    private final JSONParserClass JsonParser;
+
+    public RequestRepositoryDummy(List<Request> requests) {
+        this.requests = requests;
+        JsonParser = new JSONParserClass();
+    }
 
     @Override
     public List<Request> list(RequestSortKey sortKey) {
@@ -44,6 +51,7 @@ public class RequestRepositoryDummy implements RequestRepository {
             throw new IllegalArgumentException("Request is null");
         }
         requests.add(request);
+        JsonParser.writeJsonRequests(requests);
     }
 
     private void sort(List<Request> requests, RequestSortKey requestSortKey) {

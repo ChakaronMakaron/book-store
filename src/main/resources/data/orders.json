@@ -2,7 +2,7 @@
   {
     "id": 1,
     "clientId": 1,
-    "completionDate": "8::08::2023 22::53::36",
+    "completionDate": "10::08::2023 16::49::37",
     "status": "COMPLETED",
     "requests": [
       {
@@ -13,25 +13,12 @@
           "id": 1,
           "name": "The Great Gatsby",
           "price": 39,
-          "amount": 4
-        },
-        "amount": 1,
-        "requestStatus": "COMPLETED"
-      },
-      {
-        "id": 2,
-        "clientId": 1,
-        "book": {
-          "status": "IN_STOCK",
-          "id": 2,
-          "name": "Lolita",
-          "price": 25,
           "amount": 2
         },
-        "amount": 1,
+        "amount": 2,
         "requestStatus": "COMPLETED"
       }
     ],
-    "price": 64
+    "price": 78
   }
 ]

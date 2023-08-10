@@ -3,6 +3,7 @@ package com.andersen.repositories.impl;
 import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Order;
 import com.andersen.repositories.OrderRepository;
+import com.andersen.utils.JSONParserClass;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 public class OrderRepositoryDummy implements OrderRepository {
 
     private final List<Order> orders;
+    private final JSONParserClass JsonParser;
 
     public OrderRepositoryDummy(List<Order> orders) {
         this.orders = orders;
+        JsonParser = new JSONParserClass();
     }
 
     @Override
@@ -30,6 +33,7 @@ public class OrderRepositoryDummy implements OrderRepository {
             throw new IllegalArgumentException("Order is null");
         }
         orders.add(order);
+        JsonParser.writeJsonOrders(orders);
     }
 
     @Override
@@ -76,7 +80,7 @@ public class OrderRepositoryDummy implements OrderRepository {
         }
     }
 
-    public boolean containsSortParameter(String orderSortKey) {
+    private boolean containsSortParameter(String orderSortKey) {
         for (OrderSortKey sortKey : OrderSortKey.values()) {
             if (sortKey.name().equalsIgnoreCase(orderSortKey)) {
                 return true;

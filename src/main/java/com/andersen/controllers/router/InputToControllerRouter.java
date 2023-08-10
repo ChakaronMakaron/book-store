@@ -115,7 +115,10 @@ public class InputToControllerRouter {
 
         // Exit
         router.put(new ParsedInput(AppCommand.EXIT), input -> {
-            new JSONParserClass().writeJson(orderController, bookController);
+            JSONParserClass parser = new JSONParserClass();
+            parser.writeJsonOrders(orderController.list("natural"));
+            parser.writeJsonBooks(bookController.list("natural"));
+            parser.writeJsonRequests(requestController.list("natural"));
             System.exit(0);
         });
 

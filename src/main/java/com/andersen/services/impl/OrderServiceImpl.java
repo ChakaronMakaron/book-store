@@ -159,10 +159,12 @@ public class OrderServiceImpl implements OrderService {
         if (order.getRequests().isEmpty()) {
             order.setRequests(new ArrayList<>());
         }
-        List<Request> requests = order.getRequests();
+        List<Request> orderRequests = order.getRequests();
 
-        requests.add(new Request((long) requests.size() + 1, order.getClientId(), book, amount, Request.RequestStatus.IN_PROCESS));
+        Request newRequest = new Request((long) orderRequests.size() + 1, order.getClientId(), book, amount, Request.RequestStatus.IN_PROCESS);
+        orderRequests.add(newRequest);
+        requestService.add(newRequest);
 
-        order.setRequests(requests);
+        order.setRequests(orderRequests);
     }
 }

@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "clientId": 1,
+    "book": {
+      "status": "IN_STOCK",
+      "id": 1,
+      "name": "The Great Gatsby",
+      "price": 39,
+      "amount": 2
+    },
+    "amount": 2,
+    "requestStatus": "COMPLETED"
+  }
+]

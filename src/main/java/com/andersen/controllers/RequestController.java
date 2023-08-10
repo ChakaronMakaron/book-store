@@ -1,6 +1,10 @@
 package com.andersen.controllers;
 
+import com.andersen.models.Request;
+
+import java.util.List;
+
 public interface RequestController {
 
-    void list(String sortKey);
+    List<Request> list(String sortKey);
 }
