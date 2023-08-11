@@ -18,15 +18,12 @@ public class BookControllerCommandLine implements BookController {
     @Override
     public List<Book> list(String sortKey) {
         BookSortKey bookSortKey = BookSortKey.valueOf(sortKey.toUpperCase());
-        List<Book> books = bookService.list(bookSortKey);
-        books.forEach(System.out::println);
-        return books;
+        return bookService.getAllSorted(bookSortKey);
     }
 
     @Override
-    public void add(Long id, int amountToAdd) {
-        bookService.changeAmountOfBook(id, bookService.getBookById(id).
-                orElseThrow(() -> new IllegalArgumentException("No book with this id")).getAmount() + amountToAdd);
+    public void bookSupply(Long id, int amountToAdd) {
+        bookService.supply(id, amountToAdd);
     }
 }
 

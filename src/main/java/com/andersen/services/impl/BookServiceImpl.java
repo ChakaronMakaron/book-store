@@ -18,34 +18,27 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> list(BookSortKey sortKey) {
-        return bookRepository.list(sortKey);
+    public List<Book> getAllSorted(BookSortKey sortKey) {
+        return bookRepository.getAllSorted(sortKey);
     }
 
     @Override
     public List<Book> getAll() {
-        return bookRepository.findAll();
+        return bookRepository.getAll();
     }
 
     @Override
-    public Optional<Book> getBookById(Long bookId) {
-        return bookRepository.findByBookId(bookId);
+    public Optional<Book> findById(Long bookId) {
+        return bookRepository.findById(bookId);
     }
 
     @Override
-    public void changeAmountOfBook(Long bookId, Integer amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount value is not valid");
-        }
-        bookRepository.findByBookId(bookId).ifPresent(book -> book.setAmount(amount));
+    public void supply(Long bookId, Integer amount) {
+        bookRepository.supply(bookId, amount);
     }
 
     @Override
     public void changeBookStatus(Long bookId, boolean bookStatus) {
-        if (bookStatus) {
-            bookRepository.findByBookId(bookId).orElseThrow(IllegalArgumentException::new).setStatus(Book.BookStatus.IN_STOCK);
-        } else {
-            bookRepository.findByBookId(bookId).orElseThrow(IllegalArgumentException::new).setStatus(Book.BookStatus.OUT_OF_STOCK);
-        }
+        bookRepository.changeBookStatus(bookId, bookStatus ? Book.BookStatus.IN_STOCK : Book.BookStatus.OUT_OF_STOCK);
     }
 }

@@ -1,29 +1,27 @@
 package com.andersen;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
+import com.andersen.config.DependencyModule;
+import com.andersen.config.model.ConfigModel;
+import com.andersen.controllers.router.RouterServlet;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import jakarta.servlet.http.HttpServlet;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.commons.io.IOUtils;
 
-import com.andersen.config.DependencyModule;
-import com.andersen.config.model.ConfigModel;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
-import jakarta.servlet.http.HttpServlet;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class EntryPoint {
 
     public static void main(String[] args) throws Exception {
+        ConfigModel config = readConfig();
 
-        Injector injector = Guice.createInjector(new DependencyModule());
+        Injector injector = Guice.createInjector(new DependencyModule(config));
 
-        ConfigModel config = readConfig(injector.getInstance(ObjectMapper.class));
-        HttpServlet routerServlet = injector.getInstance(HttpServlet.class);
+        HttpServlet routerServlet = injector.getInstance(RouterServlet.class);
 
         String tempDir = System.getProperty("java.io.tmpdir");
 
@@ -31,26 +29,30 @@ public class EntryPoint {
         tomcat.setBaseDir(tempDir);
 
         Connector httpConnector = new Connector();
-        httpConnector.setPort(config.port());
+        httpConnector.setPort(config.getPort());
         tomcat.getService().addConnector(httpConnector);
 
-        Context servletContext = tomcat.addContext(config.contextPath(), tempDir);
+        Context servletContext = tomcat.addContext(config.getContextPath(), tempDir);
 
-        tomcat.addServlet(config.contextPath(), "RouterServlet", routerServlet);
+        tomcat.addServlet(config.getContextPath(), "RouterServlet", routerServlet);
         servletContext.addServletMappingDecoded("/*", "RouterServlet");
 
         tomcat.start();
+
         tomcat.getServer().await();
     }
 
-    private static ConfigModel readConfig(ObjectMapper objectMapper) {
-        try {
-            String rawConfig = IOUtils.toString(EntryPoint.class.getClassLoader().getResourceAsStream("config.json"),
-                    StandardCharsets.UTF_8);
-            System.out.printf("Config:\n%s", rawConfig);
-            return objectMapper.readValue(rawConfig, ConfigModel.class);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
+    private static ConfigModel readConfig() {
+        try (InputStream input = EntryPoint.class.getClassLoader().getResourceAsStream("config.properties")) {
+
+            Properties properties = new Properties();
+
+            properties.load(input);
+
+            return new ConfigModel(properties);
+
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

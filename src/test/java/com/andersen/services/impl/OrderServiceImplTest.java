@@ -166,11 +166,11 @@ class OrderServiceImplTest {
     void givenUserInputForTheBook_whenInputIsCorrectAndOrderInitialized_thenItShouldAddNewRequest() {
         Book expectedBook = new Book(1L, "The Great Gatsby", 39, 5);
 
-        Mockito.when(bookService.getBookById(1L)).thenReturn(Optional.of(expectedBook));
+        Mockito.when(bookService.findById(1L)).thenReturn(Optional.of(expectedBook));
 
         orderService.processUserInput(order1, "1 2");
 
-        Mockito.verify(bookService, Mockito.times(1)).getBookById(1L);
+        Mockito.verify(bookService, Mockito.times(1)).findById(1L);
 
         assertEquals(1, order1.getRequests().size());
 
@@ -183,12 +183,12 @@ class OrderServiceImplTest {
     void givenUserInputForTheBook_whenInputIsCorrectAndOrderIsNotInitialized_thenItShouldCreateNewOrderAndAddNewRequest() {
         Book expectedBook = new Book(1L, "The Great Gatsby", 39, 5);
 
-        Mockito.when(bookService.getBookById(1L)).thenReturn(Optional.of(expectedBook));
+        Mockito.when(bookService.findById(1L)).thenReturn(Optional.of(expectedBook));
 
         Order actualOrder = new Order();
         orderService.processUserInput(actualOrder, "1 2");
 
-        Mockito.verify(bookService, Mockito.times(1)).getBookById(1L);
+        Mockito.verify(bookService, Mockito.times(1)).findById(1L);
 
         assertEquals(1, actualOrder.getRequests().size());
 

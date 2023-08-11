@@ -1,13 +1,13 @@
 package com.andersen.repositories.impl;
 
+import com.andersen.enums.BookSortKey;
+import com.andersen.models.Book;
+import com.andersen.repositories.BookRepository;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
-import com.andersen.enums.BookSortKey;
-import com.andersen.models.Book;
-import com.andersen.repositories.BookRepository;
 
 public class BookRepositoryDummy implements BookRepository {
 
@@ -18,12 +18,12 @@ public class BookRepositoryDummy implements BookRepository {
     }
 
     @Override
-    public List<Book> findAll() {
+    public List<Book> getAll() {
         return books;
     }
 
     @Override
-    public Optional<Book> findByBookId(Long bookId) {
+    public Optional<Book> findById(Long bookId) {
         if (bookId < 1L) {
             throw new IllegalArgumentException("Bad book id");
         }
@@ -33,12 +33,25 @@ public class BookRepositoryDummy implements BookRepository {
     }
 
     @Override
-    public List<Book> list(BookSortKey sortKey) {
+    public List<Book> getAllSorted(BookSortKey sortKey) {
         List<Book> fetchedBooks = new ArrayList<>(books);
         if (sortKey != BookSortKey.NATURAL) {
             sort(fetchedBooks, sortKey);
         }
         return fetchedBooks;
+    }
+
+    @Override
+    public void supply(Long id, int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount value is not valid");
+        }
+        findById(id).ifPresent(book -> book.setAmount(book.getAmount() + amount));
+    }
+
+    @Override
+    public void changeBookStatus(Long id, Book.BookStatus status) {
+        findById(id).orElseThrow(() -> new IllegalArgumentException("Wrong book id")).setStatus(status);
     }
 
     private void sort(List<Book> books, BookSortKey bookSortKey) {

@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface BookService {
 
-    List<Book> list(BookSortKey sortKey);
+    List<Book> getAllSorted(BookSortKey sortKey);
 
     List<Book> getAll();
 
-    Optional<Book> getBookById(Long bookId);
+    Optional<Book> findById(Long bookId);
 
-    void changeAmountOfBook(Long bookId, Integer amount);
+    void supply(Long bookId, Integer amount);
 
     void changeBookStatus(Long bookId, boolean bookStatus);
 }

@@ -8,10 +8,13 @@ import java.util.Optional;
 
 
 public interface BookRepository {
-    List<Book> findAll();
+    List<Book> getAll();
 
-    Optional<Book> findByBookId(Long bookId);
+    Optional<Book> findById(Long bookId);
 
-    List<Book> list(BookSortKey sortKey);
+    List<Book> getAllSorted(BookSortKey sortKey);
 
+    void supply(Long id, int amount);
+
+    void changeBookStatus(Long id, Book.BookStatus status);
 }

@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
             if (request.getAmount() > book.getAmount()) {
                 requestService.add(request);
             } else {
-                bookService.changeAmountOfBook(book.getId(), book.getAmount() - request.getAmount());
+                bookService.supply(book.getId(), book.getAmount() - request.getAmount());
                 request.setRequestStatus(Request.RequestStatus.COMPLETED);
             }
         }
@@ -138,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Wrong input parameters");
         }
 
-        Optional<Book> book = bookService.getBookById(bookId);
+        Optional<Book> book = bookService.findById(bookId);
 
         book.ifPresent(theBook -> {                          // if book was found -> create order or change order
             if (order.getId() != null) {                       // if order already exists -> set new request for the book

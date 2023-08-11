@@ -77,6 +77,7 @@ public class Order {
             this.requests = new ArrayList<>(requests);
         }
     }
+
     public Integer getPrice() {
         return price;
     }

@@ -6,3 +6,4 @@ bin
 out
 tomcat
 app
+src/main/resources/data

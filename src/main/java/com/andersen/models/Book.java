@@ -12,6 +12,8 @@ public class Book {
         IN_STOCK, OUT_OF_STOCK
     }
 
+    public Book() {
+    }
 
     public Book(Long id, String name, Integer price, Integer amount) {
         this.id = id;
@@ -20,7 +22,6 @@ public class Book {
         this.amount = amount;
         this.status = (amount >= 1) ? BookStatus.IN_STOCK : BookStatus.OUT_OF_STOCK;
     }
-
 
     public Long getId() {
         return id;

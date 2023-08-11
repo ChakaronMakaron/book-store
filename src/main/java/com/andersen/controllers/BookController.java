@@ -8,5 +8,5 @@ public interface BookController {
 
     List<Book> list(String sortKey);
 
-    void add(Long id, int amountToAdd);
+    void bookSupply(Long id, int amountToAdd);
 }

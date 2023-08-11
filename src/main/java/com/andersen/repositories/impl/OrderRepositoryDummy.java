@@ -62,9 +62,9 @@ public class OrderRepositoryDummy implements OrderRepository {
     public void sort(List<Order> orders, String orderSortKey) {
         OrderSortKey sortKey;
 
-        if(containsSortParameter(orderSortKey)){
+        if (containsSortParameter(orderSortKey)) {
             sortKey = OrderSortKey.valueOf(orderSortKey.toUpperCase());
-        }else{
+        } else {
             sortKey = OrderSortKey.NATURAL;
         }
 

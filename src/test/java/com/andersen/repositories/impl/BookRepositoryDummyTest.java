@@ -30,7 +30,7 @@ public class BookRepositoryDummyTest {
         assertNotNull(pair);
 
         BookRepository bookRepository = new BookRepositoryDummy(pair.actual());
-        List<Book> sortedBooks = bookRepository.list(sortKey);
+        List<Book> sortedBooks = bookRepository.getAllSorted(sortKey);
 
         assertEquals(pair.expected(), sortedBooks);
     }
