@@ -1,19 +1,16 @@
 package com.andersen.utils;
 
-import com.andersen.controllers.BookController;
-import com.andersen.controllers.OrderController;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.andersen.models.Book;
 import com.andersen.models.Order;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class JSONParserClass {
 
@@ -21,20 +18,6 @@ public class JSONParserClass {
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .setPrettyPrinting()
             .create();
-    public void writeJson(OrderController orderController, BookController bookController){
-        List<Order> orders = orderController.list("natural");
-        List<Book> books = bookController.list("natural");
-
-
-        try(FileWriter ordersWriter = new FileWriter("src/main/resources/data/orders.json");
-            FileWriter bookWriter = new FileWriter("src/main/resources/data/books.json")){
-            gson.toJson(orders, ordersWriter);
-            gson.toJson(books, bookWriter);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
 
     public List<Book> readJsonBooks(){
         List<Book> books;

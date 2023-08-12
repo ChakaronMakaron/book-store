@@ -1,7 +1,7 @@
 package com.andersen.controllers.impl;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,6 +13,8 @@ import com.andersen.services.OrderService;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Singleton
 public class ServletOrderController implements OrderController {
@@ -28,7 +30,8 @@ public class ServletOrderController implements OrderController {
     }
 
     @Override
-    public List<Order> list(String sortKey) {
+    public List<Order> list(HttpServletRequest request, HttpServletResponse response) {
+        /*
         // Long clientId = Authenticator.getInstance().getUser().getId();
 
         Long clientId = 1L; // TODO
@@ -41,18 +44,22 @@ public class ServletOrderController implements OrderController {
             order.getRequests().forEach(request -> System.out.printf("\t%s%n", request));
         });
         return orders;
+        */
+        return Collections.emptyList();
     }
 
     @Override
-    public void complete(Long orderId) {
+    public void complete(HttpServletRequest request, HttpServletResponse response) {
+        /*
         if (orderId < 1L) {
             throw new IllegalArgumentException("Wrong order id");
         }
         orderService.changeStatus(orderId, Order.OrderStatus.COMPLETED);
+         */
     }
 
     @Override
-    public void create() {
+    public void create(HttpServletRequest request, HttpServletResponse response) {
         Order order = new Order();
 
         List<Book> books = bookService.getAll(); // find all books and print it to console
@@ -78,16 +85,19 @@ public class ServletOrderController implements OrderController {
     }
 
     @Override
-    public void cancel(Long orderId) {
+    public void cancel(HttpServletRequest request, HttpServletResponse response) {
+        /*
         if (orderId < 1L) {
             throw new IllegalArgumentException("Wrong order id");
         }
         orderService.changeStatus(orderId, Order.OrderStatus.CANCELED);
+        */
     }
 
     @Override
-    public void countIncome(LocalDateTime startPeriodCompletionDate, LocalDateTime endPeriodOfCompletionDate) {
+    public void countIncome(HttpServletRequest request, HttpServletResponse response) {
 
+        /*
         List<Order> orders = orderService.getOrdersFilteredInPeriod(startPeriodCompletionDate, endPeriodOfCompletionDate);
         int incomeCounter = 0;
         for (Order order : orders) {
@@ -96,6 +106,6 @@ public class ServletOrderController implements OrderController {
         }
         System.out.printf("Total income for period from %s to %s is %s", startPeriodCompletionDate,
                 endPeriodOfCompletionDate, incomeCounter);
+        */
     }
-
 }

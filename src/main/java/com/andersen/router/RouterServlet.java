@@ -1,8 +1,7 @@
-package com.andersen.controllers.router;
+package com.andersen.router;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -29,10 +28,10 @@ public class RouterServlet extends HttpServlet {
     private OrderController orderController;
     private RequestController requestController;
 
-    private List<Method> getHandlers;
-    private List<Method> postHandlers;
-    private List<Method> putHandlers;
-    private List<Method> deleteHandlers;
+    private List<RequestHandler> getHandlers;
+    private List<RequestHandler> postHandlers;
+    private List<RequestHandler> putHandlers;
+    private List<RequestHandler> deleteHandlers;
 
     @Inject
     public RouterServlet(BookController bookController, OrderController orderController,
@@ -52,13 +51,13 @@ public class RouterServlet extends HttpServlet {
         try {
             
             getHandlers.stream()
-                .filter(handler -> handler.getAnnotation(Get.class).value().equals(req.getRequestURI()))
+                .filter(handler -> handler.getMethod().getAnnotation(Get.class).value().equals(req.getRequestURI()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No mapping for GET %s".formatted(req.getRequestURI())))
                 .invoke(req, resp);
 
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -67,13 +66,13 @@ public class RouterServlet extends HttpServlet {
         try {
             
             postHandlers.stream()
-                .filter(handler -> handler.getAnnotation(Post.class).value().equals(req.getRequestURI()))
+                .filter(handler -> handler.getMethod().getAnnotation(Post.class).value().equals(req.getRequestURI()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No mapping for POST %s".formatted(req.getRequestURI())))
                 .invoke(req, resp);
 
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -82,13 +81,13 @@ public class RouterServlet extends HttpServlet {
         try {
             
             deleteHandlers.stream()
-                .filter(handler -> handler.getAnnotation(Delete.class).value().equals(req.getRequestURI()))
+                .filter(handler -> handler.getMethod().getAnnotation(Delete.class).value().equals(req.getRequestURI()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No mapping for DELETE %s".formatted(req.getRequestURI())))
                 .invoke(req, resp);
 
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -97,21 +96,24 @@ public class RouterServlet extends HttpServlet {
         try {
             
             putHandlers.stream()
-                .filter(handler -> handler.getAnnotation(Put.class).value().equals(req.getRequestURI()))
+                .filter(handler -> handler.getMethod().getAnnotation(Put.class).value().equals(req.getRequestURI()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No mapping for PUT %s".formatted(req.getRequestURI())))
                 .invoke(req, resp);
 
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
-    private List<Method> findHandlersByHttpMethod(Class<? extends Annotation> httpMethodAnnotation) {
+    private List<RequestHandler> findHandlersByHttpMethod(Class<? extends Annotation> httpMethodAnnotation) {
         return List.of(bookController, orderController, requestController).stream()
-                .map(controller -> Arrays.asList(controller.getClass().getDeclaredMethods()))
+                .map(controller ->
+                    Arrays.asList(controller.getClass().getDeclaredMethods()).stream()
+                        .filter(method -> Objects.nonNull(method.getAnnotation(httpMethodAnnotation)))
+                        .map(method -> new RequestHandler(controller, method))
+                        .toList())
                 .flatMap(list -> list.stream())
-                .filter(method -> Objects.nonNull(method.getAnnotation(httpMethodAnnotation)))
                 .toList();
     }
 }

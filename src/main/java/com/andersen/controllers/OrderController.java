@@ -1,19 +1,21 @@
 package com.andersen.controllers;
 
+import java.util.List;
+
 import com.andersen.models.Order;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface OrderController {
 
-    List<Order> list(String sortKey);
+    List<Order> list(HttpServletRequest request, HttpServletResponse response);
 
-    void complete(Long orderId);
+    void complete(HttpServletRequest request, HttpServletResponse response);
 
-    void create();
+    void create(HttpServletRequest request, HttpServletResponse response);
 
-    void cancel(Long orderId);
+    void cancel(HttpServletRequest request, HttpServletResponse response);
 
-    void countIncome(LocalDateTime startPeriodOfCompletionDate, LocalDateTime endPeriodOfCompletionDate);
+    void countIncome(HttpServletRequest request, HttpServletResponse response);
 }
