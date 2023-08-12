@@ -34,13 +34,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void complete(Long id) {
+        completeRequests(id);
+
         Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Wrong order id"));
 
-        int completedRequests = completeRequests(order);
-
-        if (completedRequests == order.getRequests().size()) {
-            orderRepository.changeOrderStatus(order.getId(), Order.OrderStatus.COMPLETED);
+        for (Request request : order.getRequests()) {
+            if (request.getRequestStatus() == Request.RequestStatus.IN_PROCESS) {
+                orderRepository.changeOrderStatus(order.getId(), Order.OrderStatus.IN_PROCESS);
+                return;
+            }
         }
+
+        orderRepository.changeOrderStatus(order.getId(), Order.OrderStatus.COMPLETED);
     }
 
     @Override
@@ -64,16 +69,15 @@ public class OrderServiceImpl implements OrderService {
         return income;
     }
 
-    public int completeRequests(Order order) {
-        int completedRequests = 0;
+    public void completeRequests(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Wrong order id"));
 
         for (Request request : order.getRequests()) {
             if (request.getBook().getStatus() == Book.BookStatus.IN_STOCK) {
                 requestRepository.changeRequestStatus(request.getId(), Request.RequestStatus.COMPLETED);
-                completedRequests++;
+            } else {
+                requestRepository.changeRequestStatus(request.getId(), Request.RequestStatus.IN_PROCESS);
             }
         }
-
-        return completedRequests;
     }
 }

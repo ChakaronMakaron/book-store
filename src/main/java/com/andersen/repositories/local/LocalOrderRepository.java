@@ -25,8 +25,7 @@ public class LocalOrderRepository implements OrderRepository {
     @Override
     public List<Order> getAll() {
         try {
-            return objectMapper.readValue(new File(configModel.savePath()), new TypeReference<>() {
-            });
+            return objectMapper.readValue(new File(configModel.savePath()), AppState.class).getOrders();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

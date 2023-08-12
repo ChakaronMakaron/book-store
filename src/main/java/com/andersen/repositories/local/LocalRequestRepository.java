@@ -32,8 +32,7 @@ public class LocalRequestRepository implements RequestRepository {
     @Override
     public List<Request> getAll() {
         try {
-            return objectMapper.readValue(new File(configModel.savePath()), new TypeReference<>() {
-            });
+            return objectMapper.readValue(new File(configModel.savePath()), AppState.class).getRequests();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

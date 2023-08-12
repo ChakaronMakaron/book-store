@@ -22,6 +22,8 @@ import com.andersen.services.impl.BookServiceImpl;
 import com.andersen.services.impl.OrderServiceImpl;
 import com.andersen.services.impl.RequestServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import jakarta.inject.Singleton;
@@ -38,6 +40,7 @@ public class DependencyModule extends AbstractModule {
     @Override
     protected void configure() {
         super.configure();
+
         bind(RouterServlet.class);
 
         bind(BookRepository.class).to(LocalBookRepository.class);
@@ -56,7 +59,11 @@ public class DependencyModule extends AbstractModule {
     @Provides
     @Singleton
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        return objectMapper;
     }
 
     @Provides

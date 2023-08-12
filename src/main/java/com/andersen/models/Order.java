@@ -15,14 +15,13 @@ public class Order {
     private Integer price;
 
     public enum OrderStatus {
-        IN_PROCESS, COMPLETED, CANCELED
+        JUST_CREATED, IN_PROCESS, COMPLETED, CANCELED
     }
 
-    public Order(Long id, Long clientId, LocalDateTime completionDate, OrderStatus status, List<Request> requests) {
+    public Order(Long id, Long clientId, List<Request> requests) {
         this.id = id;
         this.clientId = clientId;
-        this.completionDate = completionDate;
-        this.status = status;
+        this.status = OrderStatus.JUST_CREATED;
         this.requests = requests;
         this.price = requests.stream().
                 mapToInt(request -> request.getAmount() * request.getBook().getPrice())

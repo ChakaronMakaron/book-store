@@ -11,7 +11,6 @@ import java.util.Objects;
 public class AppState {
     private List<Book> books;
     private List<Order> orders;
-    private List<Request> requests;
 
     public AppState() {
     }
@@ -24,10 +23,6 @@ public class AppState {
         return orders;
     }
 
-    public List<Request> getRequests() {
-        return requests;
-    }
-
     public void setBooks(List<Book> books) {
         this.books = books;
     }
@@ -36,8 +31,11 @@ public class AppState {
         this.orders = orders;
     }
 
-    public void setRequests(List<Request> requests) {
-        this.requests = requests;
+    public List<Request> getRequests() {
+        List<Request> requests = new ArrayList<>();
+        orders.forEach(order -> requests.addAll(order.getRequests()));
+
+        return requests;
     }
 
     public void synchronizeBooks(List<Book> newBooks) {
@@ -116,6 +114,8 @@ public class AppState {
     }
 
     public void synchronizeRequests(List<Request> newRequests) {
+        List<Request> requests = getRequests();
+
         for (Request newRequest : newRequests) {
 
             Request matchingRequest = findIdMatchingRequest(newRequest, requests);

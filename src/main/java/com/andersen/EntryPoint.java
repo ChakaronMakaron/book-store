@@ -31,7 +31,7 @@ public class EntryPoint {
         Context servletContext = tomcat.addContext(config.contextPath(), tempDir);
 
         tomcat.addServlet(config.contextPath(), "RouterServlet", routerServlet);
-        servletContext.addServletMappingDecoded("/*", "RouterServlet");
+        servletContext.addServletMappingDecoded("/test", "RouterServlet");
 
         tomcat.start();
 

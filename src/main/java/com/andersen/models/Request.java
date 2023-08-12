@@ -11,7 +11,7 @@ public class Request {
     private RequestStatus requestStatus;
 
     public enum RequestStatus {
-        IN_PROCESS, COMPLETED
+        JUST_CREATED, IN_PROCESS, COMPLETED
     }
 
     public Request(Long id, Long clientId, Book book, Integer amount) {
@@ -19,7 +19,10 @@ public class Request {
         this.clientId = clientId;
         this.book = book;
         this.amount = amount;
-        this.requestStatus = RequestStatus.IN_PROCESS;
+        this.requestStatus = RequestStatus.JUST_CREATED;
+    }
+
+    public Request() {
     }
 
     public Long getId() {
