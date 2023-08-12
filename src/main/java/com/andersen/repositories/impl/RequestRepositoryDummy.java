@@ -1,14 +1,17 @@
 package com.andersen.repositories.impl;
 
-import com.andersen.enums.RequestSortKey;
-import com.andersen.models.Request;
-import com.andersen.repositories.RequestRepository;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.andersen.enums.RequestSortKey;
+import com.andersen.models.Request;
+import com.andersen.repositories.RequestRepository;
+
+import jakarta.inject.Singleton;
+
+@Singleton
 public class RequestRepositoryDummy implements RequestRepository {
 
     private final List<Request> requests = new ArrayList<>();

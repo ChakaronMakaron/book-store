@@ -1,24 +1,30 @@
 package com.andersen.services.impl;
 
-import com.andersen.authorization.Authenticator;
-import com.andersen.models.Book;
-import com.andersen.models.Order;
-import com.andersen.models.Request;
-import com.andersen.repositories.OrderRepository;
-import com.andersen.services.OrderService;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.andersen.models.Book;
+import com.andersen.models.Order;
+import com.andersen.models.Request;
+import com.andersen.repositories.OrderRepository;
+import com.andersen.services.BookService;
+import com.andersen.services.OrderService;
+import com.andersen.services.RequestService;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+
+@Singleton
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final RequestServiceImpl requestService;
-    private final BookServiceImpl bookService;
+    private final RequestService requestService;
+    private final BookService bookService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, RequestServiceImpl requestService, BookServiceImpl bookService) {
+    @Inject
+    public OrderServiceImpl(OrderRepository orderRepository, RequestService requestService, BookService bookService) {
         this.orderRepository = orderRepository;
         this.requestService = requestService;
         this.bookService = bookService;
@@ -151,7 +157,8 @@ public class OrderServiceImpl implements OrderService {
 
     private void createOrder(Order order, Integer amount, Book book) {
         order.setId((long) orderRepository.findAll().size() + 1);
-        order.setClientId(Authenticator.getInstance().getUser().getId());
+        // order.setClientId(Authenticator.getInstance().getUser().getId()); // TODO
+        order.setClientId(1L);
         order.setStatus(Order.OrderStatus.IN_PROCESS);
         addRequestToOrder(order, amount, book);
     }

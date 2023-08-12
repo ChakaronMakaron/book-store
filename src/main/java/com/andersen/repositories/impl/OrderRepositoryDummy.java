@@ -1,9 +1,5 @@
 package com.andersen.repositories.impl;
 
-import com.andersen.enums.OrderSortKey;
-import com.andersen.models.Order;
-import com.andersen.repositories.OrderRepository;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,12 +7,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.andersen.enums.OrderSortKey;
+import com.andersen.models.Order;
+import com.andersen.repositories.OrderRepository;
+
+import jakarta.inject.Singleton;
+
+@Singleton
 public class OrderRepositoryDummy implements OrderRepository {
 
     private final List<Order> orders;
 
-    public OrderRepositoryDummy(List<Order> orders) {
-        this.orders = orders;
+    public OrderRepositoryDummy() {
+        this.orders = new ArrayList<>(); // TODO
     }
 
     @Override

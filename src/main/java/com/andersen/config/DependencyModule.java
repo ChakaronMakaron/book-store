@@ -5,9 +5,27 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
-import com.andersen.EntryPoint;
+import com.andersen.App;
 import com.andersen.config.model.ConfigModel;
+import com.andersen.controllers.BookController;
+import com.andersen.controllers.OrderController;
+import com.andersen.controllers.RequestController;
+import com.andersen.controllers.impl.ServletBookController;
+import com.andersen.controllers.impl.ServletOrderController;
+import com.andersen.controllers.impl.ServletRequestController;
 import com.andersen.controllers.router.RouterServlet;
+import com.andersen.repositories.BookRepository;
+import com.andersen.repositories.OrderRepository;
+import com.andersen.repositories.RequestRepository;
+import com.andersen.repositories.impl.BookRepositoryDummy;
+import com.andersen.repositories.impl.OrderRepositoryDummy;
+import com.andersen.repositories.impl.RequestRepositoryDummy;
+import com.andersen.services.BookService;
+import com.andersen.services.OrderService;
+import com.andersen.services.RequestService;
+import com.andersen.services.impl.BookServiceImpl;
+import com.andersen.services.impl.OrderServiceImpl;
+import com.andersen.services.impl.RequestServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -19,8 +37,19 @@ public class DependencyModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        super.configure();
         bind(HttpServlet.class).to(RouterServlet.class);
+        // Controllers
+        bind(BookController.class).to(ServletBookController.class);
+        bind(OrderController.class).to(ServletOrderController.class);
+        bind(RequestController.class).to(ServletRequestController.class);
+        // Services
+        bind(BookService.class).to(BookServiceImpl.class);
+        bind(OrderService.class).to(OrderServiceImpl.class);
+        bind(RequestService.class).to(RequestServiceImpl.class);
+        // Repositories
+        bind(BookRepository.class).to(BookRepositoryDummy.class);
+        bind(OrderRepository.class).to(OrderRepositoryDummy.class);
+        bind(RequestRepository.class).to(RequestRepositoryDummy.class);
     }
 
     @Provides
@@ -37,10 +66,13 @@ public class DependencyModule extends AbstractModule {
 
     private ConfigModel loadConfig(ObjectMapper objectMapper) {
         try {
-            String rawConfig = IOUtils.toString(EntryPoint.class.getClassLoader().getResourceAsStream("config.json"),
+
+            String rawConfig = IOUtils.toString(App.class.getClassLoader().getResourceAsStream("config.json"),
                     StandardCharsets.UTF_8);
             System.out.printf("Config:\n%s", rawConfig);
+
             return objectMapper.readValue(rawConfig, ConfigModel.class);
+
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

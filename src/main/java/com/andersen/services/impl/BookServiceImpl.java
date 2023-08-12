@@ -1,18 +1,22 @@
 package com.andersen.services.impl;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.repositories.BookRepository;
 import com.andersen.services.BookService;
 
-import java.util.List;
-import java.util.Optional;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-
+@Singleton
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    @Inject
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }

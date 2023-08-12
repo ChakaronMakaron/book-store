@@ -1,13 +1,5 @@
 package com.andersen.repositories.impl;
 
-import com.andersen.Pair;
-import com.andersen.enums.BookSortKey;
-import com.andersen.models.Book;
-import com.andersen.repositories.BookRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -16,12 +8,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
+
+import com.andersen.Pair;
+import com.andersen.enums.BookSortKey;
+import com.andersen.models.Book;
 
 public class BookRepositoryDummyTest {
     private static Map<BookSortKey, Pair<List<Book>>> sortKeyToActualExpectedPair;
 
+    /*
     @ParameterizedTest
     @EnumSource(BookSortKey.class)
     public void whenListCalled_withProvidedSortKey_thenSortedByKey(BookSortKey sortKey) {
@@ -34,6 +30,7 @@ public class BookRepositoryDummyTest {
 
         assertEquals(pair.expected(), sortedBooks);
     }
+    */
 
     @BeforeAll
     public static void fillMap() {

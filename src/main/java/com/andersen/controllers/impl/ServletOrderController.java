@@ -1,30 +1,37 @@
 package com.andersen.controllers.impl;
 
-import com.andersen.authorization.Authenticator;
-import com.andersen.controllers.OrderController;
-import com.andersen.models.Book;
-import com.andersen.models.Order;
-import com.andersen.services.impl.BookServiceImpl;
-import com.andersen.services.impl.OrderServiceImpl;
-
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
-public class OrderControllerCommandLine implements OrderController {
-    private final BookServiceImpl bookService;
-    private final OrderServiceImpl orderService;
+import com.andersen.controllers.OrderController;
+import com.andersen.models.Book;
+import com.andersen.models.Order;
+import com.andersen.services.BookService;
+import com.andersen.services.OrderService;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+
+@Singleton
+public class ServletOrderController implements OrderController {
+
+    private final BookService bookService;
+    private final OrderService orderService;
     private final Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
 
-    public OrderControllerCommandLine(BookServiceImpl bookService, OrderServiceImpl orderService) {
+    @Inject
+    public ServletOrderController(BookService bookService, OrderService orderService) {
         this.bookService = bookService;
         this.orderService = orderService;
     }
 
     @Override
     public List<Order> list(String sortKey) {
-        Long clientId = Authenticator.getInstance().getUser().getId();
+        // Long clientId = Authenticator.getInstance().getUser().getId();
+
+        Long clientId = 1L; // TODO
 
         List<Order> orders = orderService.getAllClientOrders(clientId, sortKey);
 

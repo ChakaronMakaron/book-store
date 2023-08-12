@@ -9,12 +9,15 @@ import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.repositories.BookRepository;
 
+import jakarta.inject.Singleton;
+
+@Singleton
 public class BookRepositoryDummy implements BookRepository {
 
     private final List<Book> books;
 
-    public BookRepositoryDummy(List<Book> books) {
-        this.books = books;
+    public BookRepositoryDummy() {
+        this.books = new ArrayList<>(); // TODO
     }
 
     @Override
