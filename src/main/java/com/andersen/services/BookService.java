@@ -14,7 +14,5 @@ public interface BookService {
 
     Optional<Book> findById(Long bookId);
 
-    void supply(Long bookId, Integer amount);
-
-    void changeBookStatus(Long bookId, boolean bookStatus);
+    void changeBookStatus(Long bookId, Book.BookStatus bookStatus);
 }

@@ -11,15 +11,15 @@ public class Request {
     private RequestStatus requestStatus;
 
     public enum RequestStatus {
-        IN_PROCESS, COMPLETED, INTERRUPTED, CANCELED
+        IN_PROCESS, COMPLETED
     }
 
-    public Request(Long id, Long clientId, Book book, Integer amount, RequestStatus requestStatus) {
+    public Request(Long id, Long clientId, Book book, Integer amount) {
         this.id = id;
         this.clientId = clientId;
         this.book = book;
         this.amount = amount;
-        this.requestStatus = requestStatus;
+        this.requestStatus = RequestStatus.IN_PROCESS;
     }
 
     public Long getId() {
@@ -64,10 +64,6 @@ public class Request {
 
     @Override
     public String toString() {
-        return id
-                + ". book = " + book.getName()
-                + ", price = " + book.getPrice()
-                + ", bookAmount = " + book.getAmount()
-                + ", requestAmount = " + amount;
+        return id + ". book = " + book.getName() + ", price = " + book.getPrice() + ", requestAmount = " + amount;
     }
 }

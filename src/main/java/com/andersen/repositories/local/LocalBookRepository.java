@@ -1,10 +1,11 @@
 package com.andersen.repositories.local;
 
+import com.andersen.config.model.ConfigModel;
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.repositories.BookRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,27 +15,23 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class LocalBookRepository implements BookRepository {
-    private final ObjectMapper objectMapper;
-    private final String savePath;
-
-    public LocalBookRepository(ObjectMapper objectMapper, String savePath) {
-        this.objectMapper = objectMapper;
-        this.savePath = savePath;
-    }
+    @Inject
+    private ObjectMapper objectMapper;
+    @Inject
+    private ConfigModel configModel;
 
     @Override
     public List<Book> getAll() {
         try {
-            return objectMapper.readValue(new File(savePath), new TypeReference<>() {
-            });
+            return objectMapper.readValue(new File(configModel.savePath()), AppState.class).getBooks();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Optional<Book> findById(Long bookId) {
-        return getAll().stream().filter(book -> Objects.equals(book.getId(), bookId)).findFirst();
+    public Optional<Book> findById(Long id) {
+        return getAll().stream().filter(book -> Objects.equals(book.getId(), id)).findFirst();
     }
 
     public Book findById(List<Book> books, Long id) {
@@ -50,21 +47,8 @@ public class LocalBookRepository implements BookRepository {
     public List<Book> getAllSorted(BookSortKey sortKey) {
         List<Book> books = getAll();
 
-        if (sortKey == BookSortKey.NATURAL) return books;
-
         sort(books, sortKey);
         return books;
-    }
-
-    @Override
-    public void supply(Long id, int amount) {
-        List<Book> books = getAll();
-
-        Book suppliedBook = findById(books, id);
-
-        suppliedBook.setAmount(suppliedBook.getAmount() + amount);
-
-        save(books);
     }
 
     @Override
@@ -82,14 +66,18 @@ public class LocalBookRepository implements BookRepository {
         switch (bookSortKey) {
             case NAME -> books.sort(Comparator.comparing(Book::getName));
             case PRICE -> books.sort(Comparator.comparing(Book::getPrice));
-            case AMOUNT -> books.sort(Comparator.comparing(Book::getAmount));
+            case STATUS -> books.sort(Comparator.comparing(Book::getStatus));
             default -> throw new IllegalArgumentException("Unexpected value: " + bookSortKey);
         }
     }
 
     private void save(List<Book> books) {
         try {
-            objectMapper.writeValue(new File(savePath), books);
+            AppState appState = objectMapper.readValue(new File(configModel.savePath()), AppState.class);
+
+            appState.synchronizeBooks(books);
+
+            objectMapper.writeValue(new File(configModel.savePath()), appState);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

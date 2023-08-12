@@ -1,27 +1,19 @@
 package com.andersen.services;
 
+import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Order;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderService {
-    List<Order> list(String sortKey);
+    List<Order> getAllSorted(OrderSortKey sortKey);
 
     void add(Order order);
 
-    void save(Order order);
+    void complete(Long id);
 
-    List<Order> getAllClientOrders(Long clientId, String sortKey);
+    void cancel(Long id);
 
-    void changeStatus(Long orderId, Order.OrderStatus newStatus);
-
-    void processOrder(Order order);
-
-    void processUserInput(Order order, String bookRequest);
-
-    void changeRequestsStatusByOrderStatus(Order.OrderStatus newStatus, Order order);
-
-    List<Order> getOrdersFilteredInPeriod(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate);
-
+    int getIncomeBySpecifiedPeriod(LocalDateTime from, LocalDateTime to);
 }

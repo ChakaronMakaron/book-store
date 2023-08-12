@@ -1,0 +1,5 @@
+{
+  "port": 228,
+  "contextPath": "",
+  "savePath": "src/main/resources/data/save.json"
+}

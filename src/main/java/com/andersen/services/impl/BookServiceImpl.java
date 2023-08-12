@@ -2,20 +2,27 @@ package com.andersen.services.impl;
 
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
+import com.andersen.models.Order;
+import com.andersen.models.Request;
 import com.andersen.repositories.BookRepository;
+import com.andersen.repositories.OrderRepository;
+import com.andersen.repositories.RequestRepository;
 import com.andersen.services.BookService;
+import com.google.inject.Inject;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
 public class BookServiceImpl implements BookService {
 
-    private final BookRepository bookRepository;
-
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    @Inject
+    private BookRepository bookRepository;
+    @Inject
+    private OrderRepository orderRepository;
+    @Inject
+    private RequestRepository requestRepository;
 
     @Override
     public List<Book> getAllSorted(BookSortKey sortKey) {
@@ -33,12 +40,40 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void supply(Long bookId, Integer amount) {
-        bookRepository.supply(bookId, amount);
+    public void changeBookStatus(Long id, Book.BookStatus status) {
+        bookRepository.changeBookStatus(id, status);
+
+        if (status == Book.BookStatus.IN_STOCK) {
+            completeRequests(id);
+        }
     }
 
-    @Override
-    public void changeBookStatus(Long bookId, boolean bookStatus) {
-        bookRepository.changeBookStatus(bookId, bookStatus ? Book.BookStatus.IN_STOCK : Book.BookStatus.OUT_OF_STOCK);
+    public void completeRequests(Long bookId) {
+        List<Request> requests = requestRepository.getAll();
+
+        requests.forEach(request -> {
+            if (Objects.equals(request.getBook().getId(), bookId)) {
+                requestRepository.changeRequestStatus(request.getId(), Request.RequestStatus.COMPLETED);
+            }
+        });
+
+        completeOrders();
+    }
+
+    public void completeOrders() {
+        List<Order> orders = orderRepository.getAll();
+
+        for (Order order : orders) {
+            completeOrder(order);
+        }
+    }
+
+    public void completeOrder(Order order) {
+        for (Request request : order.getRequests()) {
+            if (request.getRequestStatus() == Request.RequestStatus.IN_PROCESS) {
+                return;
+            }
+        }
+        order.setStatus(Order.OrderStatus.COMPLETED);
     }
 }

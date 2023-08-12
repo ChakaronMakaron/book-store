@@ -14,7 +14,5 @@ public interface BookRepository {
 
     List<Book> getAllSorted(BookSortKey sortKey);
 
-    void supply(Long id, int amount);
-
     void changeBookStatus(Long id, Book.BookStatus status);
 }

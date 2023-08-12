@@ -1,6 +1,7 @@
 package com.andersen.controllers.router;
 
 import com.andersen.controllers.BookController;
+import com.google.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -11,16 +12,12 @@ import java.io.IOException;
 
 @Singleton
 public class RouterServlet extends HttpServlet {
-    private final BookController bookController;
-
-    public RouterServlet(BookController bookController) {
-        this.bookController = bookController;
-    }
+    @Inject
+    private BookController bookController;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        bookController.list("natural");
-        bookController.bookSupply(1L, 10);
+        System.out.println(bookController.getAllSorted("price"));
         System.out.println("DO GET");
         resp.getOutputStream().println("GET Privet");
     }

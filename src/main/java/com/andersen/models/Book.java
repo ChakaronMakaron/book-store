@@ -6,7 +6,6 @@ public class Book {
     private Long id;
     private String name;
     private Integer price;
-    private Integer amount;
 
     public enum BookStatus {
         IN_STOCK, OUT_OF_STOCK
@@ -15,12 +14,11 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String name, Integer price, Integer amount) {
+    public Book(Long id, String name, Integer price) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.amount = amount;
-        this.status = (amount >= 1) ? BookStatus.IN_STOCK : BookStatus.OUT_OF_STOCK;
+        this.status = BookStatus.IN_STOCK;
     }
 
     public Long getId() {
@@ -47,15 +45,6 @@ public class Book {
         this.price = price;
     }
 
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-        this.status = (amount >= 1) ? BookStatus.IN_STOCK : BookStatus.OUT_OF_STOCK;
-    }
-
     public BookStatus getStatus() {
         return status;
     }
@@ -66,7 +55,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return id + ". name = " + name + ", price = " + price + ", amount = " + amount + ", status = " + status;
+        return id + ". name = " + name + ", price = " + price + ", status = " + status;
     }
 
 

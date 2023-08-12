@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookController {
 
-    List<Book> list(String sortKey);
+    List<Book> getAllSorted(String sortKey);
 
-    void bookSupply(Long id, int amountToAdd);
+    void changeBookStatus(Long id, Book.BookStatus status);
 }

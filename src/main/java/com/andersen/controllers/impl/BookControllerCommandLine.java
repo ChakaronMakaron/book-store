@@ -4,26 +4,24 @@ import com.andersen.controllers.BookController;
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.services.BookService;
+import com.google.inject.Inject;
 
 import java.util.List;
 
 public class BookControllerCommandLine implements BookController {
 
-    private final BookService bookService;
-
-    public BookControllerCommandLine(BookService bookService) {
-        this.bookService = bookService;
-    }
+    @Inject
+    private BookService bookService;
 
     @Override
-    public List<Book> list(String sortKey) {
+    public List<Book> getAllSorted(String sortKey) {
         BookSortKey bookSortKey = BookSortKey.valueOf(sortKey.toUpperCase());
         return bookService.getAllSorted(bookSortKey);
     }
 
     @Override
-    public void bookSupply(Long id, int amountToAdd) {
-        bookService.supply(id, amountToAdd);
+    public void changeBookStatus(Long id, Book.BookStatus status) {
+        bookService.changeBookStatus(id, status);
     }
 }
 

@@ -1,23 +1,21 @@
 package com.andersen.repositories;
 
+import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Order;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository {
-    List<Order> findAll();
+    void save(Order order);
 
-    void add(Order order);
+    List<Order> getAll();
 
-    Optional<Order> findByOrderId(Long orderId);
+    List<Order> getAllSorted(OrderSortKey sortKey);
 
-    List<Order> findOrdersByClientId(Long clientId);
+    Optional<Order> findById(Long id);
 
-    List<Order> list(String sortKey);
+    void changeOrderStatus(Long id, Order.OrderStatus orderStatus);
 
-    List<Order> findOrdersInPeriodOfCompletionDateWithPositiveStatus(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate);
-
-    void sort(List<Order> orders, String orderSortKey);
+    void remove(Long id);
 }

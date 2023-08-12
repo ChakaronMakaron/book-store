@@ -6,14 +6,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderController {
+    List<Order> getAllSorted(String sortKey);
 
-    List<Order> list(String sortKey);
+    void addOrder(Order order);
 
-    void complete(Long orderId);
+    void complete(Long id);
 
-    void create();
-
-    void cancel(Long orderId);
-
-    void countIncome(LocalDateTime startPeriodOfCompletionDate, LocalDateTime endPeriodOfCompletionDate);
+    int getIncomeBySpecifiedPeriod(LocalDateTime from, LocalDateTime to);
 }

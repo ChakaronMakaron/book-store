@@ -18,13 +18,15 @@ public class Order {
         IN_PROCESS, COMPLETED, CANCELED
     }
 
-    public Order(Long id, Long clientId, LocalDateTime completionDate, OrderStatus status, List<Request> requests, Integer price) {
+    public Order(Long id, Long clientId, LocalDateTime completionDate, OrderStatus status, List<Request> requests) {
         this.id = id;
         this.clientId = clientId;
         this.completionDate = completionDate;
         this.status = status;
         this.requests = requests;
-        this.price = price;
+        this.price = requests.stream().
+                mapToInt(request -> request.getAmount() * request.getBook().getPrice())
+                .sum();
     }
 
     public Order() {

@@ -6,11 +6,11 @@ import com.andersen.models.Request;
 import java.util.List;
 
 public interface RequestRepository {
-    List<Request> list(RequestSortKey sortKey);
+    void save(Request request);
 
-    List<Request> findAll();
+    List<Request> getAll();
 
-    List<Request> findAllByClientIdSortedByKey(Long clientId, RequestSortKey requestSortKey);
+    List<Request> getAllSorted(RequestSortKey sortKey);
 
-    void add(Request request);
+    void changeRequestStatus(Long id, Request.RequestStatus status);
 }

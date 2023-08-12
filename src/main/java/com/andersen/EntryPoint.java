@@ -10,17 +10,13 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 public class EntryPoint {
 
     public static void main(String[] args) throws Exception {
-        ConfigModel config = readConfig();
 
-        Injector injector = Guice.createInjector(new DependencyModule(config));
+        Injector injector = Guice.createInjector(new DependencyModule());
 
+        ConfigModel config = injector.getInstance(ConfigModel.class);
         HttpServlet routerServlet = injector.getInstance(RouterServlet.class);
 
         String tempDir = System.getProperty("java.io.tmpdir");
@@ -29,30 +25,16 @@ public class EntryPoint {
         tomcat.setBaseDir(tempDir);
 
         Connector httpConnector = new Connector();
-        httpConnector.setPort(config.getPort());
+        httpConnector.setPort(config.port());
         tomcat.getService().addConnector(httpConnector);
 
-        Context servletContext = tomcat.addContext(config.getContextPath(), tempDir);
+        Context servletContext = tomcat.addContext(config.contextPath(), tempDir);
 
-        tomcat.addServlet(config.getContextPath(), "RouterServlet", routerServlet);
+        tomcat.addServlet(config.contextPath(), "RouterServlet", routerServlet);
         servletContext.addServletMappingDecoded("/*", "RouterServlet");
 
         tomcat.start();
 
         tomcat.getServer().await();
-    }
-
-    private static ConfigModel readConfig() {
-        try (InputStream input = EntryPoint.class.getClassLoader().getResourceAsStream("config.properties")) {
-
-            Properties properties = new Properties();
-
-            properties.load(input);
-
-            return new ConfigModel(properties);
-
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 }
