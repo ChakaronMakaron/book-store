@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface BookRepository {
     List<Book> getAll();
 
-    Optional<Book> findById(Long bookId);
+    Book findById(Long bookId);
 
     List<Book> getAllSorted(BookSortKey sortKey);
 

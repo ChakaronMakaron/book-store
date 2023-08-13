@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Order {
 
@@ -18,8 +19,8 @@ public class Order {
         JUST_CREATED, IN_PROCESS, COMPLETED, CANCELED
     }
 
-    public Order(Long id, Long clientId, List<Request> requests) {
-        this.id = id;
+    public Order(Long clientId, List<Request> requests) {
+        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
         this.clientId = clientId;
         this.status = OrderStatus.JUST_CREATED;
         this.requests = requests;

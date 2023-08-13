@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrderController {
     List<Order> getAllSorted(HttpServletRequest request, HttpServletResponse response);
 
-    void addOrder(Order order);
+    void addOrder(HttpServletRequest request, HttpServletResponse response);
 
     void complete(Long id);
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import java.util.UUID;
+
 public class Request {
 
     private Long id;
@@ -22,8 +24,8 @@ public class Request {
         JUST_CREATED, IN_PROCESS, COMPLETED
     }
 
-    public Request(Long id, Long clientId, Book book, Integer amount) {
-        this.id = id;
+    public Request(Long clientId, Book book, Integer amount) {
+        this.id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
         this.clientId = clientId;
         this.book = book;
         this.amount = amount;

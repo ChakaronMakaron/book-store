@@ -1,4 +1,4 @@
-package com.andersen.controllers.impl;
+package com.andersen.controllers.servlet;
 
 import com.andersen.controllers.RequestController;
 import com.andersen.services.RequestService;

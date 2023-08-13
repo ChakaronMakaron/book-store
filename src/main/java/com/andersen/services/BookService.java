@@ -12,7 +12,7 @@ public interface BookService {
 
     List<Book> getAll();
 
-    Optional<Book> findById(Long bookId);
+    Book findById(Long bookId);
 
     void changeBookStatus(Long bookId, Book.BookStatus bookStatus);
 }

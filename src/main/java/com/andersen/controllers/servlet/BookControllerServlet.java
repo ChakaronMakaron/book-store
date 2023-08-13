@@ -1,4 +1,4 @@
-package com.andersen.controllers.impl;
+package com.andersen.controllers.servlet;
 
 import com.andersen.annotations.Get;
 import com.andersen.annotations.Put;

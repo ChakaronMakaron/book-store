@@ -36,8 +36,10 @@ public class LocalBookRepository implements BookRepository {
     }
 
     @Override
-    public Optional<Book> findById(Long id) {
-        return getAll().stream().filter(book -> Objects.equals(book.getId(), id)).findFirst();
+    public Book findById(Long id) {
+        return getAll().stream()
+                .filter(book -> Objects.equals(book.getId(), id))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Wrong book id"));
     }
 
     public Book findById(List<Book> books, Long id) {

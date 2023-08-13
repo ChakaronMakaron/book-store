@@ -1,16 +1,23 @@
-package com.andersen.controllers.impl;
+package com.andersen.controllers.servlet;
 
 import com.andersen.annotations.Get;
+import com.andersen.annotations.Post;
 import com.andersen.controllers.OrderController;
+import com.andersen.controllers.servlet.jsonBodies.JsonOrder;
 import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Order;
+import com.andersen.models.Request;
 import com.andersen.services.impl.BookServiceImpl;
 import com.andersen.services.impl.OrderServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,11 +25,13 @@ import java.util.List;
 public class OrderControllerServlet implements OrderController {
     private final BookServiceImpl bookService;
     private final OrderServiceImpl orderService;
+    private final ObjectMapper objectMapper;
 
     @Inject
-    public OrderControllerServlet(BookServiceImpl bookService, OrderServiceImpl orderService) {
+    public OrderControllerServlet(BookServiceImpl bookService, OrderServiceImpl orderService, ObjectMapper objectMapper) {
         this.bookService = bookService;
         this.orderService = orderService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -36,8 +45,23 @@ public class OrderControllerServlet implements OrderController {
     }
 
     @Override
-    public void addOrder(Order order) {
-        orderService.add(order);
+    @Post("/orders/add")
+    public void addOrder(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String data = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
+            JsonOrder jsonOrder = objectMapper.readValue(data, JsonOrder.class);
+
+            List<Request> requests = jsonOrder.getRequests().stream()
+                    .map(jsonRequest -> new Request(jsonOrder.getClientId(), bookService.findById(jsonRequest.getBookId()),
+                            jsonRequest.getAmount()))
+                    .toList();
+
+            Order order = new Order(jsonOrder.getClientId(), requests);
+
+            orderService.add(order);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
