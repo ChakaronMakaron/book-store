@@ -32,9 +32,8 @@ public class BookControllerServlet implements BookController {
     @Override
     @Get("/books/sorted")
     public List<Book> getAllSorted(HttpServletRequest request, HttpServletResponse response) {
-        String sortKey = request.getParameter("sort");
+        BookSortKey bookSortKey = BookSortKey.valueOf(request.getParameter("sort").toUpperCase());
 
-        BookSortKey bookSortKey = BookSortKey.valueOf(sortKey.toUpperCase());
         return bookService.getAllSorted(bookSortKey);
     }
 
@@ -42,7 +41,8 @@ public class BookControllerServlet implements BookController {
     @Put("/books/change-status")
     public void changeBookStatus(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-        Book.BookStatus status = Book.BookStatus.valueOf(request.getParameter("status"));
+
+        Book.BookStatus status = Book.BookStatus.valueOf(request.getParameter("status").toUpperCase());
 
         bookService.changeBookStatus(id, status);
     }

@@ -41,9 +41,8 @@ public class LocalOrderRepository implements OrderRepository {
     public List<Order> getAllSorted(OrderSortKey sortKey) {
         List<Order> orders = getAll();
 
-        if (sortKey == OrderSortKey.NATURAL) return orders;
-
         sort(orders, sortKey);
+
         return orders;
     }
 
