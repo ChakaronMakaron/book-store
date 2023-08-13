@@ -1,19 +1,16 @@
 package com.andersen.controllers.impl;
 
 import com.andersen.annotations.Get;
+import com.andersen.annotations.Put;
 import com.andersen.controllers.BookController;
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.services.BookService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @Singleton
@@ -33,13 +30,20 @@ public class BookControllerServlet implements BookController {
     }
 
     @Override
-    public List<Book> getAllSorted(String sortKey) {
+    @Get("/books/sorted")
+    public List<Book> getAllSorted(HttpServletRequest request, HttpServletResponse response) {
+        String sortKey = request.getParameter("sort");
+
         BookSortKey bookSortKey = BookSortKey.valueOf(sortKey.toUpperCase());
         return bookService.getAllSorted(bookSortKey);
     }
 
     @Override
-    public void changeBookStatus(Long id, Book.BookStatus status) {
+    @Put("/books/change-status")
+    public void changeBookStatus(HttpServletRequest request, HttpServletResponse response) {
+        Long id = Long.valueOf(request.getParameter("id"));
+        Book.BookStatus status = Book.BookStatus.valueOf(request.getParameter("status"));
+
         bookService.changeBookStatus(id, status);
     }
 }

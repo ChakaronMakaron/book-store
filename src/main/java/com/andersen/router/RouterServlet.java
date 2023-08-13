@@ -128,7 +128,7 @@ public class RouterServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             PrintWriter out = response.getWriter();
-            out.print(result);
+            out.print(objectMapper.writeValueAsString(result));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
