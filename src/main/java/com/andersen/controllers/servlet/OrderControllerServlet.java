@@ -2,6 +2,7 @@ package com.andersen.controllers.servlet;
 
 import com.andersen.annotations.Get;
 import com.andersen.annotations.Post;
+import com.andersen.annotations.Put;
 import com.andersen.controllers.OrderController;
 import com.andersen.controllers.servlet.jsonBodies.JsonOrder;
 import com.andersen.enums.OrderSortKey;
@@ -65,8 +66,16 @@ public class OrderControllerServlet implements OrderController {
     }
 
     @Override
-    public void complete(Long id) {
-        orderService.complete(id);
+    @Put("/orders/complete")
+    public void complete(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String data = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
+            Long id = objectMapper.readValue(data, Long.class);
+
+            orderService.complete(id);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

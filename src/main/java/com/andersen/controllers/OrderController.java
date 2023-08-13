@@ -12,7 +12,7 @@ public interface OrderController {
 
     void addOrder(HttpServletRequest request, HttpServletResponse response);
 
-    void complete(Long id);
+    void complete(HttpServletRequest request, HttpServletResponse response);
 
     int getIncomeBySpecifiedPeriod(LocalDateTime from, LocalDateTime to);
 }
