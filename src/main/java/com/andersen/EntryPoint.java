@@ -52,15 +52,15 @@ public class EntryPoint {
 //        );
 
         BookController bookController = new BookControllerCommandLine(new BookServiceImpl(new BookRepositoryDummy(books)));
-
+        RequestServiceImpl requestService = new RequestServiceImpl(new RequestRepositoryDummy());
 
         OrderController orderController = new OrderControllerCommandLine(
                 new BookServiceImpl(new BookRepositoryDummy(books)),
                 new OrderServiceImpl(new OrderRepositoryDummy(orders),
-                        new RequestServiceImpl(new RequestRepositoryDummy()),
+                        requestService,
                         new BookServiceImpl(new BookRepositoryDummy(books))));
 
-        RequestController requestController = new RequestControllerCommandLine(new RequestServiceImpl(new RequestRepositoryDummy()));
+        RequestController requestController = new RequestControllerCommandLine(requestService);
 
         InputToControllerRouter inputToControllerMapper = new InputToControllerRouter(bookController, orderController, requestController);
 

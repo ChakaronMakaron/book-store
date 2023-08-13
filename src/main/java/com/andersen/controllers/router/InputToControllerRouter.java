@@ -96,6 +96,15 @@ public class InputToControllerRouter {
             }
         });
 
+        //Request creating switching ON/OFF
+        router.put(new ParsedInput(AppCommand.REQUEST, RequestAction.SWITCH), input -> {
+            Boolean clientChoice = Boolean.parseBoolean(input.getArgs()[0]);
+            requestController.requestCreationSwitch(clientChoice);
+            orderController.orderRequestCreationSwitch(clientChoice);
+        });
+
+
+
 
         //Get total income from orders for a certain period
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
