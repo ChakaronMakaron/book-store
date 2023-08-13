@@ -74,6 +74,6 @@ public class BookServiceImpl implements BookService {
                 return;
             }
         }
-        order.setStatus(Order.OrderStatus.COMPLETED);
+        orderRepository.changeOrderStatus(order.getId(), Order.OrderStatus.COMPLETED);
     }
 }

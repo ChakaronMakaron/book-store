@@ -29,12 +29,14 @@ public class RouterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 /*        System.out.println(bookController.getAllSorted("price"));
-        List<Book> books = bookController.getAllSorted("price");
-        orderController.addOrder(new Order(1L, 1L, List.of(
-                new Request(1L, 1L, books.get(0), 10),
-                new Request(2L, 1L, books.get(1), 1)
-        )));*/
-        orderController.complete(1L);
+        List<Book> books = bookController.getAllSorted("price");*/
+        List<Book> books = bookController.getAll();
+//        orderController.addOrder(new Order(1L, 1L, List.of(
+//                new Request(1L, 1L, books.get(0), 10),
+//                new Request(2L, 1L, books.get(1), 1)
+//        )));
+       bookController.changeBookStatus(books.get(1).getId(), Book.BookStatus.IN_STOCK);
+//        orderController.complete(1L);
         System.out.println("DO GET");
         resp.getOutputStream().println("GET Privet");
     }
