@@ -7,6 +7,7 @@ import com.andersen.repositories.RequestRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +15,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+@Singleton
 public class LocalRequestRepository implements RequestRepository {
+    private final ObjectMapper objectMapper;
+    private final ConfigModel configModel;
+
     @Inject
-    private ObjectMapper objectMapper;
-    @Inject
-    private ConfigModel configModel;
+    public LocalRequestRepository(ObjectMapper objectMapper, ConfigModel configModel) {
+        this.objectMapper = objectMapper;
+        this.configModel = configModel;
+    }
 
     @Override
     public void save(Request request) {
@@ -54,7 +60,7 @@ public class LocalRequestRepository implements RequestRepository {
                 return request;
             }
         }
-        throw new IllegalArgumentException("Wrong book id");
+        throw new IllegalArgumentException("Wrong books id");
     }
 
     @Override

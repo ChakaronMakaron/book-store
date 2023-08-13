@@ -9,20 +9,25 @@ import com.andersen.repositories.OrderRepository;
 import com.andersen.repositories.RequestRepository;
 import com.andersen.services.BookService;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-
+@Singleton
 public class BookServiceImpl implements BookService {
 
+    private final BookRepository bookRepository;
+    private final OrderRepository orderRepository;
+    private final RequestRepository requestRepository;
+
     @Inject
-    private BookRepository bookRepository;
-    @Inject
-    private OrderRepository orderRepository;
-    @Inject
-    private RequestRepository requestRepository;
+    public BookServiceImpl(BookRepository bookRepository, OrderRepository orderRepository, RequestRepository requestRepository) {
+        this.bookRepository = bookRepository;
+        this.orderRepository = orderRepository;
+        this.requestRepository = requestRepository;
+    }
 
     @Override
     public List<Book> getAllSorted(BookSortKey sortKey) {

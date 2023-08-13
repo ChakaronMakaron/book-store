@@ -6,15 +6,21 @@ import com.andersen.models.Order;
 import com.andersen.services.impl.BookServiceImpl;
 import com.andersen.services.impl.OrderServiceImpl;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class OrderControllerCommandLine implements OrderController {
+@Singleton
+public class OrderControllerServlet implements OrderController {
+    private final BookServiceImpl bookService;
+    private final OrderServiceImpl orderService;
+
     @Inject
-    private BookServiceImpl bookService;
-    @Inject
-    private OrderServiceImpl orderService;
+    public OrderControllerServlet(BookServiceImpl bookService, OrderServiceImpl orderService) {
+        this.bookService = bookService;
+        this.orderService = orderService;
+    }
 
     @Override
     public List<Order> getAllSorted(String sortKey) {

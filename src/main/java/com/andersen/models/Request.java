@@ -75,6 +75,6 @@ public class Request {
 
     @Override
     public String toString() {
-        return id + ". book = " + book.getName() + ", price = " + book.getPrice() + ", requestAmount = " + amount;
+        return id + ". books = " + book.getName() + ", price = " + book.getPrice() + ", requestAmount = " + amount;
     }
 }

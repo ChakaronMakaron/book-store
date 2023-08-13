@@ -12,6 +12,8 @@ dependencies {
 
     implementation("org.apache.tomcat.embed:tomcat-embed-core:10.1.11")
     implementation("org.apache.tomcat.embed:tomcat-embed-jasper:10.1.11")
+    implementation("org.apache.tomcat:tomcat-jsp-api:10.1.11")
+
     implementation("com.google.inject:guice:7.0.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")

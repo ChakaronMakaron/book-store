@@ -9,18 +9,25 @@ import com.andersen.repositories.OrderRepository;
 import com.andersen.repositories.RequestRepository;
 import com.andersen.services.OrderService;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Singleton
 public class OrderServiceImpl implements OrderService {
 
+    private final OrderRepository orderRepository;
+    private final RequestRepository requestRepository;
+
+    private final BookRepository bookRepository;
+
     @Inject
-    private OrderRepository orderRepository;
-    @Inject
-    private RequestRepository requestRepository;
-    @Inject
-    private BookRepository bookRepository;
+    public OrderServiceImpl(OrderRepository orderRepository, RequestRepository requestRepository, BookRepository bookRepository) {
+        this.orderRepository = orderRepository;
+        this.requestRepository = requestRepository;
+        this.bookRepository = bookRepository;
+    }
 
     @Override
     public List<Order> getAllSorted(OrderSortKey sortKey) {

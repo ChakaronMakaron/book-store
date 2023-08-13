@@ -1,5 +1,5 @@
 {
-  "port": 228,
+  "port": 8080,
   "contextPath": "",
   "savePath": "src/main/resources/data/save.json"
 }

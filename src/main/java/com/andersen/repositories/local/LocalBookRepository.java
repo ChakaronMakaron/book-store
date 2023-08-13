@@ -6,6 +6,7 @@ import com.andersen.models.Book;
 import com.andersen.repositories.BookRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +15,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Singleton
 public class LocalBookRepository implements BookRepository {
+    private final ObjectMapper objectMapper;
+    private final ConfigModel configModel;
+
     @Inject
-    private ObjectMapper objectMapper;
-    @Inject
-    private ConfigModel configModel;
+    public LocalBookRepository(ObjectMapper objectMapper, ConfigModel configModel) {
+        this.objectMapper = objectMapper;
+        this.configModel = configModel;
+    }
 
     @Override
     public List<Book> getAll() {
@@ -40,7 +46,7 @@ public class LocalBookRepository implements BookRepository {
                 return book;
             }
         }
-        throw new IllegalArgumentException("Wrong book id");
+        throw new IllegalArgumentException("Wrong books id");
     }
 
     @Override

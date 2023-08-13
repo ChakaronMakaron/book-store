@@ -1,20 +1,34 @@
 package com.andersen.controllers.impl;
 
+import com.andersen.annotations.Get;
 import com.andersen.controllers.BookController;
 import com.andersen.enums.BookSortKey;
 import com.andersen.models.Book;
 import com.andersen.services.BookService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
-public class BookControllerCommandLine implements BookController {
+@Singleton
+public class BookControllerServlet implements BookController {
+
+    private final BookService bookService;
 
     @Inject
-    private BookService bookService;
+    public BookControllerServlet(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @Override
-    public List<Book> getAll() {
+    @Get("/books/list")
+    public List<Book> getAll(HttpServletRequest request, HttpServletResponse response) {
         return bookService.getAll();
     }
 

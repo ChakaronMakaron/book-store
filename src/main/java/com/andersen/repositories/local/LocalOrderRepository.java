@@ -7,6 +7,7 @@ import com.andersen.repositories.OrderRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +17,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Singleton
 public class LocalOrderRepository implements OrderRepository {
+    private final ObjectMapper objectMapper;
+    private final ConfigModel configModel;
+
     @Inject
-    private ObjectMapper objectMapper;
-    @Inject
-    private ConfigModel configModel;
+    public LocalOrderRepository(ObjectMapper objectMapper, ConfigModel configModel) {
+        this.objectMapper = objectMapper;
+        this.configModel = configModel;
+    }
 
     @Override
     public List<Order> getAll() {
@@ -78,7 +84,7 @@ public class LocalOrderRepository implements OrderRepository {
                 return order;
             }
         }
-        throw new IllegalArgumentException("Wrong book id");
+        throw new IllegalArgumentException("Wrong books id");
     }
 
     public void sort(List<Order> orders, OrderSortKey sortKey) {
