@@ -12,7 +12,7 @@ public class Request {
     private Long clientId;
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id",  scope = Book.class)
+            property = "id", scope = Book.class)
     @JsonIdentityReference(alwaysAsId = true)
     private Book book;
 

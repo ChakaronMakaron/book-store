@@ -7,7 +7,6 @@ import com.andersen.annotations.Put;
 import com.andersen.controllers.BookController;
 import com.andersen.controllers.OrderController;
 import com.andersen.controllers.RequestController;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;

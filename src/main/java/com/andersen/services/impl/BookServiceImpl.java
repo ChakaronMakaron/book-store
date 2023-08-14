@@ -13,7 +13,6 @@ import com.google.inject.Singleton;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Singleton
 public class BookServiceImpl implements BookService {

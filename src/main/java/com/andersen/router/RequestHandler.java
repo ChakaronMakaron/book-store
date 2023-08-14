@@ -13,7 +13,7 @@ public class RequestHandler {
         this.method = method;
     }
 
-    public Object invoke(Object ...args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public Object invoke(Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         return method.invoke(methodOwner, args);
     }
 

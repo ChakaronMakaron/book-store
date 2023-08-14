@@ -4,7 +4,6 @@ import com.andersen.config.model.ConfigModel;
 import com.andersen.enums.OrderSortKey;
 import com.andersen.models.Order;
 import com.andersen.repositories.OrderRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

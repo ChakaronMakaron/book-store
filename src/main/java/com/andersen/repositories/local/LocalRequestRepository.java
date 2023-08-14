@@ -4,7 +4,6 @@ import com.andersen.config.model.ConfigModel;
 import com.andersen.enums.RequestSortKey;
 import com.andersen.models.Request;
 import com.andersen.repositories.RequestRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -74,7 +73,8 @@ public class LocalRequestRepository implements RequestRepository {
 
     public void sort(List<Request> requests, RequestSortKey sortKey) {
         switch (sortKey) {
-            case PRICE -> requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
+            case PRICE ->
+                    requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
             case NAME -> requests.sort(Comparator.comparing(request -> request.getBook().getName()));
             default -> throw new IllegalArgumentException("Unexpected value: " + sortKey);
         }

@@ -4,7 +4,6 @@ import com.andersen.config.DependencyModule;
 import com.andersen.config.model.ConfigModel;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
 import jakarta.servlet.http.HttpServlet;
 
 public class EntryPoint {
