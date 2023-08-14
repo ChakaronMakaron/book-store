@@ -79,8 +79,12 @@ public class OrderControllerServlet implements OrderController {
     }
 
     @Override
-    public int getIncomeBySpecifiedPeriod(LocalDateTime from, LocalDateTime to) {
-        return orderService.getIncomeBySpecifiedPeriod(from, to);
+    @Get("/orders/income")
+    public int getIncomeBySpecifiedPeriod(HttpServletRequest request, HttpServletResponse response) {
+            LocalDateTime from = LocalDateTime.parse(request.getParameter("from"));
+            LocalDateTime to = LocalDateTime.parse(request.getParameter("to"));
+
+            return orderService.getIncomeBySpecifiedPeriod(from, to);
     }
 
 }

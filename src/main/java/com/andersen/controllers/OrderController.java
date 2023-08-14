@@ -14,5 +14,5 @@ public interface OrderController {
 
     void complete(HttpServletRequest request, HttpServletResponse response);
 
-    int getIncomeBySpecifiedPeriod(LocalDateTime from, LocalDateTime to);
+    int getIncomeBySpecifiedPeriod(HttpServletRequest request, HttpServletResponse response);
 }
