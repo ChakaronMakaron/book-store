@@ -89,13 +89,18 @@ public class AppState {
         }
 
         if (newOrders.size() != orders.size()) {
+
+            List<Order> oldOrders = new ArrayList<>();
+
             for (Order oldOrder : orders) {
                 Order matchingOrder = findIdMatchingOrder(oldOrder, newOrders);
 
                 if (matchingOrder == null) {
-                    orders.remove(oldOrder);
+                    oldOrders.add(oldOrder);
                 }
             }
+
+            oldOrders.forEach(oldOrder -> orders.remove(oldOrder));
         }
 
         List<Request> newRequests = new ArrayList<>();

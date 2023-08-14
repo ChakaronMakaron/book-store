@@ -87,4 +87,17 @@ public class OrderControllerServlet implements OrderController {
         return orderService.getIncomeBySpecifiedPeriod(from, to);
     }
 
+    @Override
+    @Put("/orders/cancel")
+    public void cancel(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String data = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
+            Long id = objectMapper.readValue(data, Long.class);
+
+            orderService.cancel(id);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
