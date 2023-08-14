@@ -173,43 +173,16 @@ public class OrderServiceImpl implements OrderService {
         if (book.getAmount() < amount && !RequestCreationAvailabilityInOrder) {
             System.out.println("Requests switched off for createOrder");
         } else {
-//            order.setId((long) orderRepository.findAll().size() + 1);
-//            order.setClientId(Authenticator.getInstance().getUser().getId());
-//            order.setStatus(Order.OrderStatus.IN_PROCESS);
                 addRequestToOrder(order, amount, book);
-
-//            if (amount > book.getAmount()){
-//                if (RequestCreationAvailabilityInOrder) {
-//                    addRequestToOrder(order, amount, book);
-//                } else {
-//                    System.out.println("Requests switched off for createOrder");
-//                }
-//            } else {
-//                addRequestToOrder(order, amount, book);
         }
     }
 
-
-
-
-
-
-
-    //
     private void addRequestToOrder(Order order, Integer amount, Book book) {
-
-        if (true){
-            if (order.getRequests().isEmpty()) {
-                order.setRequests(new ArrayList<>());
-            }
-            List<Request> requests = order.getRequests();
-
-            requests.add(new Request((long) requests.size() + 1, order.getClientId(), book, amount, Request.RequestStatus.IN_PROCESS));
-
-            order.setRequests(requests);
-        } else {
-            System.out.println("Requests switched off for addRequestOrder");
+        if (order.getRequests().isEmpty()) {
+            order.setRequests(new ArrayList<>());
         }
-
+        List<Request> requests = order.getRequests();
+        requests.add(new Request((long) requests.size() + 1, order.getClientId(), book, amount, Request.RequestStatus.IN_PROCESS));
+        order.setRequests(requests);
     }
 }
