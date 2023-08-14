@@ -20,7 +20,14 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public List<Request> getAll() {
+        return requestRepository.getAll();
+    }
+
+    @Override
     public List<Request> getAllSorted(RequestSortKey requestSortKey) {
         return requestRepository.getAllSorted(requestSortKey);
     }
+
+
 }

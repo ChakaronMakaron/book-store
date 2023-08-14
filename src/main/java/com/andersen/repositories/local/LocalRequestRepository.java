@@ -48,8 +48,6 @@ public class LocalRequestRepository implements RequestRepository {
     public List<Request> getAllSorted(RequestSortKey sortKey) {
         List<Request> requests = getAll();
 
-        if (sortKey == RequestSortKey.NATURAL) return requests;
-
         sort(requests, sortKey);
         return requests;
     }
@@ -74,9 +72,10 @@ public class LocalRequestRepository implements RequestRepository {
         save(requests);
     }
 
-    public void sort(List<Request> request, RequestSortKey sortKey) {
+    public void sort(List<Request> requests, RequestSortKey sortKey) {
         switch (sortKey) {
-            case PRICE -> request.sort(Comparator.comparing(requestToSort -> requestToSort.getBook().getName()));
+            case PRICE -> requests.sort(Comparator.comparing(request -> request.getBook().getPrice() * request.getAmount()));
+            case NAME -> requests.sort(Comparator.comparing(request -> request.getBook().getName()));
             default -> throw new IllegalArgumentException("Unexpected value: " + sortKey);
         }
     }
