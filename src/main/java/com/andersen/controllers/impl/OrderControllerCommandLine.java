@@ -91,4 +91,9 @@ public class OrderControllerCommandLine implements OrderController {
                 endPeriodOfCompletionDate, incomeCounter);
     }
 
+    @Override
+    public void orderRequestCreationSwitch(Boolean choice) {
+        orderService.setRequestCreationAvailabilityInOrder(choice);
+    }
+
 }

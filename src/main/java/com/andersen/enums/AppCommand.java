@@ -13,7 +13,7 @@ public enum AppCommand {
     EXIT(false, Collections.emptyList()),
     HELP(false, Collections.emptyList()),
     BOOK(true, List.of(BookAction.LIST, BookAction.ADD)),
-    REQUEST(true, List.of(RequestAction.LIST)),
+    REQUEST(true, List.of(RequestAction.LIST, RequestAction.SWITCH)),
     ORDER(true, List.of(OrderAction.LIST, OrderAction.CREATE, OrderAction.COMPLETE, OrderAction.CANCEL, OrderAction.TOTAL_INCOME)),
     CLIENT(true, Collections.emptyList());
 

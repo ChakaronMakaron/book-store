@@ -16,4 +16,6 @@ public interface OrderController {
     void cancel(Long orderId);
 
     void countIncome(LocalDateTime startPeriodOfCompletionDate, LocalDateTime endPeriodOfCompletionDate);
+
+    void orderRequestCreationSwitch(Boolean choice);
 }

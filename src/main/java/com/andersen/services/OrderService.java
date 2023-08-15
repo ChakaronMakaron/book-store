@@ -24,4 +24,6 @@ public interface OrderService {
 
     List<Order> getOrdersFilteredInPeriod(LocalDateTime startCompletionDate, LocalDateTime endCompletionDate);
 
+    void setRequestCreationAvailabilityInOrder(boolean choice);
+
 }

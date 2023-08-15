@@ -13,4 +13,7 @@ public interface RequestService {
     List<Request> getAll();
 
     void add(Request request);
+
+    void setRequestCreationAvailability(boolean choice);
+
 }

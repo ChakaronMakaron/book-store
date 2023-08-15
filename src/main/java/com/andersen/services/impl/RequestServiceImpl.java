@@ -9,10 +9,16 @@ import java.util.List;
 
 public class RequestServiceImpl implements RequestService {
 
+    private boolean requestCreationAvailability = true;
     private final RequestRepository requestRepository;
 
     public RequestServiceImpl(RequestRepository requestRepository) {
         this.requestRepository = requestRepository;
+    }
+
+    @Override
+    public void setRequestCreationAvailability(boolean requestCreationAvailability) {
+        this.requestCreationAvailability = requestCreationAvailability;
     }
 
     @Override
@@ -32,6 +38,12 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void add(Request request) {
-        requestRepository.add(request);
+        if (requestCreationAvailability){
+            requestRepository.add(request);
+        } else {
+            System.out.println("SOLD OUT\nNo available requests");
+
+        }
+
     }
 }
